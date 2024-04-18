@@ -70,36 +70,35 @@
                 </div>
 
                 <div class="form-divider">
-                    Your Home
+                    Your Address
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
-                        <label>Country</label>
+                        <label>Religion</label>
                         <select class="form-control selectric">
-                            <option>Indonesia</option>
-                            <option>Palestine</option>
-                            <option>Syria</option>
-                            <option>Malaysia</option>
-                            <option>Thailand</option>
+                            <option>Islam</option>
+                            <option>Hindu</option>
+                            <option>Budha</option>
+                            <option>Konghucu</option>
+                            <option>Kristen</option>
+                            <option>Katolik</option>
                         </select>
                     </div>
                     <div class="form-group col-6">
-                        <label>Province</label>
-                        <select class="form-control selectric">
-                            <option>West Java</option>
-                            <option>East Java</option>
-                        </select>
+                        <label>Photos</label>
+                        <input type="file"
+                            class="form-control">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
-                        <label>City</label>
+                        <label>Place of Birth</label>
                         <input type="text"
                             class="form-control">
                     </div>
                     <div class="form-group col-6">
-                        <label>Postal Code</label>
-                        <input type="text"
+                        <label>Date of Birth</label>
+                        <input type="date"
                             class="form-control">
                     </div>
                 </div>

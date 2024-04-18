@@ -20,7 +20,7 @@
                 class="needs-validation"
                 novalidate="">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Username or Email</label>
                     <input id="email"
                         type="email"
                         class="form-control"
@@ -29,7 +29,7 @@
                         required
                         autofocus>
                     <div class="invalid-feedback">
-                        Please fill in your email
+                        Please fill in your username or email
                     </div>
                 </div>
 
@@ -75,26 +75,10 @@
                     </button>
                 </div>
             </form>
-            <div class="mt-4 mb-3 text-center">
-                <div class="text-job text-muted">Login With Social</div>
-            </div>
-            <div class="row sm-gutters">
-                <div class="col-6">
-                    <a class="btn btn-block btn-social btn-facebook">
-                        <span class="fab fa-facebook"></span> Facebook
-                    </a>
-                </div>
-                <div class="col-6">
-                    <a class="btn btn-block btn-social btn-twitter">
-                        <span class="fab fa-twitter"></span> Twitter
-                    </a>
-                </div>
-            </div>
-
         </div>
     </div>
     <div class="text-muted mt-5 text-center">
-        Don't have an account? <a href="auth-register.html">Create One</a>
+        Don't have an account? <a href="auth-register.html">Register now</a>
     </div>
 @endsection
 
