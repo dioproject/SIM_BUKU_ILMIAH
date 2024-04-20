@@ -7,19 +7,36 @@
             <a href="index.html">St</a>
         </div>
         <ul class="sidebar-menu">
-            <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
+            <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('admin/dashboard') }}"><i class="fas fa-regular fa-house"></i><span>Dashboard</span></a>
+            </li>
+            <li class="nav-item dropdown {{ $type_menu === 'data' ? 'active' : '' }}">
                 <a href="#"
-                    class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                    class="nav-link has-dropdown"
+                    data-toggle="dropdown"><i class="fas fa-solid fa-table"></i> <span>Data</span></a>
                 <ul class="dropdown-menu">
-                    <li class='{{ Request::is('dashboard-general-dashboard') ? 'active' : '' }}'>
+                    <li class="{{ Request::is('admin/user-data') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('dashboard-general-dashboard') }}">General Dashboard</a>
+                            href="{{ url('admin/userdata') }}">User Data</a>
                     </li>
-                    <li class="{{ Request::is('dashboard-ecommerce-dashboard') ? 'active' : '' }}">
+                    <li class="{{ Request::is('admin/bookdata') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('dashboard-ecommerce-dashboard') }}">Ecommerce Dashboard</a>
+                            href="{{ url('admin/bookdata') }}">Book Data</a>
                     </li>
                 </ul>
+            </li>
+            <li class="{{ Request::is('admin/katalog') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('admin/katalog') }}"><i class="fas fa-solid fa-address-book"></i><span>Katalog</span></a>
+            </li>
+            <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('admin/royalty') }}"><i class="fas fa-solid fa-crown"></i><span>Royalty</span></a>
+            </li>
+            <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('admin/history') }}"><i class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>
             </li>
             <li class="nav-item dropdown {{ $type_menu === 'layout' ? 'active' : '' }}">
                 <a href="#"
@@ -283,15 +300,15 @@
                     <li class="{{ Request::is('auth-forgot-password') ? 'active' : '' }}">
                         <a href="{{ url('auth-forgot-password') }}">Forgot Password</a>
                     </li>
-                    <li class="{{ Request::is('auth-login') ? 'active' : '' }}">
-                        <a href="{{ url('auth-login') }}">Login</a>
+                    <li class="{{ Request::is('login') ? 'active' : '' }}">
+                        <a href="{{ url('login') }}">Login</a>
                     </li>
                     <li class="{{ Request::is('auth-login2') ? 'active' : '' }}">
                         <a class="beep beep-sidebar"
                             href="{{ url('auth-login2') }}">Login 2</a>
                     </li>
-                    <li class="{{ Request::is('auth-register') ? 'active' : '' }}">
-                        <a href="{{ url('auth-register') }}">Register</a>
+                    <li class="{{ Request::is('register') ? 'active' : '' }}">
+                        <a href="{{ url('register') }}">Register</a>
                     </li>
                     <li class="{{ Request::is('auth-reset-password') ? 'active' : '' }}">
                         <a href="{{ url('auth-reset-password') }}">Reset Password</a>

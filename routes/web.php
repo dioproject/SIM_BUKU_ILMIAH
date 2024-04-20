@@ -13,16 +13,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/dashboard-general-dashboard');
+Route::redirect('/', '/admin/dashboard');
 
-// Dashboard
-Route::get('/dashboard-general-dashboard', function () {
-    return view('pages.dashboard-general-dashboard', ['type_menu' => 'dashboard']);
-});
-Route::get('/dashboard-ecommerce-dashboard', function () {
-    return view('pages.dashboard-ecommerce-dashboard', ['type_menu' => 'dashboard']);
+// Admin Page
+Route::get('/admin/dashboard', function () {
+    return view('pages.admin.dashboard', ['type_menu' => 'dashboard']);
 });
 
+Route::get('/admin/userdata', function () {
+    return view('pages.admin.user-data', ['type_menu' => 'data']);
+});
+
+Route::get('/admin/bookdata', function () {
+    return view('pages.admin.book-data', ['type_menu' => 'data']);
+});
+
+Route::get('/admin/katalog', function () {
+    return view('pages.admin.katalog', ['type_menu' => 'katalog']);
+});
+
+Route::get('/admin/royalty', function () {
+    return view('pages.admin.royalty', ['type_menu' => 'royalty']);
+});
+
+Route::get('/admin/history', function () {
+    return view('pages.admin.history', ['type_menu' => 'history']);
+});
 
 // Layout
 Route::get('/layout-default-layout', function () {
@@ -194,14 +210,14 @@ Route::get('/modules-weather-icon', function () {
 Route::get('/auth-forgot-password', function () {
     return view('pages.auth-forgot-password', ['type_menu' => 'auth']);
 });
-Route::get('/auth-login', function () {
-    return view('pages.auth-login', ['type_menu' => 'auth']);
+Route::get('/login', function () {
+    return view('pages.login', ['type_menu' => 'auth']);
 });
 Route::get('/auth-login2', function () {
     return view('pages.auth-login2', ['type_menu' => 'auth']);
 });
-Route::get('/auth-register', function () {
-    return view('pages.auth-register', ['type_menu' => 'auth']);
+Route::get('/register', function () {
+    return view('pages.register', ['type_menu' => 'auth']);
 });
 Route::get('/auth-reset-password', function () {
     return view('pages.auth-reset-password', ['type_menu' => 'auth']);
