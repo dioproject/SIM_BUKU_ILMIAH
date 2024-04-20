@@ -123,6 +123,9 @@
             </form>
         </div>
     </div>
+    <div class="text-muted mt-5 text-center">
+        I have an account! <a href="/login">Login</a>
+    </div>
 @endsection
 
 @push('scripts')
@@ -131,5 +134,5 @@
     <script src="{{ asset('library/jquery.pwstrength/jquery.pwstrength.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/auth-register.js') }}"></script>
+    <script src="{{ asset('js/page/register.js') }}"></script>
 @endpush
