@@ -20,6 +20,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <a href="/admin/userdata/create"
+                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create User
+                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form>
@@ -51,8 +54,15 @@
                                             <td>
                                                 <div class="badge badge-success">Active</div>
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -61,8 +71,15 @@
                                             <td>
                                                 <div class="badge badge-success">Active</div>
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
@@ -71,8 +88,15 @@
                                             <td>
                                                 <div class="badge badge-danger">Not Active</div>
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -81,8 +105,15 @@
                                             <td>
                                                 <div class="badge badge-success">Active</div>
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>5</td>
@@ -91,8 +122,15 @@
                                             <td>
                                                 <div class="badge badge-success">Active</div>
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -130,6 +168,8 @@
 
 @push('scripts')
     <!-- JS Libraies -->
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

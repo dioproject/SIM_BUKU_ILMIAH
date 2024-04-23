@@ -16,7 +16,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="#"
+                                <a href="/admin/katalog/create"
                                     class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Katalog
                                 </a>
                                 <h4></h4>
