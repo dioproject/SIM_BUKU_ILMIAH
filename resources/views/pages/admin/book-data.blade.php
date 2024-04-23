@@ -11,8 +11,8 @@
             <div class="section-header">
                 <h1>Book Data</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Data</a></div>
-                    <div class="breadcrumb-item"><a href="#">Book Data</a></div>
+                    <div class="breadcrumb-item active">Data</div>
+                    <div class="breadcrumb-item"><a href="/admin/bookdata">Book Data</a></div>
                 </div>
             </div>
             <div class="section-body">
@@ -20,6 +20,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <a href="/admin/bookdata/create"
+                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Book
+                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form>
@@ -53,8 +56,15 @@
                                             <td>
                                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -64,8 +74,15 @@
                                             <td>
                                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
@@ -75,8 +92,15 @@
                                             <td>
                                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
@@ -86,8 +110,15 @@
                                             <td>
                                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                             </td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -125,6 +156,8 @@
 
 @push('scripts')
     <!-- JS Libraies -->
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

@@ -24,12 +24,32 @@ Route::get('/admin/userdata', function () {
     return view('pages.admin.user-data', ['type_menu' => 'data']);
 });
 
+Route::get('/admin/userdata/create', function () {
+    return view('pages.admin.create-user', ['type_menu' => 'data']);
+});
+
+Route::get('/admin/userdata/edit', function () {
+    return view('pages.admin.edit-user', ['type_menu' => 'data']);
+});
+
 Route::get('/admin/bookdata', function () {
     return view('pages.admin.book-data', ['type_menu' => 'data']);
 });
 
+Route::get('/admin/bookdata/create', function () {
+    return view('pages.admin.create-book', ['type_menu' => 'data']);
+});
+
+Route::get('/admin/bookdata/edit', function () {
+    return view('pages.admin.edit-book', ['type_menu' => 'data']);
+});
+
 Route::get('/admin/katalog', function () {
     return view('pages.admin.katalog', ['type_menu' => 'katalog']);
+});
+
+Route::get('/admin/katalog/create', function () {
+    return view('pages.admin.create-katalog', ['type_menu' => 'katalog']);
 });
 
 Route::get('/admin/royalty', function () {
