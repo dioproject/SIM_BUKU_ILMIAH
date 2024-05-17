@@ -5,6 +5,10 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Book;
+use App\Models\Category;
+use App\Models\Citation;
+use App\Models\Manuscript;
+use App\Models\Review;
 
 class BookFactory extends Factory
 {
@@ -23,11 +27,10 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            'id_book' => $this->faker->numberBetween(-10000, 10000),
-            'title' => $this->faker->sentence(4),
-            'sub_title' => $this->faker->regexify('[A-Za-z0-9]{40}'),
-            'fill' => $this->faker->text,
-            'review' => $this->faker->text,
+            'category_id' => Category::factory(),
+            'manuscript_id' => Manuscript::factory(),
+            'citation_id' => Citation::factory(),
+            'review_id' => Review::factory(),
         ];
     }
 }

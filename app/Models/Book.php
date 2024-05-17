@@ -15,11 +15,10 @@ class Book extends Model
      * @var array
      */
     protected $fillable = [
-        'id_book',
-        'title',
-        'sub_title',
-        'fill',
-        'review',
+        'category_id',
+        'manuscript_id',
+        'citation_id',
+        'review_id',
     ];
 
     /**
@@ -29,5 +28,29 @@ class Book extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'category_id' => 'integer',
+        'manuscript_id' => 'integer',
+        'citation_id' => 'integer',
+        'review_id' => 'integer',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function manuscript()
+    {
+        return $this->belongsTo(Manuscript::class);
+    }
+
+    public function citation()
+    {
+        return $this->belongsTo(Citation::class);
+    }
+
+    public function review()
+    {
+        return $this->belongsTo(Review::class);
+    }
 }
