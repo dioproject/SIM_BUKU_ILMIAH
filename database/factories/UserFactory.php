@@ -23,10 +23,16 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id_user' => $this->faker->numberBetween(-10000, 10000),
             'email' => $this->faker->safeEmail,
             'password' => $this->faker->password,
-            'user_role' => $this->faker->randomElement(["ADMIN","EDITOR","WRITER"]),
+            'user_role' => $this->faker->randomElement(["1","2","3"]),
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'place_of_birth' => $this->faker->regexify('[A-Za-z0-9]{25}'),
+            'date_of_birth' => $this->faker->date(),
+            'religion' => $this->faker->randomElement(["ISLAM","KATOLIK","KRISTEN","HINDU","BUDHA","KHONGHUCU"]),
+            'gender' => $this->faker->randomElement(["MAN","WOMAN"]),
+            'path_foto' => $this->faker->regexify('[A-Za-z0-9]{100}'),
         ];
     }
 }

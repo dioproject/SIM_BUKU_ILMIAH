@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.app-admin')
 @section('title', 'History')
 
 @push('style')

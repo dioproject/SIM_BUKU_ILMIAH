@@ -1,0 +1,38 @@
+created:
+    - database/factories/UserFactory.php
+    - database/factories/CategoryFactory.php
+    - database/factories/BookFactory.php
+    - database/factories/ManuscriptFactory.php
+    - database/factories/CitationFactory.php
+    - database/factories/ReviewFactory.php
+    - database/factories/CatalogFactory.php
+    - database/factories/RoyaltyFactory.php
+    - database/factories/HistoryFactory.php
+    - database/migrations/2024_05_16_234707_create_users_table.php
+    - database/migrations/2024_05_16_234708_create_categories_table.php
+    - database/migrations/2024_05_16_234709_create_books_table.php
+    - database/migrations/2024_05_16_234710_create_manuscripts_table.php
+    - database/migrations/2024_05_16_234711_create_citations_table.php
+    - database/migrations/2024_05_16_234712_create_reviews_table.php
+    - database/migrations/2024_05_16_234713_create_catalogs_table.php
+    - database/migrations/2024_05_16_234714_create_royalties_table.php
+    - database/migrations/2024_05_16_234715_create_histories_table.php
+    - app/Models/User.php
+    - app/Models/Category.php
+    - app/Models/Book.php
+    - app/Models/Manuscript.php
+    - app/Models/Citation.php
+    - app/Models/Review.php
+    - app/Models/Catalog.php
+    - app/Models/Royalty.php
+    - app/Models/History.php
+models:
+    Book: { category_id: 'id foreign:Category nullable', manuscript_id: 'id foreign:Manuscript nullable', citation_id: 'id foreign:Citation nullable', review_id: 'id foreign:Review nullable' }
+    Catalog: { book_id: 'id foreign:Book nullable', content: 'string:100 nullable' }
+    Category: { name: 'string:30 nullable' }
+    Citation: { citation: 'text nullable' }
+    History: { change_detail: 'string:255 nullable' }
+    Manuscript: { title: 'string:100 nullable', abstract: 'text nullable', fill: 'longtext nullable', submission_date: 'date nullable', status: 'enum:SUBMITTED,REVIEWING,PUBLISHED,REJECTED nullable', author_id: 'id foreign:User nullable', book_id: 'id foreign:Book nullable' }
+    Review: { manuscript_id: 'id foreign:Manuscript nullable', reviewer_id: 'id foreign:User nullable', content: 'text nullable' }
+    Royalty: { book_id: 'id foreign:Book nullable', amount: 'decimal nullable', date: 'date nullable', path_foto: 'string:100' }
+    User: { email: 'string:50 unique nullable', password: 'string:150 nullable', user_role: 'enum:1,2,3 nullable', first_name: 'string:20 nullable', last_name: 'string:50 nullable', place_of_birth: 'string:25 nullable', date_of_birth: 'date nullable', religion: 'enum:ISLAM,KATOLIK,KRISTEN,HINDU,BUDHA,KHONGHUCU nullable', gender: 'enum:MAN,WOMAN nullable', path_foto: 'string:100 nullable' }

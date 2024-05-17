@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-admin')
 
 @section('title', 'Royalty')
 
@@ -16,6 +16,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <a href="/admin/royalty/create"
+                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Royalty
+                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form>

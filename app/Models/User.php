@@ -2,40 +2,43 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'id_user',
         'email',
         'password',
         'user_role',
+        'first_name',
+        'last_name',
+        'place_of_birth',
+        'date_of_birth',
+        'religion',
+        'gender',
+        'path_foto',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'id' => 'integer',
+        'date_of_birth' => 'date',
     ];
+
+    protected function user_roles(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) =>  ["ADMIN", "EDITOR", "AUTHOR"][$value],
+        );
+    }
 }

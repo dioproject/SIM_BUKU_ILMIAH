@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-admin')
 
 @section('title', 'Create User')
 
@@ -11,9 +11,9 @@
             <div class="section-header">
                 <h1>Create User</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Data</a></div>
-                    <div class="breadcrumb-item"><a href="#">User Data</a></div>
-                    <div class="breadcrumb-item"><a href="#">Create</a></div>
+                    <div class="breadcrumb-item">Data</div>
+                    <div class="breadcrumb-item active"><a href="/admin/userdata">User Data</a></div>
+                    <div class="breadcrumb-item active"><a href="/admin/userdata/create">Create</a></div>
                 </div>
             </div>
 

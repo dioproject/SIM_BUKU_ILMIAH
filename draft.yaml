@@ -1,0 +1,51 @@
+models:
+  User:
+    email: string:50 unique nullable
+    password: string:150 nullable
+    user_role: enum:1,2,3 nullable
+    first_name: string:20 nullable
+    last_name: string:50 nullable
+    place_of_birth: string:25 nullable
+    date_of_birth: date nullable
+    religion: enum:ISLAM,KATOLIK,KRISTEN,HINDU,BUDHA,KHONGHUCU nullable
+    gender: enum:MAN,WOMAN nullable
+    path_foto: string:100 nullable
+
+  Category:
+    name: string:30 nullable
+
+  Book:
+    category_id: id foreign:Category nullable
+    manuscript_id: id foreign:Manuscript nullable
+    citation_id: id foreign:Citation nullable
+    review_id: id foreign:Review nullable
+
+  Manuscript:
+    title: string:100 nullable
+    abstract: text nullable
+    fill: longtext nullable
+    submission_date: date nullable
+    status: enum:SUBMITTED,REVIEWING,PUBLISHED,REJECTED nullable
+    author_id: id foreign:User nullable
+    book_id: id foreign:Book nullable
+
+  Citation:
+    citation: text nullable
+
+  Review:
+    manuscript_id: id foreign:Manuscript nullable
+    reviewer_id: id foreign:User nullable
+    content: text nullable
+
+  Catalog:
+    book_id: id foreign:Book nullable
+    content: string:100 nullable
+
+  Royalty:
+    book_id: id foreign:Book nullable
+    amount: decimal nullable
+    date: date nullable
+    path_foto: string:100
+
+  History:
+    change_detail: string:255 nullable
