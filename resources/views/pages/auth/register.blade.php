@@ -16,6 +16,7 @@
 
         <div class="card-body">
             <form method="POST">
+                @csrf
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="frist_name">First Name</label>
