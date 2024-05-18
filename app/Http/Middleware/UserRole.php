@@ -4,14 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class UserRole {
-    public function handle(Request $request, Closure $next, $userRole)
+class UserRole
+{
+    public function handle(Request $request, Closure $next, ...$userRoles)
     {
-        if(auth()->user()->user_role == $userRole){
-            return $next($request);
+        $user = Auth::user();
+
+        foreach ($userRoles as $role) {
+            if ($user && $user->user_role === $role) {
+                return $next($request);
+            }
         }
-          
-        return response()->json(['You do not have permission to access for this page.']);
+
+        abort(403, 'Unauthorized');
     }
 }

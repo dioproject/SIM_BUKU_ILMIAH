@@ -2,7 +2,7 @@ models:
   User:
     email: string:50 unique nullable
     password: string:150 nullable
-    user_role: enum:1,2,3 nullable
+    user_role: enum:ADMIN,EDITOR,AUTHOR nullable
     first_name: string:20 nullable
     last_name: string:50 nullable
     place_of_birth: string:25 nullable

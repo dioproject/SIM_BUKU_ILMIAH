@@ -16,12 +16,14 @@
 
         <div class="card-body">
             <form 
+                id="form_validation"
                 action="{{ route('login.action') }}" 
                 method="POST"
+                enctype="multipart/form-data"
             >
                 @csrf
                 <div class="form-group">
-                    <label for="email">Username or Email</label>
+                    <label for="email">Email</label>
                     <input id="email"
                         type="email"
                         class="form-control"
@@ -30,7 +32,7 @@
                         required
                         autofocus>
                     <div class="invalid-feedback">
-                        Please fill in your username or email
+                        Please fill in your email
                     </div>
                 </div>
 

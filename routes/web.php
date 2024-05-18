@@ -1,26 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;   
 
-Route::get('/', function() {
-    return view('pages.auth.login');
-})->middleware('auth');
-
-Auth::routes();
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'login')->name('login');
-    Route::post('/login', 'loginAction')->name('login.action');
+    Route::post('/login/action', 'loginAction')->name('login.action');
 });
 
 Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
   
     // Admin Page
-    Route::get('/admin/dashboard', [DashbordController::class, 'adminPage'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'adminPage'])->name('admin.dashboard');
     Route::get('/admin/userdata', function () {
         return view('pages.admin.user-data', ['type_menu' => 'data']);
     });
@@ -76,7 +71,7 @@ Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
 
 });
 
-Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
+Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
 
     //Author
     Route::get('/author/dashboard', [DashbordController::class, 'authorPage'])->name('author.dashboard');
