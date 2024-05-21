@@ -8,8 +8,7 @@ models:
     place_of_birth: string:25 nullable
     date_of_birth: date nullable
     religion: enum:ISLAM,KATOLIK,KRISTEN,HINDU,BUDHA,KHONGHUCU nullable
-    gender: enum:MAN,WOMAN nullable
-    path_foto: string:100 nullable
+    gender: enum:MALE,FEMALE nullable
 
   Category:
     name: string:30 nullable

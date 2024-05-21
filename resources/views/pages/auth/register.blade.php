@@ -15,7 +15,12 @@
         </div>
 
         <div class="card-body">
-            <form method="POST">
+            <form 
+                id="form-validation"
+                action="{{ route('admin.userdata.create') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
                 @csrf
                 <div class="row">
                     <div class="form-group col-6">

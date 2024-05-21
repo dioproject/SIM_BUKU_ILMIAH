@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function login() {
         return view('pages.auth.login');
     }
- 
+
     public function loginAction(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -38,7 +38,7 @@ class AuthController extends Controller
             }
 
             Auth::login($user);
-            
+
             if ($user->user_role == 'ADMIN') {
                 return redirect()->route('admin.dashboard');
             }else if ($user->user_role == 'EDITOR') {
@@ -46,8 +46,15 @@ class AuthController extends Controller
             }else{
                 return redirect()->route('author.dashboard');
             }
+
         }
         return view('pages.auth.login');
-    }         
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
 }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class HomeController extends Controller
 {
     public function __construct()
     {
@@ -13,7 +13,7 @@ class DashboardController extends Controller
 
     public function adminPage()
     {
-        return view('pages.admin.dashboard');
+        return view('pages.admin.dashboard.index');
     }
     public function editorPage()
     {

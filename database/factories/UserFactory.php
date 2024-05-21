@@ -34,8 +34,7 @@ class UserFactory extends Factory
             'place_of_birth' => $this->faker->regexify('[A-Za-z0-9]{25}'),
             'date_of_birth' => $this->faker->date(),
             'religion' => $this->faker->randomElement(["ISLAM","KATOLIK","KRISTEN","HINDU","BUDHA","KHONGHUCU"]),
-            'gender' => $this->faker->randomElement(["MAN","WOMAN"]),
-            'path_foto' => $this->faker->regexify('[A-Za-z0-9]{100}'),
+            'gender' => $this->faker->randomElement(["MALE","FEMALE"]),
         ];
     }
 }

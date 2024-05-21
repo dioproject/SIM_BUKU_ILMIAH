@@ -23,8 +23,7 @@ return new class extends Migration
             $table->string('place_of_birth', 25)->nullable();
             $table->date('date_of_birth')->nullable();
             $table->enum('religion', ["ISLAM","KATOLIK","KRISTEN","HINDU","BUDHA","KHONGHUCU"])->nullable();
-            $table->enum('gender', ["MAN","WOMAN"])->nullable();
-            $table->string('path_foto', 100)->nullable();
+            $table->enum('gender', ["MALE","FEMALE"])->nullable();
             $table->timestamps();
         });
     }

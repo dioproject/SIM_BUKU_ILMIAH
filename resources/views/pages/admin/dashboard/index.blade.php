@@ -24,10 +24,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Writer</h4>
+                                <h4>Total Author</h4>
                             </div>
                             <div class="card-body">
-                                10
+                                {{-- {{ auth()->users()->where('user_role', 'AUTHOR')->count() }} --}}
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                                 <h4>Total Editor</h4>
                             </div>
                             <div class="card-body">
-                                42
+                                {{-- {{ auth()->users()->where('user_role', 'EDITOR')->count() }} --}}
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                                 <h4>Total Users</h4>
                             </div>
                             <div class="card-body">
-                                1,201
+                                {{-- {{ auth()->users()->count() }} --}}
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                                 <h4>Total Books</h4>
                             </div>
                             <div class="card-body">
-                                47
+                                {{-- {{ auth()->books()->count() }} --}}
                             </div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>                            
+                            </div>
                             <nav aria-label="...">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item disabled">
