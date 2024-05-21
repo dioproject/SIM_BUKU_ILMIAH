@@ -59,9 +59,6 @@
             </form>
         </div>
     </div>
-    <div class="text-muted mt-5 text-center">
-        Don't have an account? <a href="/register">Register now</a>
-    </div>
 @endsection
 
 @push('scripts')

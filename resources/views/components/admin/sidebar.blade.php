@@ -16,27 +16,27 @@
                     class="nav-link has-dropdown"
                     data-toggle="dropdown"><i class="fas fa-solid fa-table"></i> <span>Data</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('admin/user-data') ? 'active' : '' }}">
+                    <li class="{{ Request::is('admin/users') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('admin/userdata') }}">User Data</a>
+                            href="{{ url('admin/users') }}">Users</a>
                     </li>
-                    <li class="{{ Request::is('admin/bookdata') ? 'active' : '' }}">
+                    <li class="{{ Request::is('admin/books') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('admin/bookdata') }}">Book Data</a>
+                            href="{{ url('admin/books') }}">Books</a>
                     </li>
                 </ul>
             </li>
-            <li class="{{ Request::is('admin/katalog') ? 'active' : '' }}">
+            <li class="{{ Request::is('admin/katalogs') ? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('admin/katalog') }}"><i class="fas fa-solid fa-address-book"></i><span>Katalog</span></a>
+                    href="{{ url('admin/katalogs') }}"><i class="fas fa-solid fa-address-book"></i><span>Katalog</span></a>
             </li>
-            <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
+            <li class="{{ Request::is('admin/royalties') ? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('admin/royalty') }}"><i class="fas fa-solid fa-crown"></i><span>Royalty</span></a>
+                    href="{{ url('admin/royalties') }}"><i class="fas fa-solid fa-crown"></i><span>Royalty</span></a>
             </li>
-            <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
+            <li class="{{ Request::is('admin/histories') ? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('admin/history') }}"><i class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>
+                    href="{{ url('admin/histories') }}"><i class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>
             </li>
         </ul>
     </aside>

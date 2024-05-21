@@ -21,7 +21,6 @@ class User extends Model implements Authenticatable
         'date_of_birth',
         'religion',
         'gender',
-        'path_foto',
     ];
 
     protected $hidden = [
