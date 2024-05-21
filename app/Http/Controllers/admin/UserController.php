@@ -55,20 +55,18 @@ class UserController extends Controller
 
     public function update(Request $request, $id) {
         $request->validate([
-            'first_name' => ['required'],
-            'last_name' => ['required'],
-            'email' => ['required'],
-            'password' => ['required'],
-            'religion' => ['required'],
-            'gender' => ['required'],
-            'place_of_birth' => ['required'],
-            'date_of_birth' => ['required'],
-            'user_role' => ['required'],
+            'first_name' => 'required|max:20',
+            'last_name' => 'required|max:50',
+            'password' => 'required|min:8',
+            'religion' => 'required|in:ISLAM,HINDU,BUDHA,KONGHUCU,KRISTEN,KATOLIK',
+            'gender' => 'required|in:MALE,FEMALE',
+            'place_of_birth' => 'required|max:25',
+            'date_of_birth' => 'required|date',
+            'user_role' => 'required|in:ADMIN,EDITOR,AUTHOR',
         ]);
 
         $user = User::findOrFail($id);
         $user->update([
-            'email' => $request->email,
             'password' => Hash::make($request->password),
             'user_role' => $request->user_role,
             'first_name' => $request->first_name,
