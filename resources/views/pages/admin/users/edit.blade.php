@@ -38,19 +38,19 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>First Name</label>
-                                            <input type="text" class="form-control" tabindex="1" id="first-name"
-                                                name="first-name" value="{{ $user->first_name }} {{ old('first_name') }}">
+                                            <input type="text" class="form-control" tabindex="1" id="first_name"
+                                                name="first_name" value="{{ $user->first_name }} {{ old('first_name') }}">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Last Name</label>
-                                            <input type="text" class="form-control" tabindex="2" id="long-name"
-                                                name="long-name" value="{{ $user->last_name }} {{ old('last_name') }}">
+                                            <input type="text" class="form-control" tabindex="2" id="last_name"
+                                                name="last_name" value="{{ $user->last_name }} {{ old('last_name') }}">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Email</label>
-                                            <input type="email" class="form-control" tabindex="3" id="email"
+                                            <input type="email" aria-hidden="true" disabled class="form-control" tabindex="3" id="email"
                                                 name="email" value="{{ $user->email }} {{ old('email') }}">
                                         </div>
                                         <div class="form-group col-md-6">
@@ -62,31 +62,29 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Religion</label>
-                                            <select class="form-control selectric" tabindex="5" name="religion"
-                                                value="{{ $user->religion }} {{ old('religion') }}">
-                                                <option value="ISLAM" {{ $user->religion === 'ISLAM' ? 'selected' : '' }}>
+                                            <select class="form-control selectric" tabindex="5" id="religion"
+                                                name="religion" value="{{ $user->religion }} {{ old('religion') }}">
+                                                <option value="ISLAM" {{ old('religion') == 'ISLAM' ? 'selected' : '' }}>
                                                     ISLAM</option>
-                                                <option value="HINDU" {{ $user->religion === 'HINDU' ? 'selected' : '' }}>
+                                                <option value="HINDU" {{ old('religion') == 'HINDU' ? 'selected' : '' }}>
                                                     HINDU</option>
-                                                <option value="BUDHA" {{ $user->religion === 'BUDHA' ? 'selected' : '' }}>
+                                                <option value="BUDHA" {{ old('religion') == 'BUDHA' ? 'selected' : '' }}>
                                                     BUDHA</option>
                                                 <option value="KONGHUCU"
-                                                    {{ $user->religion === 'KONGHUCU' ? 'selected' : '' }}>KONGHUCU
-                                                </option>
+                                                    {{ old('religion') == 'KONGHUCU' ? 'selected' : '' }}>KONGHUCU</option>
                                                 <option value="KRISTEN"
-                                                    {{ $user->religion === 'KRISTEN' ? 'selected' : '' }}>KRISTEN</option>
+                                                    {{ old('religion') == 'KRISTEN' ? 'selected' : '' }}>KRISTEN</option>
                                                 <option value="KATOLIK"
-                                                    {{ $user->religion === 'KATOLIK' ? 'selected' : '' }}>KATOLIK</option>
+                                                    {{ old('religion') == 'KATOLIK' ? 'selected' : '' }}>KATOLIK</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Gender</label>
                                             <select class="form-control selectric" tabindex="6" id="gender"
-                                                name="gender" value="{{ $user->gender }}">
-                                                <option value="MALE" {{ $user->gender === 'MALE' ? 'selected' : '' }}>
-                                                    MALE
+                                                name="gender" value="{{ $user->gender }} {{ old('gender') }}">
+                                                <option value="MALE" {{ old('gender') == 'MALE' ? 'selected' : '' }}>MALE
                                                 </option>
-                                                <option value="FEMALE" {{ $user->gender === 'FEMALE' ? 'selected' : '' }}>
+                                                <option value="FEMALE" {{ old('gender') == 'FEMALE' ? 'selected' : '' }}>
                                                     FEMALE</option>
                                             </select>
                                         </div>
@@ -94,26 +92,26 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Place of Birth</label>
-                                            <input type="text" class="form-control" tabindex="7" id="place-of-birth"
-                                                name="place-of-birth" tabindex="7" value="{{ $user->place_of_birth }}">
+                                            <input type="text" class="form-control" tabindex="7" id="place_of_birth"
+                                                name="place_of_birth" tabindex="7" value="{{ $user->place_of_birth }} {{ old('place_of_dirth') }}">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Date of Birth</label>
-                                            <input type="date" class="form-control" tabindex="8" id="date-of-birth"
-                                                name="date-of-birth" value="{{ $user->date_of_birth }}">
+                                            <input type="date" class="form-control" tabindex="8" id="date_of_birth"
+                                                name="date_of_birth" value="{{ $user->date_of_birth }} {{ old('date_of_dirth') }}">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>User Role</label>
-                                            <select class="form-control selectric" tabindex="9" name="user_role"
-                                                value="{{ $user->user_role }}">
-                                                <option value="ADMIN"
-                                                    {{ $user->user_role === 'ADMIN' ? 'selected' : '' }}>ADMIN</option>
+                                            <select class="form-control selectric" tabindex="9" id="user_role"
+                                                name="user_role" value="{{ $user->user_role }} {{ old('user_role') }}">
+                                                <option value="ADMIN" {{ old('user_role') == 'ADMIN' ? 'selected' : '' }}>
+                                                    ADMIN</option>
                                                 <option value="EDITOR"
-                                                    {{ $user->user_role === 'EDITOR' ? 'selected' : '' }}>EDITOR</option>
+                                                    {{ old('user_role') == 'EDITOR' ? 'selected' : '' }}>EDITOR</option>
                                                 <option value="AUTHOR"
-                                                    {{ $user->user_role === 'AUTHOR' ? 'selected' : '' }}>AUTHOR</option>
+                                                    {{ old('user_role') == 'AUTHOR' ? 'selected' : '' }}>AUTHOR</option>
                                             </select>
                                         </div>
                                     </div>
@@ -137,4 +135,8 @@
     <!-- JS Libraies -->
 
     <!-- Page Specific JS File -->
+
+    <script>
+
+    </script>
 @endpush
