@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\UserController;
-use App\Http\Controllers\HeaderController;
+use App\Http\Controllers\admin\HistoryController;
 
 Route::redirect('/', '/login');
 
@@ -30,28 +30,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::delete('/admin/delete/user/{id}', [UserController::class, 'destroy'])->name('admin.destroy.user');
     Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
     Route::delete('/admin/delete/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
-    Route::get('/admin/bookdata/create', function () {
-        return view('pages.admin.create-book', ['type_menu' => 'data']);
-    });
-    Route::get('/admin/bookdata/edit', function () {
-        return view('pages.admin.edit-book', ['type_menu' => 'data']);
-    });
-    Route::get('/admin/katalog', function () {
-        return view('pages.admin.katalog', ['type_menu' => 'katalog']);
-    });
-    Route::get('/admin/katalog/create', function () {
-        return view('pages.admin.create-katalog', ['type_menu' => 'katalog']);
-    });
-    Route::get('/admin/royalty', function () {
-        return view('pages.admin.royalty', ['type_menu' => 'royalty']);
-    });
-    Route::get('/admin/royalty/create', function () {
-        return view('pages.admin.create-royalty', ['type_menu' => 'royalty']);
-    });
-    Route::get('/admin/history', function () {
-        return view('pages.admin.history', ['type_menu' => 'history']);
-    });
-    Route::get('/admin/profile', [HeaderController::class, 'name'])->name('admin.profile');
+    Route::get('/admin/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 });

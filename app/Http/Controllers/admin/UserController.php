@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Gender;
+use App\Models\Religion;
+use App\Models\History;
 
 class UserController extends Controller
 {
@@ -15,52 +19,67 @@ class UserController extends Controller
     }
 
     public function create() {
-        return view('pages.admin.users.create');
+        $gender = Gender::all();
+        $religion = Religion::all();
+
+        return view('pages.admin.users.create', compact('gender', 'religion'));
     }
 
     public function store(Request $request) {
         $request->validate([
-            'first_name' => 'required|max:20',
-            'last_name' => 'required|max:50',
+            'first_name' => 'required|max:30',
+            'last_name' => 'required|max:100',
             'email' => 'required|email|max:50|unique:users',
             'password' => 'required|min:8',
-            'religion' => 'required|in:ISLAM,HINDU,BUDHA,KONGHUCU,KRISTEN,KATOLIK',
-            'gender' => 'required|in:MALE,FEMALE',
-            'place_of_birth' => 'required|max:25',
+            'religion' => 'required',
+            'gender' => 'required',
+            'place_of_birth' => 'required|max:100',
             'date_of_birth' => 'required|date',
+            'contact' => 'required|max:30',
             'user_role' => 'required|in:ADMIN,EDITOR,AUTHOR',
         ]);
 
-        $data = new User();
-        $data->email = $request->email;
-        $data->password = Hash::make($request->password);
-        $data->user_role = $request->user_role;
-        $data->first_name = $request->first_name;
-        $data->last_name = $request->last_name;
-        $data->place_of_birth = $request->place_of_birth;
-        $data->date_of_birth = $request->date_of_birth;
-        $data->religion = $request->religion;
-        $data->gender = $request->gender;
-        $data->save();
+        $data = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'user_role' => $request->user_role,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'place_of_birth' => $request->place_of_birth,
+            'date_of_birth' => $request->date_of_birth,
+            'contact' => $request->contact,
+            'religion_id' => $request->religion,
+            'gender_id' => $request->gender,
+        ]);
 
-        return redirect()->route('admin.index.user')->with('Success', 'User created successfully.');
+        if ($user) {
+            $userId = Auth::id();
+            $history = History::create([
+                'change_detail' => 'User created successfully.',
+                'user_id' => $userId,
+            ]);
+            return redirect()->route('admin.index.user')->with('Success', 'User created successfully.');
+        }
     }
 
     public function edit($id) {
         $user = User::findOrFail($id);
+        $gender = Gender::all();
+        $religion = Religion::all();
 
-        return view('pages.admin.users.edit', compact('user'));
+        return view('pages.admin.users.edit', compact('user', 'gender', 'religion'));
     }
 
     public function update(Request $request, $id) {
         $request->validate([
-            'first_name' => 'required|max:20',
-            'last_name' => 'required|max:50',
+            'first_name' => 'required|max:30',
+            'last_name' => 'required|max:100',
             'password' => 'required|min:8',
-            'religion' => 'required|in:ISLAM,HINDU,BUDHA,KONGHUCU,KRISTEN,KATOLIK',
-            'gender' => 'required|in:MALE,FEMALE',
-            'place_of_birth' => 'required|max:25',
+            'religion' => 'required',
+            'gender' => 'required',
+            'place_of_birth' => 'required|max:100',
             'date_of_birth' => 'required|date',
+            'contact' => 'required|max:30',
             'user_role' => 'required|in:ADMIN,EDITOR,AUTHOR',
         ]);
 
@@ -72,10 +91,19 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'place_of_birth' => $request->place_of_birth,
             'date_of_birth' => $request->date_of_birth,
-            'religion' => $request->religion,
-            'gender' => $request->gender,
+            'contact' => $request->contact,
+            'religion_id' => $request->religion,
+            'gender_id' => $request->gender,
         ]);
-        return redirect()->route('admin.index.user')->with('Success', 'User updated successfully.');
+
+        if ($user) {
+            $userId = Auth::id();
+            $history = History::create([
+                'change_detail' => 'User updated successfully.',
+                'user_id' => $userId,
+            ]);
+            return redirect()->route('admin.index.user')->with('Success', 'User updated successfully.');
+        }
     }
 
     public function destroy($id) {
@@ -83,10 +111,14 @@ class UserController extends Controller
         $user->delete();
 
         if($user) {
+            $userId = Auth::id();
+            $history = History::create([
+                'change_detail' => 'User deleted successfully.',
+                'user_id' => $userId,
+            ]);
             return redirect()->route('admin.index.user')->with('Success', 'User deleted successfully.');
         } else {
             return redirect()->route('admin.index.user')->with('Error', 'User not found.');
         }
-
     }
 }

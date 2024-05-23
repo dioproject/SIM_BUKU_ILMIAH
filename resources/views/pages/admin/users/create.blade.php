@@ -31,7 +31,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form id="create-user-form" action="{{ route('admin.user.store') }}" method="POST"
+                                <form id="create-user-form" action="{{ route('admin.store.user') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
@@ -63,28 +63,22 @@
                                             <label>Religion</label>
                                             <select class="form-control selectric" tabindex="5" id="religion"
                                                 name="religion" value="{{ old('religion') }}">
-                                                <option value="ISLAM" {{ old('religion') == 'ISLAM' ? 'selected' : '' }}>
-                                                    ISLAM</option>
-                                                <option value="HINDU" {{ old('religion') == 'HINDU' ? 'selected' : '' }}>
-                                                    HINDU</option>
-                                                <option value="BUDHA" {{ old('religion') == 'BUDHA' ? 'selected' : '' }}>
-                                                    BUDHA</option>
-                                                <option value="KONGHUCU"
-                                                    {{ old('religion') == 'KONGHUCU' ? 'selected' : '' }}>KONGHUCU</option>
-                                                <option value="KRISTEN"
-                                                    {{ old('religion') == 'KRISTEN' ? 'selected' : '' }}>KRISTEN</option>
-                                                <option value="KATOLIK"
-                                                    {{ old('religion') == 'KATOLIK' ? 'selected' : '' }}>KATOLIK</option>
+                                                @foreach ($religion as $rel)
+                                                    <option value="{{ $rel->id }}"
+                                                        @if (old('religion') == $rel->id) selected @endif>
+                                                        {{ $rel->option }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Gender</label>
                                             <select class="form-control selectric" tabindex="6" id="gender"
                                                 name="gender" value="{{ old('gender') }}">
-                                                <option value="MALE" {{ old('gender') == 'MALE' ? 'selected' : '' }}>MALE
-                                                </option>
-                                                <option value="FEMALE" {{ old('gender') == 'FEMALE' ? 'selected' : '' }}>
-                                                    FEMALE</option>
+                                                @foreach ($gender as $gen)
+                                                    <option value="{{ $gen->id }}"
+                                                        @if (old('religion') == $gen->id) selected @endif>
+                                                        {{ $gen->option }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -101,6 +95,11 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label>Contact</label>
+                                            <input type="text" tabindex="7" class="form-control" id="contact"
+                                                name="contact" value="{{ old('contact') }}">
+                                        </div>
                                         <div class="form-group col-md-6">
                                             <label>User Role</label>
                                             <select class="form-control selectric" tabindex="9" id="user_role"

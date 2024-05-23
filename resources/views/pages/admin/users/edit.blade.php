@@ -12,7 +12,7 @@
                 <h1>Edit User</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">Data</div>
-                    <div class="breadcrumb-item active"><a href="{{ route('admin.user.index') }}">Users</a></div>
+                    <div class="breadcrumb-item active">Users</div>
                     <div class="breadcrumb-item active">Edit User</div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form id="form-validation" action="{{ route('admin.user.update', $user->id) }}"
+                                <form id="form-validation" action="{{ route('admin.update.user', $user->id) }}"
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
@@ -64,28 +64,20 @@
                                             <label>Religion</label>
                                             <select class="form-control selectric" tabindex="5" id="religion"
                                                 name="religion" value="{{ $user->religion }} {{ old('religion') }}">
-                                                <option value="ISLAM" {{ old('religion') == 'ISLAM' ? 'selected' : '' }}>
-                                                    ISLAM</option>
-                                                <option value="HINDU" {{ old('religion') == 'HINDU' ? 'selected' : '' }}>
-                                                    HINDU</option>
-                                                <option value="BUDHA" {{ old('religion') == 'BUDHA' ? 'selected' : '' }}>
-                                                    BUDHA</option>
-                                                <option value="KONGHUCU"
-                                                    {{ old('religion') == 'KONGHUCU' ? 'selected' : '' }}>KONGHUCU</option>
-                                                <option value="KRISTEN"
-                                                    {{ old('religion') == 'KRISTEN' ? 'selected' : '' }}>KRISTEN</option>
-                                                <option value="KATOLIK"
-                                                    {{ old('religion') == 'KATOLIK' ? 'selected' : '' }}>KATOLIK</option>
+                                                @foreach ($religion as $rel)
+                                                    <option value="{{ $rel->id }}"
+                                                        {{ $rel->id == $user->religion_id ? 'selected' : '' }}>{{ $rel->option }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Gender</label>
                                             <select class="form-control selectric" tabindex="6" id="gender"
                                                 name="gender" value="{{ $user->gender }} {{ old('gender') }}">
-                                                <option value="MALE" {{ old('gender') == 'MALE' ? 'selected' : '' }}>MALE
-                                                </option>
-                                                <option value="FEMALE" {{ old('gender') == 'FEMALE' ? 'selected' : '' }}>
-                                                    FEMALE</option>
+                                                @foreach ($gender as $gen)
+                                                    <option value="{{ $gen->id }}"
+                                                        {{ $gen->id == $user->gender_id ? 'selected' : '' }}>{{ $gen->option }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -98,20 +90,25 @@
                                         <div class="form-group col-md-6">
                                             <label>Date of Birth</label>
                                             <input type="date" class="form-control" tabindex="8" id="date_of_birth"
-                                                name="date_of_birth" value="{{ $user->date_of_birth }} {{ old('date_of_dirth') }}">
+                                            name="date_of_birth" value="{{ $user->date_of_birth }} {{ old('date_of_dirth') }}">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
+                                            <label>Contact</label>
+                                            <input type="text" class="form-control" tabindex="7" id="contact"
+                                                name="contact" tabindex="7" value="{{ $user->contact }} {{ old('contact') }}">
+                                        </div>
+                                        <div class="form-group col-md-6">
                                             <label>User Role</label>
                                             <select class="form-control selectric" tabindex="9" id="user_role"
                                                 name="user_role" value="{{ $user->user_role }} {{ old('user_role') }}">
-                                                <option value="ADMIN" {{ old('user_role') == 'ADMIN' ? 'selected' : '' }}>
+                                                <option value="ADMIN" {{  $user->user_role == 'ADMIN' ? 'selected' : '' }}>
                                                     ADMIN</option>
                                                 <option value="EDITOR"
-                                                    {{ old('user_role') == 'EDITOR' ? 'selected' : '' }}>EDITOR</option>
+                                                    {{  $user->user_role == 'EDITOR' ? 'selected' : '' }}>EDITOR</option>
                                                 <option value="AUTHOR"
-                                                    {{ old('user_role') == 'AUTHOR' ? 'selected' : '' }}>AUTHOR</option>
+                                                    {{  $user->user_role == 'AUTHOR' ? 'selected' : '' }}>AUTHOR</option>
                                             </select>
                                         </div>
                                     </div>
