@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -44,7 +43,7 @@ class UserController extends Controller
         $data->gender = $request->gender;
         $data->save();
 
-        return redirect()->route('admin.user.index')->with('Success', 'User created successfully.');
+        return redirect()->route('admin.index.user')->with('Success', 'User created successfully.');
     }
 
     public function edit($id) {
@@ -76,7 +75,7 @@ class UserController extends Controller
             'religion' => $request->religion,
             'gender' => $request->gender,
         ]);
-        return redirect()->route('admin.user.index')->with('Success', 'User updated successfully.');
+        return redirect()->route('admin.index.user')->with('Success', 'User updated successfully.');
     }
 
     public function destroy($id) {
@@ -84,9 +83,9 @@ class UserController extends Controller
         $user->delete();
 
         if($user) {
-            return redirect()->route('admin.user.index')->with('Success', 'User deleted successfully.');
+            return redirect()->route('admin.index.user')->with('Success', 'User deleted successfully.');
         } else {
-            return redirect()->route('admin.user.index')->with('Error', 'User not found.');
+            return redirect()->route('admin.index.user')->with('Error', 'User not found.');
         }
 
     }

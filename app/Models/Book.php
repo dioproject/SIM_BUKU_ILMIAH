@@ -17,8 +17,7 @@ class Book extends Model
     protected $fillable = [
         'category_id',
         'manuscript_id',
-        'citation_id',
-        'review_id',
+        'status_id',
     ];
 
     /**
@@ -30,8 +29,7 @@ class Book extends Model
         'id' => 'integer',
         'category_id' => 'integer',
         'manuscript_id' => 'integer',
-        'citation_id' => 'integer',
-        'review_id' => 'integer',
+        'status_id' => 'integer',
     ];
 
     public function category()
@@ -44,13 +42,8 @@ class Book extends Model
         return $this->belongsTo(Manuscript::class);
     }
 
-    public function citation()
+    public function status()
     {
-        return $this->belongsTo(Citation::class);
-    }
-
-    public function review()
-    {
-        return $this->belongsTo(Review::class);
+        return $this->belongsTo(Status::class);
     }
 }

@@ -26,8 +26,8 @@ class ReviewFactory extends Factory
     {
         return [
             'manuscript_id' => Manuscript::factory(),
-            'reviewer_id' => User::factory(),
             'content' => $this->faker->paragraphs(3, true),
+            'reviewer_id' => User::factory(),
         ];
     }
 }

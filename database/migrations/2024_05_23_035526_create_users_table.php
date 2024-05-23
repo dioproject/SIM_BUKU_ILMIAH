@@ -13,19 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email', 50)->unique()->nullable();
             $table->string('password', 150)->nullable();
             $table->enum('user_role', ["ADMIN","EDITOR","AUTHOR"])->nullable();
-            $table->string('first_name', 20)->nullable();
-            $table->string('last_name', 50)->nullable();
-            $table->string('place_of_birth', 25)->nullable();
+            $table->string('first_name', 30)->nullable();
+            $table->string('last_name', 100)->nullable();
+            $table->string('place_of_birth', 100)->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->enum('religion', ["ISLAM","KATOLIK","KRISTEN","HINDU","BUDHA","KHONGHUCU"])->nullable();
-            $table->enum('gender', ["MALE","FEMALE"])->nullable();
+            $table->string('contact', 30)->nullable();
+            $table->foreignId('religion_id')->nullable()->constrained('Religions');
+            $table->foreignId('gender_id')->nullable()->constrained('Genders');
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

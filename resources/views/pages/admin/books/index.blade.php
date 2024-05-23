@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Users')
+@section('title', 'Book Data')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,10 +9,10 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Users</h1>
+                <h1>Book Data</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active">Data</div>
-                    <div class="breadcrumb-item">Users</div>
+                    <div class="breadcrumb-item">Books</div>
                 </div>
             </div>
             <div class="section-body">
@@ -20,8 +20,8 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.user') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create User
+                                <a href="/admin/bookdata/create" class="btn btn-icon icon-left btn-primary"><i
+                                        class="far fa-edit"></i> Create Book
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
@@ -40,22 +40,22 @@
                                     <table class="table-bordered table-md table">
                                         <tr>
                                             <th>No.</th>
-                                            <th>Name</th>
-                                            <th>User Role</th>
-                                            <th>Created At</th>
+                                            <th>Book Title</th>
+                                            <th>Author</th>
+                                            <th>Last Modified</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($users as $key => $user)
+                                        @foreach ($books as $key => $book)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $user->first_name }}</td>
-                                                <td>{{ $user->user_role }}</td>
-                                                <td>{{ $user->created_at }}</td>
+                                                <td>{{ $book->manuscript }}</td>
+                                                <td>{{ $book->manuscript }}</td>
+                                                <td>{{ $book->created_at }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.user', $user->id) }}"><i
+                                                        title="Edit" href="{{ route('admin.edit.book', $user->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.user', $user->id) }}"
+                                                    <form action="{{ route('admin.destroy.book', $user->id) }}"
                                                         method="POST" class="btn btn-danger p-0" type="button"
                                                         onsubmit="return confirm('Are you sure want to delete it?')">
                                                         @csrf

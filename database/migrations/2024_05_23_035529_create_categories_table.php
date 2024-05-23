@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('catalogs', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->nullable()->constrained('Books');
-            $table->string('content', 100)->nullable();
+            $table->string('name', 100)->nullable();
             $table->timestamps();
         });
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('catalogs');
+        Schema::dropIfExists('categories');
     }
 };

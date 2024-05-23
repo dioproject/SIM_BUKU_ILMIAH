@@ -19,9 +19,9 @@ class Manuscript extends Model
         'abstract',
         'fill',
         'submission_date',
-        'status',
+        'path_foto',
+        'citation_id',
         'author_id',
-        'book_id',
     ];
 
     /**
@@ -31,18 +31,18 @@ class Manuscript extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'submission_date' => 'date',
+        'submission_date' => 'datetime',
+        'citation_id' => 'integer',
         'author_id' => 'integer',
-        'book_id' => 'integer',
     ];
+
+    public function citation()
+    {
+        return $this->belongsTo(Citation::class);
+    }
 
     public function author()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function book()
-    {
-        return $this->belongsTo(Book::class);
     }
 }

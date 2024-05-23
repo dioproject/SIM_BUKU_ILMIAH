@@ -19,8 +19,9 @@ class User extends Model implements Authenticatable
         'last_name',
         'place_of_birth',
         'date_of_birth',
-        'religion',
-        'gender',
+        'contact',
+        'religion_id',
+        'gender_id',
     ];
 
     protected $hidden = [
@@ -30,5 +31,17 @@ class User extends Model implements Authenticatable
     protected $casts = [
         'id' => 'integer',
         'date_of_birth' => 'date',
+        'religion_id' => 'integer',
+        'gender_id' => 'integer',
     ];
+
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class);
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
+    }
 }

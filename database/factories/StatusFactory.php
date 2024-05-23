@@ -4,17 +4,16 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Book;
-use App\Models\Catalog;
+use App\Models\Status;
 
-class CatalogFactory extends Factory
+class StatusFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Catalog::class;
+    protected $model = Status::class;
 
     /**
      * Define the model's default state.
@@ -24,8 +23,7 @@ class CatalogFactory extends Factory
     public function definition()
     {
         return [
-            'book_id' => Book::factory(),
-            'description' => $this->faker->text,
+            'option' => $this->faker->regexify('[A-Za-z0-9]{15}'),
         ];
     }
 }

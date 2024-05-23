@@ -15,15 +15,10 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('manuscripts', function (Blueprint $table) {
+        Schema::create('catalogs', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 100)->nullable();
-            $table->text('abstract')->nullable();
-            $table->longText('fill')->nullable();
-            $table->date('submission_date')->nullable();
-            $table->enum('status', ["SUBMITTED","REVIEWING","PUBLISHED","REJECTED"])->nullable();
-            $table->foreignId('author_id')->nullable()->constrained('Users');
             $table->foreignId('book_id')->nullable()->constrained('Books');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
@@ -37,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('manuscripts');
+        Schema::dropIfExists('catalogs');
     }
 };

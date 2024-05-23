@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Create Book')
+@section('title', 'Edit Book')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -10,11 +10,11 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create Book</h1>
+                <h1>Edit Book</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active">Data</div>
-                    <div class="breadcrumb-item"><a href="/admin/bookdata">Book Data</a></div>
-                    <div class="breadcrumb-item"><a href="/admin/bookdata/create">Create</a></div>
+                    <div class="breadcrumb-item">Books</div>
+                    <div class="breadcrumb-item">Edit</div>
                 </div>
             </div>
 

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Book;
+use App\Models\Citation;
 use App\Models\Manuscript;
 use App\Models\User;
 
@@ -28,10 +28,10 @@ class ManuscriptFactory extends Factory
             'title' => $this->faker->sentence(4),
             'abstract' => $this->faker->text,
             'fill' => $this->faker->text,
-            'submission_date' => $this->faker->date(),
-            'status' => $this->faker->randomElement(["SUBMITTED","REVIEWING","PUBLISHED","REJECTED"]),
+            'submission_date' => $this->faker->dateTime(),
+            'path_foto' => $this->faker->regexify('[A-Za-z0-9]{200}'),
+            'citation_id' => Citation::factory(),
             'author_id' => User::factory(),
-            'book_id' => Book::factory(),
         ];
     }
 }

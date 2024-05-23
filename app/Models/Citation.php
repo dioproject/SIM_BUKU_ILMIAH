@@ -16,6 +16,7 @@ class Citation extends Model
      */
     protected $fillable = [
         'citation',
+        'bibliography',
     ];
 
     /**
