@@ -4,10 +4,8 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet"
-        href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
 @endpush
 
 @section('main')
@@ -56,9 +54,9 @@
                             <div class="card-header">
                                 <h4>Total Users</h4>
                             </div>
-                            <div class="card-body">
-                                {{-- {{ auth()->users()->count() }} --}}
-                            </div>
+                                <div class="card-body">
+                                    {{-- {{ $users->count }} --}}
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -105,20 +103,14 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                                                <a href="#" class="font-weight-600"><img
+                                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar"
+                                                        width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                     title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                                <a class="btn btn-danger btn-action" data-toggle="tooltip" title="Delete"
                                                     data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
                                                     data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                             </td>
@@ -133,20 +125,14 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                                                <a href="#" class="font-weight-600"><img
+                                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar"
+                                                        width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                     title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                                <a class="btn btn-danger btn-action" data-toggle="tooltip" title="Delete"
                                                     data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
                                                     data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                             </td>
@@ -161,20 +147,14 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                                                <a href="#" class="font-weight-600"><img
+                                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar"
+                                                        width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                     title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                                <a class="btn btn-danger btn-action" data-toggle="tooltip" title="Delete"
                                                     data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
                                                     data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                             </td>
@@ -189,20 +169,14 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                                                <a href="#" class="font-weight-600"><img
+                                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar"
+                                                        width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                     title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                                <a class="btn btn-danger btn-action" data-toggle="tooltip" title="Delete"
                                                     data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
                                                     data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                             </td>
@@ -217,20 +191,14 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                                                <a href="#" class="font-weight-600"><img
+                                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar"
+                                                        width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                     title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                                <a class="btn btn-danger btn-action" data-toggle="tooltip" title="Delete"
                                                     data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
                                                     data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                             </td>
@@ -245,20 +213,14 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                                                <a href="#" class="font-weight-600"><img
+                                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar"
+                                                        width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                     title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
+                                                <a class="btn btn-danger btn-action" data-toggle="tooltip" title="Delete"
                                                     data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
                                                     data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
                                             </td>
@@ -269,21 +231,15 @@
                             <nav aria-label="...">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item disabled">
-                                        <a class="page-link"
-                                            href="#"
-                                            tabindex="-1">Previous</a>
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
                                     </li>
-                                    <li class="page-item"><a class="page-link"
-                                            href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
                                     <li class="page-item active">
-                                        <a class="page-link"
-                                            href="#">2 <span class="sr-only">(current)</span></a>
+                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
                                     </li>
-                                    <li class="page-item"><a class="page-link"
-                                            href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link"
-                                            href="#">Next</a>
+                                        <a class="page-link" href="#">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -298,10 +254,8 @@
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
                                 <li class="media">
-                                    <img class="rounded-circle mr-3"
-                                        width="50"
-                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                        alt="avatar">
+                                    <img class="rounded-circle mr-3" width="50"
+                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar">
                                     <div class="media-body">
                                         <div class="text-primary float-right">Now</div>
                                         <div class="media-title">Farhan A Mujib</div>
@@ -310,10 +264,8 @@
                                     </div>
                                 </li>
                                 <li class="media">
-                                    <img class="rounded-circle mr-3"
-                                        width="50"
-                                        src="{{ asset('img/avatar/avatar-2.png') }}"
-                                        alt="avatar">
+                                    <img class="rounded-circle mr-3" width="50"
+                                        src="{{ asset('img/avatar/avatar-2.png') }}" alt="avatar">
                                     <div class="media-body">
                                         <div class="float-right">12m</div>
                                         <div class="media-title">Ujang Maman</div>
@@ -322,10 +274,8 @@
                                     </div>
                                 </li>
                                 <li class="media">
-                                    <img class="rounded-circle mr-3"
-                                        width="50"
-                                        src="{{ asset('img/avatar/avatar-3.png') }}"
-                                        alt="avatar">
+                                    <img class="rounded-circle mr-3" width="50"
+                                        src="{{ asset('img/avatar/avatar-3.png') }}" alt="avatar">
                                     <div class="media-body">
                                         <div class="float-right">17m</div>
                                         <div class="media-title">Rizal Fakhri</div>
@@ -334,10 +284,8 @@
                                     </div>
                                 </li>
                                 <li class="media">
-                                    <img class="rounded-circle mr-3"
-                                        width="50"
-                                        src="{{ asset('img/avatar/avatar-4.png') }}"
-                                        alt="avatar">
+                                    <img class="rounded-circle mr-3" width="50"
+                                        src="{{ asset('img/avatar/avatar-4.png') }}" alt="avatar">
                                     <div class="media-body">
                                         <div class="float-right">21m</div>
                                         <div class="media-title">Alfa Zulkarnain</div>
