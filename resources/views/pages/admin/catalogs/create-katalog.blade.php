@@ -11,8 +11,8 @@
             <div class="section-header">
                 <h1>Create Katalog</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="/admin/katalog">Katalog</a></div>
-                    <div class="breadcrumb-item"><a href="/admin/katalog/create">Create</a></div>
+                    <div class="breadcrumb-item active">Katalog</div>
+                    <div class="breadcrumb-item">Create</div>
                 </div>
             </div>
 

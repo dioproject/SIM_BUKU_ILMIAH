@@ -30,7 +30,7 @@ class Royalty extends Model
         'id' => 'integer',
         'book_id' => 'integer',
         'amount' => 'decimal',
-        'date' => 'date',
+        'date' => 'datetime',
     ];
 
     public function book()

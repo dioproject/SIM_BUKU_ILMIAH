@@ -15,12 +15,11 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('royalties', function (Blueprint $table) {
+        Schema::create('histories', function (Blueprint $table) {
             $table->id();
+            $table->text('change_detail')->nullable();
             $table->foreignId('book_id')->nullable()->constrained('Books');
-            $table->decimal('amount')->nullable();
-            $table->date('date')->nullable();
-            $table->string('path_foto', 100);
+            $table->foreignId('user_id')->nullable()->constrained('Users');
             $table->timestamps();
         });
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('royalties');
+        Schema::dropIfExists('histories');
     }
 };

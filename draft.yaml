@@ -3,48 +3,60 @@ models:
     email: string:50 unique nullable
     password: string:150 nullable
     user_role: enum:ADMIN,EDITOR,AUTHOR nullable
-    first_name: string:20 nullable
-    last_name: string:50 nullable
-    place_of_birth: string:25 nullable
+    first_name: string:30 nullable
+    last_name: string:100 nullable
+    place_of_birth: string:100 nullable
     date_of_birth: date nullable
-    religion: enum:ISLAM,KATOLIK,KRISTEN,HINDU,BUDHA,KHONGHUCU nullable
-    gender: enum:MALE,FEMALE nullable
+    contact: string:30 nullable
+    religion_id: id foreign:Religion nullable
+    gender_id: id foreign:Gender nullable
+
+  Religion:
+    option: string:10 nullable
+
+  Gender:
+    option: string:6 nullable
 
   Category:
-    name: string:30 nullable
+    name: string:100 nullable
 
   Book:
     category_id: id foreign:Category nullable
     manuscript_id: id foreign:Manuscript nullable
-    citation_id: id foreign:Citation nullable
-    review_id: id foreign:Review nullable
+    status_id: id foreign:Status nullable
 
   Manuscript:
-    title: string:100 nullable
+    title: string:250 nullable
     abstract: text nullable
     fill: longtext nullable
-    submission_date: date nullable
-    status: enum:SUBMITTED,REVIEWING,PUBLISHED,REJECTED nullable
+    submission_date: datetime nullable
+    path_foto: string:200 nullable
+    citation_id: id foreign:Citation nullable
     author_id: id foreign:User nullable
-    book_id: id foreign:Book nullable
+
+  Status:
+    option: string:15 nullable
 
   Citation:
-    citation: text nullable
+    citation: string:200 nullable
+    bibliography: text nullable
 
   Review:
     manuscript_id: id foreign:Manuscript nullable
-    reviewer_id: id foreign:User nullable
     content: text nullable
+    reviewer_id: id foreign:User nullable
 
   Catalog:
     book_id: id foreign:Book nullable
-    content: string:100 nullable
+    description: text nullable
 
   Royalty:
     book_id: id foreign:Book nullable
     amount: decimal nullable
-    date: date nullable
-    path_foto: string:100
+    date: datetime nullable
+    path_foto: string:150
 
   History:
-    change_detail: string:255 nullable
+    change_detail: text nullable
+    book_id: id foreign:Book nullable
+    user_id: id foreign:User nullable

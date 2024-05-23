@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Book;
 use App\Models\Category;
-use App\Models\Citation;
 use App\Models\Manuscript;
-use App\Models\Review;
+use App\Models\Status;
 
 class BookFactory extends Factory
 {
@@ -29,8 +28,7 @@ class BookFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'manuscript_id' => Manuscript::factory(),
-            'citation_id' => Citation::factory(),
-            'review_id' => Review::factory(),
+            'status_id' => Status::factory(),
         ];
     }
 }

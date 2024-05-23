@@ -13,11 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 30)->nullable();
+            $table->foreignId('category_id')->nullable()->constrained('Categories');
+            $table->foreignId('manuscript_id')->nullable()->constrained('Manuscripts');
+            $table->foreignId('status_id')->nullable()->constrained('Statuses');
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -27,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('books');
     }
 };

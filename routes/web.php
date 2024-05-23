@@ -22,15 +22,14 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
 
     // Admin Page
     Route::get('/admin/dashboard', [HomeController::class, 'adminPage'])->name('admin.dashboard');
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
-    Route::get('/admin/create/user', [UserController::class, 'create'])->name('admin.user.create');
-    Route::post('/admin/create/user', [UserController::class, 'store'])->name('admin.user.store');
-    Route::get('/admin/edit/user/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
-    Route::put('/admin/edit/user/{id}', [UserController::class, 'update'])->name('admin.user.update');
-    Route::delete('/admin/delete/user/{id}', [UserController::class, 'destroy'])->name('admin.user.destroy');
-    Route::get('/admin/bookdata', function () {
-        return view('pages.admin.book-data', ['type_menu' => 'data']);
-    });
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.index.user');
+    Route::get('/admin/create/user', [UserController::class, 'create'])->name('admin.create.user');
+    Route::post('/admin/create/user', [UserController::class, 'store'])->name('admin.store.user');
+    Route::get('/admin/edit/user/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
+    Route::put('/admin/edit/user/{id}', [UserController::class, 'update'])->name('admin.update.user');
+    Route::delete('/admin/delete/user/{id}', [UserController::class, 'destroy'])->name('admin.destroy.user');
+    Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
+    Route::delete('/admin/delete/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
     Route::get('/admin/bookdata/create', function () {
         return view('pages.admin.create-book', ['type_menu' => 'data']);
     });

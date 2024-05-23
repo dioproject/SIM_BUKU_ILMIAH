@@ -23,7 +23,8 @@ class CitationFactory extends Factory
     public function definition()
     {
         return [
-            'citation' => $this->faker->text,
+            'citation' => $this->faker->regexify('[A-Za-z0-9]{200}'),
+            'bibliography' => $this->faker->text,
         ];
     }
 }

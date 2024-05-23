@@ -26,8 +26,8 @@ class RoyaltyFactory extends Factory
         return [
             'book_id' => Book::factory(),
             'amount' => $this->faker->randomFloat(0, 0, 9999999999.),
-            'date' => $this->faker->date(),
-            'path_foto' => $this->faker->regexify('[A-Za-z0-9]{100}'),
+            'date' => $this->faker->dateTime(),
+            'path_foto' => $this->faker->regexify('[A-Za-z0-9]{150}'),
         ];
     }
 }

@@ -15,9 +15,12 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('citations', function (Blueprint $table) {
+        Schema::create('royalties', function (Blueprint $table) {
             $table->id();
-            $table->text('citation')->nullable();
+            $table->foreignId('book_id')->nullable()->constrained('Books');
+            $table->decimal('amount')->nullable();
+            $table->dateTime('date')->nullable();
+            $table->string('path_foto', 150);
             $table->timestamps();
         });
 
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('citations');
+        Schema::dropIfExists('royalties');
     }
 };

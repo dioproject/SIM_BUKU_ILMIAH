@@ -135,8 +135,4 @@
     <!-- JS Libraies -->
 
     <!-- Page Specific JS File -->
-
-    <script>
-
-    </script>
 @endpush

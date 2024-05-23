@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class Status extends Model
 {
     use HasFactory;
 
@@ -15,9 +15,7 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'manuscript_id',
-        'content',
-        'reviewer_id',
+        'option',
     ];
 
     /**
@@ -27,17 +25,5 @@ class Review extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'manuscript_id' => 'integer',
-        'reviewer_id' => 'integer',
     ];
-
-    public function manuscript()
-    {
-        return $this->belongsTo(Manuscript::class);
-    }
-
-    public function reviewer()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

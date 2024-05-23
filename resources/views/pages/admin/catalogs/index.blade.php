@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Katalog')
+@section('title', 'Catalog')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,7 +9,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Katalog</h1>
+                <h1>Catalog</h1>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -17,7 +17,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <a href="/admin/katalog/create"
-                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Katalog
+                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Catalog
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">

@@ -16,7 +16,7 @@ class Catalog extends Model
      */
     protected $fillable = [
         'book_id',
-        'content',
+        'description',
     ];
 
     /**
