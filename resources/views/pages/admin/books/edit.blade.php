@@ -23,35 +23,58 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <input type="text"
-                                            class="form-control">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
                                     </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sub TItle</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <select class="form-control selectric">
-                                            <option>Tech</option>
-                                            <option>News</option>
-                                            <option>Political</option>
-                                        </select>
+                                @endif
+                                <form action="{{ route('admin.update.book', $book->id) }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Category</label>
+                                            <select class="form-control selectric" tabindex="1" id="category"
+                                                name="category" value="{{ $book->category_id }} {{ old('category') }}">
+                                                @foreach ($category as $cate)
+                                                    <option value="{{ $cate->id }}"
+                                                        {{ $cate->id == $book->category_id ? 'selected' : '' }}>
+                                                        {{ $cate->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            <label>Title</label>
+                                            <input type="text" tabindex="2" class="form-control" id="title"
+                                                name="title" value="{{ $book->title }} {{ old('title') }}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Content</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <textarea class="summernote"></textarea>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>Abstract</label>
+                                            <textarea class="summernote" tabindex="3" id="abstract" name="abstract"
+                                                value="{{ $book->abstract }} {{ old('abstract') }}">{{ $book->abstract }}</textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Submit</button>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>Fill</label>
+                                            <textarea class="summernote" tabindex="4" id="fill" name="fill"
+                                                value="{{ $book->fill }} {{ old('fill') }}">{{ $book->fill }}</textarea>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+                                                Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

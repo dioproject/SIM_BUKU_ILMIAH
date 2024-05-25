@@ -53,10 +53,9 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            $userId = Auth::id();
-            $history = History::create([
+            History::create([
                 'change_detail' => 'User created successfully.',
-                'user_id' => $userId,
+                'user_id' => Auth::id(),
             ]);
             return redirect()->route('admin.index.user')->with('Success', 'User created successfully.');
         }
@@ -97,10 +96,9 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            $userId = Auth::id();
-            $history = History::create([
+            History::create([
                 'change_detail' => 'User updated successfully.',
-                'user_id' => $userId,
+                'user_id' => Auth::id(),
             ]);
             return redirect()->route('admin.index.user')->with('Success', 'User updated successfully.');
         }
@@ -111,10 +109,9 @@ class UserController extends Controller
         $user->delete();
 
         if($user) {
-            $userId = Auth::id();
-            $history = History::create([
+            History::create([
                 'change_detail' => 'User deleted successfully.',
-                'user_id' => $userId,
+                'user_id' => Auth::id(),
             ]);
             return redirect()->route('admin.index.user')->with('Success', 'User deleted successfully.');
         } else {

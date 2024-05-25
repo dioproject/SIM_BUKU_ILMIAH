@@ -35,17 +35,15 @@
                                             <th>No.</th>
                                             <th>History</th>
                                             <th>Users</th>
-                                            <th>Books</th>
+                                            <th>Book Title</th>
                                             <th>Date</th>
                                         </tr>
                                         @foreach ($history as $key => $his)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $his->change_detail }}</td>
-                                                @foreach ($name as $nm)
-                                                    <td>{{ $nm->first_name }}</td>
-                                                @endforeach
-                                                <td>{{ $his->book_id }}</td>
+                                                <td>{{ $name[$key]->first_name }}</td>
+                                                <td>{{ isset($title[$key]) ? $title[$key]->title : '' }}</td>
                                                 <td>{{ $his->created_at }}</td>
                                             </tr>
                                         @endforeach
