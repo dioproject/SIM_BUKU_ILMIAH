@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\HistoryController;
+use App\Http\Controllers\admin\BookController;
+use App\Http\Controllers\admin\CategoryController;
 
 Route::redirect('/', '/login');
 
@@ -28,7 +30,17 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/edit/user/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
     Route::put('/admin/edit/user/{id}', [UserController::class, 'update'])->name('admin.update.user');
     Route::delete('/admin/delete/user/{id}', [UserController::class, 'destroy'])->name('admin.destroy.user');
+    Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.index.category');
+    Route::get('/admin/create/category', [CategoryController::class, 'create'])->name('admin.create.category');
+    Route::post('/admin/create/category', [CategoryController::class, 'store'])->name('admin.store.category');
+    Route::get('/admin/edit/category{id}', [CategoryController::class, 'edit'])->name('admin.edit.category');
+    Route::put('/admin/edit/category/{id}', [CategoryController::class, 'update'])->name('admin.update.category');
+    Route::delete('/admin/delete/category/{id}', [CategoryController::class, 'destroy'])->name('admin.destroy.category');
     Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
+    Route::get('/admin/create/book', [BookController::class, 'create'])->name('admin.create.book');
+    Route::post('/admin/create/book', [BookController::class, 'store'])->name('admin.store.book');
+    Route::get('/admin/edit/book/{id}', [BookController::class, 'edit'])->name('admin.edit.book');
+    Route::put('/admin/edit/book/{id}', [BookController::class, 'update'])->name('admin.update.book');
     Route::delete('/admin/delete/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -39,35 +51,12 @@ Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
 
     //Editor
     Route::get('/editor/dashboard', [HomeController::class, 'editorPage'])->name('editor.dashboard');
-    Route::get('/editor/users', function () {
-        return view('pages.editor.user-data', ['type_menu' => 'data']);
-    });
-    Route::get('/editor/bookdata', function () {
-        return view('pages.editor.book-data', ['type_menu' => 'data']);
-    });
-    Route::get('/editor/bookdata/review', function () {
-        return view('pages.editor.review-book', ['type_menu' => 'data']);
-    });
-    Route::get('/editor/history', function () {
-        return view('pages.editor.history', ['type_menu' => 'history']);
-    });
-
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
 
     //Author
     Route::get('/author/dashboard', [HomeController::class, 'authorPage'])->name('author.dashboard');
-    Route::get('/author/bookdata', function () {
-        return view('pages.author.book-data', ['type_menu' => 'data']);
-    });
-    Route::get('/author/bookdata/create', function () {
-        return view('pages.author.create-book', ['type_menu' => 'data']);
-    });
-    Route::get('/author/royalty', function () {
-        return view('pages.author.royalty', ['type_menu' => 'royalty']);
-    });
-    Route::get('/author/history', function () {
-        return view('pages.author.history', ['type_menu' => 'history']);
-    });
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
