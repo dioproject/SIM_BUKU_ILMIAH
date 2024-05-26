@@ -23,9 +23,9 @@
                 <a class="nav-link" href="{{ url('admin/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
-            <li class="{{ Request::is('admin/katalogs') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/katalogs') }}"><i
-                        class="fas fa-solid fa-book-open"></i><span>Katalog</span></a>
+            <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('admin/catalogs') }}"><i
+                        class="fas fa-solid fa-book-open"></i><span>Catalogs</span></a>
             </li>
             <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/royalty') }}"><i

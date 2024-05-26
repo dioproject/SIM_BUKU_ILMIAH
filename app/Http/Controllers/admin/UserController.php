@@ -93,6 +93,7 @@ class UserController extends Controller
             'contact' => $request->contact,
             'religion_id' => $request->religion,
             'gender_id' => $request->gender,
+            'updated_at',
         ]);
 
         if ($user) {

@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Catalog')
+@section('title', 'Catalogs')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,14 +9,14 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Catalog</h1>
+                <h1>Catalogs</h1>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="/admin/katalog/create"
+                                <a href="{{ route('admin.create.catalog') }}"
                                     class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Catalog
                                 </a>
                                 <h4></h4>
@@ -37,44 +37,39 @@
                                 <div class="table-responsive">
                                     <table class="table-bordered table-md table">
                                         <tr>
-                                            <th>ID</th>
+                                            <th>No.</th>
                                             <th>Book Title</th>
-                                            <th>Writer</th>
+                                            <th>Author</th>
                                             <th>Last Uploaded</th>
                                             <th>Action</th>
                                         </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>2017-01-09</td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>2017-01-09</td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>2017-01-09</td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>2017-01-09</td>
-                                            <td><a href="#"
-                                                    class="btn btn-secondary">Detail</a></td>
-                                        </tr>
+                                        @foreach ($catalog as $key => $cata)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                @foreach ($bookTitle as $tit)
+                                                    @if ($tit->book_id)
+                                                        <td>{{ $tit->title }}</td>
+                                                    @endif
+                                                @endforeach
+                                                @foreach ($author as $aut)
+                                                    <td>{{ $aut->first_name }}</td>
+                                                @endforeach
+                                                <td>{{ $cata->created_at }}</td>
+                                                <td>
+                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                        title="Edit" href="{{ route('admin.edit.catalog', $cata->id) }}"><i
+                                                            class="fas fa-pencil-alt"></i></a>
+                                                    <form action="{{ route('admin.destroy.catalog', $cata->id) }}"
+                                                        method="POST" class="btn btn-danger p-0" type="button"
+                                                        onsubmit="return confirm('Are you sure want to delete it?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
+                                                            title="Delete"><i class="fas fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>

@@ -11,9 +11,8 @@
             <div class="section-header">
                 <h1>Create User</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item">Data</div>
-                    <div class="breadcrumb-item active">User Data</div>
-                    <div class="breadcrumb-item active">Create User</div>
+                    <div class="breadcrumb-item active">Users</div>
+                    <div class="breadcrumb-item active">Create</div>
                 </div>
             </div>
 
