@@ -43,7 +43,11 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $his->change_detail }}</td>
                                                 <td>{{ $name[$key]->first_name }}</td>
-                                                <td>{{ isset($title[$key]) ? $title[$key]->title : '' }}</td>
+                                                @foreach ($title as $tit)
+                                                    @if ($tit->book_id)
+                                                        <td>{{ $tit->title }}</td>
+                                                    @endif
+                                                @endforeach
                                                 <td>{{ $his->created_at }}</td>
                                             </tr>
                                         @endforeach

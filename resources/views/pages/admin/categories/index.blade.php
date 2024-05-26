@@ -9,17 +9,14 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Categories</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active">Categories</div>
-                </div>
+                <h1>Category</h1>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
+                                <a href="{{ route('admin.create.category') }}" class="btn btn-icon icon-left btn-primary"><i
                                         class="far fa-edit"></i> Create category
                                 </a>
                                 <h4></h4>
@@ -50,9 +47,9 @@
                                                 <td>{{ $cate->created_at }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.category', $category->id) }}"><i
+                                                        title="Edit" href="{{ route('admin.edit.category', $cate->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.category', $category->id) }}"
+                                                    <form action="{{ route('admin.destroy.category', $cate->id) }}"
                                                         method="POST" class="btn btn-danger p-0" type="button"
                                                         onsubmit="return confirm('Are you sure want to delete it?')">
                                                         @csrf

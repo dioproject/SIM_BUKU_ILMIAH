@@ -104,18 +104,20 @@ class BookController extends Controller
     }
 
     public function destroy($id) {
-        $book = Manuscript::findOrFail($id);
-        $book->delete();
+        $manuscript = Manuscript::findOrFail($id);
+        $manuscript->delete();
 
-        if($book) {
-            History::create([
-                'change_detail' => 'User deleted successfully.',
+        if($manuscript) {
+            $book = Book::where('manuscript_id', $id)->delete();
+
+            History::update([
+                'change_detail' => 'Book deleted successfully.',
                 'user_id' => Auth::id(),
-                'book_id' => $book,
+                'book_id' => null,
             ]);
             return redirect()->route('admin.index.book')->with('Success', 'Book deleted successfully.');
         } else {
-            return redirect()->route('admin.index.book')->with('Error', 'Book not found.');
+            return redirect()->route('admin.index.book')->with('Error', 'Failed to delete book.');
         }
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\HistoryController;
 use App\Http\Controllers\admin\BookController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\CatalogController;
 
 Route::redirect('/', '/login');
 
@@ -33,7 +34,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.index.category');
     Route::get('/admin/create/category', [CategoryController::class, 'create'])->name('admin.create.category');
     Route::post('/admin/create/category', [CategoryController::class, 'store'])->name('admin.store.category');
-    Route::get('/admin/edit/category{id}', [CategoryController::class, 'edit'])->name('admin.edit.category');
+    Route::get('/admin/edit/category/{id}', [CategoryController::class, 'edit'])->name('admin.edit.category');
     Route::put('/admin/edit/category/{id}', [CategoryController::class, 'update'])->name('admin.update.category');
     Route::delete('/admin/delete/category/{id}', [CategoryController::class, 'destroy'])->name('admin.destroy.category');
     Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
@@ -42,6 +43,12 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/edit/book/{id}', [BookController::class, 'edit'])->name('admin.edit.book');
     Route::put('/admin/edit/book/{id}', [BookController::class, 'update'])->name('admin.update.book');
     Route::delete('/admin/delete/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
+    Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
+    Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
+    Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
+    Route::get('/admin/edit/catalog/{id}', [CatalogController::class, 'edit'])->name('admin.edit.catalog');
+    Route::put('/admin/edit/catalog/{id}', [CatalogController::class, 'update'])->name('admin.update.catalog');
+    Route::delete('/admin/delete/catalog/{id}', [CatalogController::class, 'destroy'])->name('admin.destroy.catalog');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
