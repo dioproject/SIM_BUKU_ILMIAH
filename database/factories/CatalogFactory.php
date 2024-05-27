@@ -26,6 +26,8 @@ class CatalogFactory extends Factory
         return [
             'book_id' => Book::factory(),
             'description' => $this->faker->text,
+            'path_foto' => $this->faker->regexify('[A-Za-z0-9]{200}'),
+            'status_id' => Status::factory(),
         ];
     }
 }

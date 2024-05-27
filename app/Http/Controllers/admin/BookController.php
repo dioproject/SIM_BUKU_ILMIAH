@@ -110,10 +110,9 @@ class BookController extends Controller
         if($manuscript) {
             $book = Book::where('manuscript_id', $id)->delete();
 
-            History::update([
+            History::where('book_id', $book)->update([
                 'change_detail' => 'Book deleted successfully.',
                 'user_id' => Auth::id(),
-                'book_id' => null,
             ]);
             return redirect()->route('admin.index.book')->with('Success', 'Book deleted successfully.');
         } else {

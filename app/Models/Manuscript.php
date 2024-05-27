@@ -18,7 +18,6 @@ class Manuscript extends Model
         'title',
         'abstract',
         'fill',
-        'submission_date',
         'path_foto',
         'citation_id',
         'author_id',
@@ -31,7 +30,6 @@ class Manuscript extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'submission_date' => 'datetime',
         'citation_id' => 'integer',
         'author_id' => 'integer',
     ];
