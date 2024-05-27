@@ -11,18 +11,18 @@ created:
     - database/factories/CatalogFactory.php
     - database/factories/RoyaltyFactory.php
     - database/factories/HistoryFactory.php
-    - database/migrations/2024_05_23_035526_create_users_table.php
-    - database/migrations/2024_05_23_035527_create_religions_table.php
-    - database/migrations/2024_05_23_035528_create_genders_table.php
-    - database/migrations/2024_05_23_035529_create_categories_table.php
-    - database/migrations/2024_05_23_035530_create_books_table.php
-    - database/migrations/2024_05_23_035531_create_manuscripts_table.php
-    - database/migrations/2024_05_23_035532_create_statuses_table.php
-    - database/migrations/2024_05_23_035533_create_citations_table.php
-    - database/migrations/2024_05_23_035534_create_reviews_table.php
-    - database/migrations/2024_05_23_035535_create_catalogs_table.php
-    - database/migrations/2024_05_23_035536_create_royalties_table.php
-    - database/migrations/2024_05_23_035537_create_histories_table.php
+    - database/migrations/2024_05_27_002116_create_users_table.php
+    - database/migrations/2024_05_27_002117_create_religions_table.php
+    - database/migrations/2024_05_27_002118_create_genders_table.php
+    - database/migrations/2024_05_27_002119_create_categories_table.php
+    - database/migrations/2024_05_27_002120_create_books_table.php
+    - database/migrations/2024_05_27_002121_create_manuscripts_table.php
+    - database/migrations/2024_05_27_002122_create_statuses_table.php
+    - database/migrations/2024_05_27_002123_create_citations_table.php
+    - database/migrations/2024_05_27_002124_create_reviews_table.php
+    - database/migrations/2024_05_27_002125_create_catalogs_table.php
+    - database/migrations/2024_05_27_002126_create_royalties_table.php
+    - database/migrations/2024_05_27_002127_create_histories_table.php
     - app/Models/User.php
     - app/Models/Religion.php
     - app/Models/Gender.php
@@ -36,15 +36,15 @@ created:
     - app/Models/Royalty.php
     - app/Models/History.php
 models:
-    Book: { category_id: 'id foreign:Category nullable', manuscript_id: 'id foreign:Manuscript nullable', status_id: 'id foreign:Status nullable' }
-    Catalog: { book_id: 'id foreign:Book nullable', description: 'text nullable' }
+    Book: { category_id: 'id foreign:Category nullable onUpdate onDelete', manuscript_id: 'id foreign:Manuscript nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete' }
+    Catalog: { book_id: 'id foreign:Book nullable onUpdate onDelete', description: 'text nullable', path_foto: 'string:200 nullable', status_id: 'id foreign:Status nullable onUpdate onDelete' }
     Category: { name: 'string:100 nullable' }
     Citation: { citation: 'string:200 nullable', bibliography: 'text nullable' }
-    History: { change_detail: 'text nullable', book_id: 'id foreign:Book nullable', user_id: 'id foreign:User nullable' }
-    Manuscript: { title: 'string:250 nullable', abstract: 'text nullable', fill: 'longtext nullable', submission_date: 'datetime nullable', path_foto: 'string:200 nullable', citation_id: 'id foreign:Citation nullable', author_id: 'id foreign:User nullable' }
-    Review: { manuscript_id: 'id foreign:Manuscript nullable', content: 'text nullable', reviewer_id: 'id foreign:User nullable' }
-    Royalty: { book_id: 'id foreign:Book nullable', amount: 'decimal nullable', date: 'datetime nullable', path_foto: 'string:150' }
-    User: { email: 'string:50 unique nullable', password: 'string:150 nullable', user_role: 'enum:ADMIN,EDITOR,AUTHOR nullable', first_name: 'string:30 nullable', last_name: 'string:100 nullable', place_of_birth: 'string:100 nullable', date_of_birth: 'date nullable', contact: 'string:30 nullable', religion_id: 'id foreign:Religion nullable', gender_id: 'id foreign:Gender nullable' }
+    History: { change_detail: 'text nullable', book_id: 'id foreign:Book nullable onUpdate onDelete', user_id: 'id foreign:User nullable onUpdate onDelete' }
+    Manuscript: { title: 'string:250 nullable', abstract: 'text nullable', fill: 'longtext nullable', path_foto: 'string:200 nullable', citation_id: 'id foreign:Citation nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete' }
+    Review: { manuscript_id: 'id foreign:Manuscript nullable onUpdate onDelete', content: 'text nullable', reviewer_id: 'id foreign:User nullable onUpdate onDelete' }
+    Royalty: { book_id: 'id foreign:Book nullable onUpdate onDelete', amount: 'decimal nullable', date: 'datetime nullable', path_foto: 'string:150 nullable' }
+    User: { email: 'string:50 unique nullable', password: 'string:150 nullable', user_role: 'enum:ADMIN,EDITOR,AUTHOR nullable', first_name: 'string:30 nullable', last_name: 'string:100 nullable', place_of_birth: 'string:100 nullable', date_of_birth: 'date nullable', contact: 'string:30 nullable', religion_id: 'id foreign:Religion nullable onUpdate onDelete', gender_id: 'id foreign:Gender nullable onUpdate onDelete' }
     Religion: { option: 'string:10 nullable' }
     Gender: { option: 'string:6 nullable' }
     Status: { option: 'string:15 nullable' }

@@ -20,10 +20,9 @@ return new class extends Migration
             $table->string('title', 250)->nullable();
             $table->text('abstract')->nullable();
             $table->longText('fill')->nullable();
-            $table->dateTime('submission_date')->nullable();
             $table->string('path_foto', 200)->nullable();
-            $table->foreignId('citation_id')->nullable()->constrained('Citations');
-            $table->foreignId('author_id')->nullable()->constrained('Users');
+            $table->foreignId('citation_id')->nullable()->constrained('Citations')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
 

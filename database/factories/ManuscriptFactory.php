@@ -28,7 +28,6 @@ class ManuscriptFactory extends Factory
             'title' => $this->faker->sentence(4),
             'abstract' => $this->faker->text,
             'fill' => $this->faker->text,
-            'submission_date' => $this->faker->dateTime(),
             'path_foto' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'citation_id' => Citation::factory(),
             'author_id' => User::factory(),

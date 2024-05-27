@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('place_of_birth', 100)->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('contact', 30)->nullable();
-            $table->foreignId('religion_id')->nullable()->constrained('Religions');
-            $table->foreignId('gender_id')->nullable()->constrained('Genders');
+            $table->foreignId('religion_id')->nullable()->constrained('Religions')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('gender_id')->nullable()->constrained('Genders')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
 

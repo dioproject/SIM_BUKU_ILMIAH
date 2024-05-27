@@ -51,9 +51,6 @@
                                                         <td>{{ $tit->title }}</td>
                                                     @endif
                                                 @endforeach
-                                                @foreach ($author as $aut)
-                                                    <td>{{ $aut->first_name }}</td>
-                                                @endforeach
                                                 <td>{{ $cata->created_at }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"

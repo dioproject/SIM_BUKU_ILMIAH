@@ -8,8 +8,8 @@ models:
     place_of_birth: string:100 nullable
     date_of_birth: date nullable
     contact: string:30 nullable
-    religion_id: id foreign:Religion nullable
-    gender_id: id foreign:Gender nullable
+    religion_id: id foreign:Religion nullable onUpdate onDelete
+    gender_id: id foreign:Gender nullable onUpdate onDelete
 
   Religion:
     option: string:10 nullable
@@ -21,18 +21,17 @@ models:
     name: string:100 nullable
 
   Book:
-    category_id: id foreign:Category nullable
-    manuscript_id: id foreign:Manuscript nullable
-    status_id: id foreign:Status nullable
+    category_id: id foreign:Category nullable onUpdate onDelete
+    manuscript_id: id foreign:Manuscript nullable onUpdate onDelete
+    status_id: id foreign:Status nullable onUpdate onDelete
 
   Manuscript:
     title: string:250 nullable
     abstract: text nullable
     fill: longtext nullable
-    submission_date: datetime nullable
     path_foto: string:200 nullable
-    citation_id: id foreign:Citation nullable
-    author_id: id foreign:User nullable
+    citation_id: id foreign:Citation nullable onUpdate onDelete
+    author_id: id foreign:User nullable onUpdate onDelete
 
   Status:
     option: string:15 nullable
@@ -42,21 +41,23 @@ models:
     bibliography: text nullable
 
   Review:
-    manuscript_id: id foreign:Manuscript nullable
+    manuscript_id: id foreign:Manuscript nullable onUpdate onDelete
     content: text nullable
-    reviewer_id: id foreign:User nullable
+    reviewer_id: id foreign:User nullable onUpdate onDelete
 
   Catalog:
-    book_id: id foreign:Book nullable
+    book_id: id foreign:Book nullable onUpdate onDelete
     description: text nullable
+    path_foto: string:200 nullable
+    status_id: id foreign:Status nullable onUpdate onDelete
 
   Royalty:
-    book_id: id foreign:Book nullable
+    book_id: id foreign:Book nullable onUpdate onDelete
     amount: decimal nullable
     date: datetime nullable
-    path_foto: string:150
+    path_foto: string:150 nullable
 
   History:
     change_detail: text nullable
-    book_id: id foreign:Book nullable
-    user_id: id foreign:User nullable
+    book_id: id foreign:Book nullable onUpdate onDelete
+    user_id: id foreign:User nullable onUpdate onDelete

@@ -15,12 +15,11 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('royalties', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->nullable()->constrained('Books');
-            $table->decimal('amount')->nullable();
-            $table->dateTime('date')->nullable();
-            $table->string('path_foto', 150);
+            $table->foreignId('category_id')->nullable()->constrained('Categories')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('manuscript_id')->nullable()->constrained('Manuscripts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('royalties');
+        Schema::dropIfExists('books');
     }
 };

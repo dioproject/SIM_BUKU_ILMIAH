@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('books', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable()->constrained('Categories');
-            $table->foreignId('manuscript_id')->nullable()->constrained('Manuscripts');
-            $table->foreignId('status_id')->nullable()->constrained('Statuses');
+            $table->foreignId('manuscript_id')->nullable()->constrained('Manuscripts')->onUpdate('cascade')->onDelete('cascade');
+            $table->text('content')->nullable();
+            $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('reviews');
     }
 };

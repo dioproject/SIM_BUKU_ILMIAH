@@ -17,6 +17,8 @@ class Catalog extends Model
     protected $fillable = [
         'book_id',
         'description',
+        'path_foto',
+        'status_id',
     ];
 
     /**
@@ -27,10 +29,16 @@ class Catalog extends Model
     protected $casts = [
         'id' => 'integer',
         'book_id' => 'integer',
+        'status_id' => 'integer',
     ];
 
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

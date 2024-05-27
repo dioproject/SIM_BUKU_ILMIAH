@@ -17,8 +17,10 @@ return new class extends Migration
 
         Schema::create('catalogs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->nullable()->constrained('Books');
+            $table->foreignId('book_id')->nullable()->constrained('Books')->onUpdate('cascade')->onDelete('cascade');
             $table->text('description')->nullable();
+            $table->string('path_foto', 200)->nullable();
+            $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
 

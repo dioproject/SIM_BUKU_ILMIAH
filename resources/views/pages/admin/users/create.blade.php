@@ -75,7 +75,7 @@
                                                 name="gender" value="{{ old('gender') }}">
                                                 @foreach ($gender as $gen)
                                                     <option value="{{ $gen->id }}"
-                                                        @if (old('religion') == $gen->id) selected @endif>
+                                                        @if (old('gender') == $gen->id) selected @endif>
                                                         {{ $gen->option }}</option>
                                                 @endforeach
                                             </select>
