@@ -36,12 +36,12 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Title</label>
-                                            <select class="form-control selectric" tabindex="1" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                                @foreach ($title as $tit)
-                                                    <option value="{{ $tit->id }}"
-                                                        @if (old('title') == $tit->id) selected @endif>
-                                                        {{ $tit->title }}</option>
+                                            <select class="form-control selectric" tabindex="1" id="book_id"
+                                                name="book_id" value="{{ old('book_id') }}">
+                                                @foreach ($books as $book)
+                                                    <option value="{{ $book->id }}"
+                                                        @if (old('book_id') == $book->id) selected @endif>
+                                                        {{ $book->manuscript->title }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

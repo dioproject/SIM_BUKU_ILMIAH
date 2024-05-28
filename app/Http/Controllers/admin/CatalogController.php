@@ -11,6 +11,7 @@ use App\Models\History;
 use App\Models\Catalog;
 use App\Models\Status;
 use App\Models\User;
+use App\Models\Book;
 
 class CatalogController extends Controller
 {
@@ -26,15 +27,14 @@ class CatalogController extends Controller
     }
 
     public function create() {
-        $title = Manuscript::all();
+        $books = Book::with('manuscript')->get();
 
-        return view('pages.admin.catalogs.create', compact('title'));
+        return view('pages.admin.catalogs.create', compact('books'));
     }
 
     public function store(Request $request) {
-        // dd($request->all());
         $request->validate([
-            'title' => 'required',
+            'book_id' => 'required',
             'path_foto' =>  'required|image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'required',
         ]);
@@ -46,31 +46,24 @@ class CatalogController extends Controller
         }
 
         $catalog = Catalog::create([
-            'book_id' => $request->title,
+            'book_id' => $request->book_id,
             'description' => $request->description,
             'path_foto' => $filePath,
             'status_id' => Status::findOrFail(1)->id,
         ]);
 
         if ($catalog) {
+            $book = Book::findOrFail($request->book_id);
+            $book->update([
+                'status_id' => Status::findOrFail(3)->id,
+            ]);
+
             History::create([
                 'change_detail' => 'Catalog created successfully.',
                 'user_id' => Auth::id(),
             ]);
             return redirect()->route('admin.index.catalog')->with('Success', 'Catalog created successfully.');
         }
-        return redirect()->route('admin.create.catalog')->with('Error', 'Book not found.');
-    }
-
-    public function edit($id) {
-
-    }
-
-    public function update(Request $request, $id) {
-
-    }
-
-    public function destroy($id) {
-
+        return redirect()->route('admin.create.catalog')->with('Error', 'Catalog not found.');
     }
 }

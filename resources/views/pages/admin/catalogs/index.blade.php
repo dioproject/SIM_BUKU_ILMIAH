@@ -41,7 +41,6 @@
                                             <th>Book Title</th>
                                             <th>Author</th>
                                             <th>Last Uploaded</th>
-                                            <th>Action</th>
                                         </tr>
                                         @foreach ($catalog as $key => $cata)
                                             <tr>
@@ -52,19 +51,6 @@
                                                     @endif
                                                 @endforeach
                                                 <td>{{ $cata->created_at }}</td>
-                                                <td>
-                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.catalog', $cata->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.catalog', $cata->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
-                                                            title="Delete"><i class="fas fa-trash"></i></button>
-                                                    </form>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </table>
