@@ -46,12 +46,9 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
     Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
     Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
-    Route::get('/admin/edit/catalog/{id}', [CatalogController::class, 'edit'])->name('admin.edit.catalog');
-    Route::put('/admin/edit/catalog/{id}', [CatalogController::class, 'update'])->name('admin.update.catalog');
     Route::delete('/admin/delete/catalog/{id}', [CatalogController::class, 'destroy'])->name('admin.destroy.catalog');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
 });
 
 Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
