@@ -18,7 +18,6 @@ class Catalog extends Model
         'book_id',
         'description',
         'path_foto',
-        'status_id',
     ];
 
     /**
@@ -29,7 +28,6 @@ class Catalog extends Model
     protected $casts = [
         'id' => 'integer',
         'book_id' => 'integer',
-        'status_id' => 'integer',
     ];
 
     public function book()

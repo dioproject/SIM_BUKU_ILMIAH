@@ -21,8 +21,8 @@ return new class extends Migration
             $table->text('abstract')->nullable();
             $table->longText('fill')->nullable();
             $table->string('path_foto', 200)->nullable();
-            $table->foreignId('citation_id')->nullable()->constrained('Citations')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('citation_id')->nullable()->constrained('Citations')->onUpdate('set null')->onDelete('cascade');
+            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
 

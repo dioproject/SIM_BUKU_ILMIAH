@@ -9,6 +9,8 @@ use App\Http\Controllers\admin\HistoryController;
 use App\Http\Controllers\admin\BookController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CatalogController;
+use App\Http\Controllers\admin\RoyaltyController;
+use App\Http\Controllers\admin\NotificationController;
 
 Route::redirect('/', '/login');
 
@@ -46,7 +48,9 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
     Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
     Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
-    Route::delete('/admin/delete/catalog/{id}', [CatalogController::class, 'destroy'])->name('admin.destroy.catalog');
+    Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
+    Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
+    Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

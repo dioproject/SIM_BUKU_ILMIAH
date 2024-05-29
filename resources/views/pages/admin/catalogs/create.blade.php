@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
@@ -36,7 +37,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Title</label>
-                                            <select class="form-control selectric" tabindex="1" id="book_id"
+                                            <select class="form-control select2" tabindex="1" id="book_id"
                                                 name="book_id" value="{{ old('book_id') }}">
                                                 @foreach ($books as $book)
                                                     <option value="{{ $book->id }}"
@@ -80,6 +81,7 @@
 
 @push('scripts')
     <!-- JS Libraies -->
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
 @endpush

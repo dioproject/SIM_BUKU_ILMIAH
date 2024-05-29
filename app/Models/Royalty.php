@@ -17,8 +17,9 @@ class Royalty extends Model
     protected $fillable = [
         'book_id',
         'amount',
-        'date',
         'path_foto',
+        'status_id',
+        'author_id',
     ];
 
     /**
@@ -29,12 +30,17 @@ class Royalty extends Model
     protected $casts = [
         'id' => 'integer',
         'book_id' => 'integer',
-        'amount' => 'decimal',
-        'date' => 'datetime',
+        'status_id' => 'integer',
+        'author_id' => 'integer',
     ];
 
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

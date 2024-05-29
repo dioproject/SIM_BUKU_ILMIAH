@@ -50,7 +50,8 @@
                                                         <td>{{ $tit->title }}</td>
                                                     @endif
                                                 @endforeach
-                                                <td>{{ $cata->created_at }}</td>
+                                                <td>{{ $author[$key]->first_name }}</td>
+                                                <td>{{ $cata->updated_at }}</td>
                                             </tr>
                                         @endforeach
                                     </table>

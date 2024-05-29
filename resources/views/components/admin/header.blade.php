@@ -2,17 +2,13 @@
 <nav class="navbar navbar-expand-lg main-navbar">
     <form class="form-inline mr-auto">
         <ul class="navbar-nav mr-3">
-            <li><a href="#"
-                    data-toggle="sidebar"
-                    class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-            <li><a href="#"
-                    data-toggle="search"
-                    class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i
+                        class="fas fa-search"></i></a></li>
         </ul>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown dropdown-list-toggle"><a href="#"
-                data-toggle="dropdown"
+        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
                 <div class="dropdown-header">Notifications
@@ -21,16 +17,17 @@
                     </div>
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
-                    <a href="#"
-                        class="dropdown-item">
-                        <div class="dropdown-item-icon bg-info text-white">
-                            <i class="far fa-user"></i>
+                    @foreach ($notifications as $notification)
+                        <div class="dropdown-item">
+                            <div class="dropdown-item-icon bg-info text-white">
+                                <i class="far fa-user"></i>
+                            </div>
+                            <div class="dropdown-item-desc">
+                                {{ $notification->change_detail }}
+                                <div class="time">{{ $notification->created_at->diffForHumans() }}</div>
+                            </div>
                         </div>
-                        <div class="dropdown-item-desc">
-                            <b>You</b> and <b>Dedik Sugiharto</b> are now friends
-                            <div class="time">10 Hours Ago</div>
-                        </div>
-                    </a>
+                    @endforeach
                 </div>
                 <div class="dropdown-footer text-center">
                     <a href="#">View All <i class="fas fa-chevron-right"></i></a>
@@ -38,19 +35,14 @@
             </div>
         </li>
         <li class="dropdown">
-            <a href="#"
-                data-toggle="dropdown"
-                class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image"
-                    src="{{ asset('img/avatar/avatar-1.png') }}"
-                    class="rounded-circle mr-1">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <img alt="image" src="{{ asset('img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
 
-                    <div class="d-sm-none d-lg-inline-block">ADMIN, {{ auth()->user()->first_name }}</div>
+                <div class="d-sm-none d-lg-inline-block">ADMIN, {{ auth()->user()->first_name }}</div>
 
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{{ route('logout') }}"
-                    class="dropdown-item has-icon text-danger">
+                <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
