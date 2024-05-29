@@ -16,16 +16,14 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="/admin/royalty/create"
-                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Royalty
+                                <a href="{{ route('admin.create.royalty') }}" class="btn btn-icon icon-left btn-primary"><i
+                                        class="far fa-edit"></i> Create Royalty
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form>
                                         <div class="input-group">
-                                            <input type="text"
-                                                class="form-control"
-                                                placeholder="Search">
+                                            <input type="text" class="form-control" placeholder="Search">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                             </div>
@@ -37,53 +35,36 @@
                                 <div class="table-responsive">
                                     <table class="table-bordered table-md table">
                                         <tr>
+                                            <th>No.</th>
                                             <th>Book Title</th>
-                                            <th>Writer</th>
-                                            <th>Price</th>
-                                            <th>Sold</th>
+                                            <th>Author</th>
                                             <th>Royalty</th>
                                             <th>Status</th>
+                                            <th>Action</th>
                                         </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>98237</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>201700</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>12378</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>170109</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
+                                        @foreach ($royalty as $key => $royal)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $royal->book->manuscript->title }}</td>
+                                                <td>{{ $royal->book->manuscript->author->first_name }}</td>
+                                                <td>{{ $royal->amount }}</td>
+                                                <td>{{ $royal->status->option }}</td>
+                                                <td>
+                                                    {{-- <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                        title="Edit"
+                                                        href="{{ route('admin.edit.royalty', $royal->id) }}"><i
+                                                            class="fas fa-pencil-alt"></i></a> --}}
+                                                    {{-- <form action="{{ route('admin.destroy.royalty', $royal->id) }}"
+                                                        method="POST" class="btn btn-danger p-0" type="button"
+                                                        onsubmit="return confirm('Are you sure want to delete it?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
+                                                            title="Delete"><i class="fas fa-trash"></i></button>
+                                                    </form> --}}
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>
@@ -91,21 +72,17 @@
                                 <nav class="d-inline-block">
                                     <ul class="pagination mb-0">
                                         <li class="page-item disabled">
-                                            <a class="page-link"
-                                                href="#"
-                                                tabindex="-1"><i class="fas fa-chevron-left"></i></a>
+                                            <a class="page-link" href="#" tabindex="-1"><i
+                                                    class="fas fa-chevron-left"></i></a>
                                         </li>
-                                        <li class="page-item active"><a class="page-link"
-                                                href="#">1 <span class="sr-only">(current)</span></a></li>
+                                        <li class="page-item active"><a class="page-link" href="#">1 <span
+                                                    class="sr-only">(current)</span></a></li>
                                         <li class="page-item">
-                                            <a class="page-link"
-                                                href="#">2</a>
+                                            <a class="page-link" href="#">2</a>
                                         </li>
-                                        <li class="page-item"><a class="page-link"
-                                                href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
                                         <li class="page-item">
-                                            <a class="page-link"
-                                                href="#"><i class="fas fa-chevron-right"></i></a>
+                                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
                                         </li>
                                     </ul>
                                 </nav>

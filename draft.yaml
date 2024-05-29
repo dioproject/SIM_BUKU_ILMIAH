@@ -49,13 +49,13 @@ models:
     book_id: id foreign:Book nullable onUpdate onDelete
     description: text nullable
     path_foto: string:200 nullable
-    status_id: id foreign:Status nullable onUpdate onDelete
 
   Royalty:
     book_id: id foreign:Book nullable onUpdate onDelete
     amount: decimal nullable
-    date: datetime nullable
-    path_foto: string:150 nullable
+    path_foto: string:200 nullable
+    status_id: id foreign:Status nullable onUpdate onDelete
+    author_id: id foreign:User nullable onUpdate onDelete
 
   History:
     change_detail: text nullable
