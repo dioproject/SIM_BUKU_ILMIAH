@@ -15,7 +15,7 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'manuscript_id',
+        'book_id',
         'content',
         'reviewer_id',
     ];
@@ -27,13 +27,13 @@ class Review extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'manuscript_id' => 'integer',
+        'book_id' => 'integer',
         'reviewer_id' => 'integer',
     ];
 
-    public function manuscript()
+    public function book()
     {
-        return $this->belongsTo(Manuscript::class);
+        return $this->belongsTo(Book::class);
     }
 
     public function reviewer()

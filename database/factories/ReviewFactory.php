@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Manuscript;
+use App\Models\Book;
 use App\Models\Review;
 use App\Models\User;
 
@@ -25,7 +25,7 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            'manuscript_id' => Manuscript::factory(),
+            'book_id' => Book::factory(),
             'content' => $this->faker->paragraphs(3, true),
             'reviewer_id' => User::factory(),
         ];

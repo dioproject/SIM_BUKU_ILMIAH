@@ -50,10 +50,10 @@
                                                 <td>{{ $royal->amount }}</td>
                                                 <td>{{ $royal->status->option }}</td>
                                                 <td>
-                                                    {{-- <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                         title="Edit"
                                                         href="{{ route('admin.edit.royalty', $royal->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i></a> --}}
+                                                            class="fas fa-pencil-alt"></i></a>
                                                     {{-- <form action="{{ route('admin.destroy.royalty', $royal->id) }}"
                                                         method="POST" class="btn btn-danger p-0" type="button"
                                                         onsubmit="return confirm('Are you sure want to delete it?')">

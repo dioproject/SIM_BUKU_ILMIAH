@@ -41,7 +41,7 @@ models:
     bibliography: text nullable
 
   Review:
-    manuscript_id: id foreign:Manuscript nullable onUpdate onDelete
+    book_id: id foreign:Book nullable onUpdate onDelete
     content: text nullable
     reviewer_id: id foreign:User nullable onUpdate onDelete
 

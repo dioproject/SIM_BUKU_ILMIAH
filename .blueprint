@@ -42,7 +42,7 @@ models:
     Citation: { citation: 'string:200 nullable', bibliography: 'text nullable' }
     History: { change_detail: 'text nullable', book_id: 'id foreign:Book nullable onUpdate onDelete', user_id: 'id foreign:User nullable onUpdate onDelete' }
     Manuscript: { title: 'string:250 nullable', abstract: 'text nullable', fill: 'longtext nullable', path_foto: 'string:200 nullable', citation_id: 'id foreign:Citation nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete' }
-    Review: { manuscript_id: 'id foreign:Manuscript nullable onUpdate onDelete', content: 'text nullable', reviewer_id: 'id foreign:User nullable onUpdate onDelete' }
+    Review: { book_id: 'id foreign:Book nullable onUpdate onDelete', content: 'text nullable', reviewer_id: 'id foreign:User nullable onUpdate onDelete' }
     Royalty: { book_id: 'id foreign:Book nullable onUpdate onDelete', amount: 'decimal nullable', path_foto: 'string:200 nullable', status_id: 'id foreign:Status nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete' }
     User: { email: 'string:50 unique nullable', password: 'string:150 nullable', user_role: 'enum:ADMIN,EDITOR,AUTHOR nullable', first_name: 'string:30 nullable', last_name: 'string:100 nullable', place_of_birth: 'string:100 nullable', date_of_birth: 'date nullable', contact: 'string:30 nullable', religion_id: 'id foreign:Religion nullable onUpdate onDelete', gender_id: 'id foreign:Gender nullable onUpdate onDelete' }
     Religion: { option: 'string:10 nullable' }

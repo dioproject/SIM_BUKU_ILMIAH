@@ -8,27 +8,20 @@
         </div>
         <ul class="sidebar-menu">
             <li class="{{ Request::is('editor/dashboard') ? 'active' : '' }}">
-                <a class="nav-link"
-                    href="{{ url('editor/dashboard') }}"><i class="fas fa-regular fa-house"></i><span>Dashboard</span></a>
+                <a class="nav-link" href="{{ url('editor/dashboard') }}"><i
+                        class="fas fa-regular fa-house"></i><span>Dashboard</span></a>
             </li>
-            <li class="nav-item dropdown {{ $type_menu === 'data' ? 'active' : '' }}">
-                <a href="#"
-                    class="nav-link has-dropdown"
-                    data-toggle="dropdown"><i class="fas fa-solid fa-table"></i> <span>Data</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ Request::is('editor/user-data') ? 'active' : '' }}">
-                        <a class="nav-link"
-                            href="{{ url('editor/userdata') }}">User Data</a>
-                    </li>
-                    <li class="{{ Request::is('editor/bookdata') ? 'active' : '' }}">
-                        <a class="nav-link"
-                            href="{{ url('editor/bookdata') }}">Book Data</a>
-                    </li>
-                </ul>
+            <li class="{{ Request::is('editor/users') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('editor/users') }}"><i
+                    class="fas fa-solid fa-user-group"></i><span>Users</span></a>
+            </li>
+            <li class="{{ Request::is('editor/books') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('editor/books') }}"><i
+                    class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
             <li class="{{ Request::is('editor/history') ? 'active' : '' }}">
-                <a class="nav-link"
-                    href="{{ url('editor/history') }}"><i class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>
+                <a class="nav-link" href="{{ url('editor/history') }}"><i
+                        class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>
             </li>
         </ul>
     </aside>

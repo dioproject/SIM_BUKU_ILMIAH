@@ -1,4 +1,4 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-author')
 
 @section('title', 'Books')
 
@@ -16,7 +16,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
+                                <a href="{{ route('author.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
                                         class="far fa-edit"></i> Create Book
                                 </a>
                                 <h4></h4>
@@ -53,16 +53,8 @@
                                                 <td>{{ $status[$key]->option }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.book', $book->id) }}"><i
+                                                        title="Edit" href="{{ route('author.edit.book', $book->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.book', $book->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
-                                                            title="Delete"><i class="fas fa-trash"></i></button>
-                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
