@@ -10,7 +10,9 @@ use App\Http\Controllers\admin\BookController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CatalogController;
 use App\Http\Controllers\admin\RoyaltyController;
-use App\Http\Controllers\admin\NotificationController;
+use App\Http\Controllers\author\AuthorBookController;
+use App\Http\Controllers\author\AuthorRoyaltyController;
+use App\Http\Controllers\author\AuthorHistoryController;
 
 Route::redirect('/', '/login');
 
@@ -18,9 +20,8 @@ Route::controller(AuthController::class)->group(function() {
     //Login
     Route::get('/login', 'login')->name('login');
     Route::post('/login/action', 'loginAction')->name('login.action');
-    //Register
-    Route::get('/register', 'register')->name('register');
-    Route::post('/register/action', 'registerAction')->name('register.action');
+    //Logout
+    Route::get('/logout', 'logout')->name('logout');
 });
 
 Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
@@ -51,20 +52,26 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
     Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
     Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
+    Route::get('/admin/edit/royalty/{id}', [RoyaltyController::class, 'edit'])->name('admin.edit.royalty');
+    Route::put('/admin/edit/royalty/{id}', [RoyaltyController::class, 'update'])->name('admin.update.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('history.index');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
 
     //Editor
     Route::get('/editor/dashboard', [HomeController::class, 'editorPage'])->name('editor.dashboard');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
 
     //Author
     Route::get('/author/dashboard', [HomeController::class, 'authorPage'])->name('author.dashboard');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');
+    Route::get('/author/create/book', [AuthorBookController::class, 'create'])->name('author.create.book');
+    Route::post('/author/create/book', [AuthorBookController::class, 'store'])->name('author.store.book');
+    Route::get('/author/edit/book/{id}', [AuthorBookController::class, 'edit'])->name('author.edit.book');
+    Route::put('/author/edit/book/{id}', [AuthorBookController::class, 'update'])->name('author.update.book');
+    Route::get('/author/royalty', [AuthorRoyaltyController::class, 'index'])->name('author.index.royalty');
+    Route::get('/author/history', [AuthorHistoryController::class, 'index'])->name('author.index.history');
 });

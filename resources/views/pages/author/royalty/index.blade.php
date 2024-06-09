@@ -1,6 +1,6 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-author')
 
-@section('title', 'Books')
+@section('title', 'Royalty')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,16 +9,13 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Books</h1>
+                <h1>Royalty</h1>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Book
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form>
@@ -38,32 +35,16 @@
                                             <th>No.</th>
                                             <th>Book Title</th>
                                             <th>Author</th>
-                                            <th>Last Modified</th>
+                                            <th>Royalty</th>
                                             <th>Status</th>
-                                            <th>Action</th>
                                         </tr>
-                                        @foreach ($books as $key => $book)
+                                        @foreach ($royalty as $key => $royal)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $title[$key]->title }}</td>
-                                                @foreach ($author as $aut)
-                                                    <td>{{ $aut->first_name }}</td>
-                                                @endforeach
-                                                <td>{{ $book->updated_at }}</td>
-                                                <td>{{ $status[$key]->option }}</td>
-                                                <td>
-                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.book', $book->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.book', $book->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
-                                                            title="Delete"><i class="fas fa-trash"></i></button>
-                                                    </form>
-                                                </td>
+                                                <td>{{ $royal->book->manuscript->title }}</td>
+                                                <td>{{ $royal->book->manuscript->author->first_name }}</td>
+                                                <td>{{ $royal->amount }}</td>
+                                                <td>{{ $royal->status->option }}</td>
                                             </tr>
                                         @endforeach
                                     </table>
@@ -76,7 +57,7 @@
                                             <a class="page-link" href="#" tabindex="-1"><i
                                                     class="fas fa-chevron-left"></i></a>
                                         </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1<span
+                                        <li class="page-item active"><a class="page-link" href="#">1 <span
                                                     class="sr-only">(current)</span></a></li>
                                         <li class="page-item">
                                             <a class="page-link" href="#">2</a>
@@ -98,8 +79,6 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

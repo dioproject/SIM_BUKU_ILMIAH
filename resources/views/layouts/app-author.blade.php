@@ -45,16 +45,16 @@
     <div id="app">
         <div class="main-wrapper">
             <!-- Header -->
-            @include('components.writer.header')
+            @include('components.author.header')
 
             <!-- Sidebar -->
-            @include('components.writer.sidebar')
+            @include('components.author.sidebar')
 
             <!-- Content -->
             @yield('main')
 
             <!-- Footer -->
-            @include('components.writer.footer')
+            @include('components.author.footer')
         </div>
     </div>
 

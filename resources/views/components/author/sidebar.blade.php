@@ -11,9 +11,9 @@
                 <a class="nav-link"
                     href="{{ url('author/dashboard') }}"><i class="fas fa-regular fa-house"></i><span>Dashboard</span></a>
             </li>
-            <li class="{{ Request::is('author/bookdata') ? 'active' : '' }}">
+            <li class="{{ Request::is('author/books') ? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('author/bookdata') }}"><i class="fas fa-solid fa-book"></i><span>Book Data</span></a>
+                    href="{{ url('author/books') }}"><i class="fas fa-solid fa-book"></i><span>Book Data</span></a>
             </li>
             <li class="{{ Request::is('author/royalty') ? 'active' : '' }}">
                 <a class="nav-link"

@@ -1,6 +1,6 @@
-@extends('layouts.app-author')
+@extends('layouts.app-admin')
 
-@section('title', 'Royalty')
+@section('title', 'Reviews')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,15 +9,15 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Royalty</h1>
+                <h1>Reviews</h1>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="/admin/royalty/create"
-                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Royalty
+                                <a href="{{ route('admin.create.catalog') }}"
+                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Create Review
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
@@ -37,53 +37,24 @@
                                 <div class="table-responsive">
                                     <table class="table-bordered table-md table">
                                         <tr>
+                                            <th>No.</th>
                                             <th>Book Title</th>
-                                            <th>Writer</th>
-                                            <th>Price</th>
-                                            <th>Sold</th>
-                                            <th>Royalty</th>
-                                            <th>Status</th>
+                                            <th>Author</th>
+                                            <th>Last Uploaded</th>
+                                            <th>Action</th>
                                         </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>98237</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>201700</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>12378</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>170109</td>
-                                            <td>17</td>
-                                            <td>15000</td>
-                                            <td>
-                                                <div class="badge badge-success">Success</div>
-                                            </td>
-                                        </tr>
+                                        @foreach ($catalog as $key => $cata)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                @foreach ($bookTitle as $tit)
+                                                    @if ($tit->book_id)
+                                                        <td>{{ $tit->title }}</td>
+                                                    @endif
+                                                @endforeach
+                                                <td>{{ $author[$key]->first_name }}</td>
+                                                <td>{{ $cata->updated_at }}</td>
+                                            </tr>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
-@extends('layouts.app-author')
+@extends('layouts.app-editor')
 
-@section('title', 'Book Data')
+@section('title', 'Users')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,16 +9,17 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Book Data</h1>
+                <h1>User Data</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active">Data</div>
+                    <div class="breadcrumb-item"><a href="/editor/userdata">User Data</a></div>
+                </div>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="/admin/bookdata/create"
-                                    class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Review Book
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form>
@@ -37,25 +38,23 @@
                                 <div class="table-responsive">
                                     <table class="table-bordered table-md table">
                                         <tr>
-                                            <th>Book Code</th>
-                                            <th>Book Title</th>
-                                            <th>Writer</th>
-                                            <th>Last Modified</th>
-                                            <th>Comment</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Created At</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                         <tr>
                                             <td>1</td>
                                             <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
                                             <td>2017-01-09</td>
                                             <td>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                <div class="badge badge-success">Active</div>
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary btn-action mr-1"
                                                     data-toggle="tooltip"
-                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="btn btn-danger"
                                                     data-toggle="tooltip"
                                                     title="Delete"
@@ -64,16 +63,15 @@
                                         </tr>
                                         <tr>
                                             <td>2</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
+                                            <td>Hasan Basri</td>
                                             <td>2017-01-09</td>
                                             <td>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                <div class="badge badge-success">Active</div>
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary btn-action mr-1"
                                                     data-toggle="tooltip"
-                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="btn btn-danger"
                                                     data-toggle="tooltip"
                                                     title="Delete"
@@ -82,16 +80,15 @@
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>2017-01-09</td>
+                                            <td>Kusnadi</td>
+                                            <td>2017-01-11</td>
                                             <td>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                <div class="badge badge-danger">Not Active</div>
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary btn-action mr-1"
                                                     data-toggle="tooltip"
-                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="btn btn-danger"
                                                     data-toggle="tooltip"
                                                     title="Delete"
@@ -100,16 +97,32 @@
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td>Irwansyah Saputra</td>
-                                            <td>Lorem</td>
-                                            <td>2017-01-09</td>
+                                            <td>Rizal Fakhri</td>
+                                            <td>2017-01-11</td>
                                             <td>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                <div class="badge badge-success">Active</div>
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary btn-action mr-1"
                                                     data-toggle="tooltip"
-                                                    title="Edit" href="/admin/bookdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
+                                                <a class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    title="Delete"
+                                                    id="swal-6"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>Rizal Fakhri</td>
+                                            <td>2017-01-11</td>
+                                            <td>
+                                                <div class="badge badge-success">Active</div>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1"
+                                                    data-toggle="tooltip"
+                                                    title="Edit" href="/admin/userdata/edit"><i class="fas fa-pencil-alt"></i></a>
                                                 <a class="btn btn-danger"
                                                     data-toggle="tooltip"
                                                     title="Delete"

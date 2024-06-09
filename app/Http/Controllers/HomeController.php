@@ -17,10 +17,10 @@ class HomeController extends Controller
     }
     public function editorPage()
     {
-        return view('pages.editor.dashboard');
+        return view('pages.editor.dashboard.index');
     }
     public function authorPage()
     {
-        return view('pages.author.dashboard');
+        return view('pages.author.dashboard.index');
     }
 }
