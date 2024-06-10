@@ -39,7 +39,7 @@ class UserController extends Controller
             'user_role' => 'required|in:ADMIN,EDITOR,AUTHOR',
         ]);
 
-        $data = User::create([
+        $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'user_role' => $request->user_role,

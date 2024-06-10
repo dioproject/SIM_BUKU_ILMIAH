@@ -14,11 +14,18 @@ use App\Models\Category;
 
 class BookController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
+        $request->validate([
+            'search' => 'required',
+        ]);
+
         $books = Book::all();
         $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
         $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->get();
         $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
+        $search  = Book::where('title', 'like', "%{$request->search}%")
+        ->orWhere('author', 'like', "%{$request->search}%")
+        ->paginate(10);
 
         return view('pages.admin.books.index', compact('books', 'title', 'status', 'author'));
     }
@@ -86,7 +93,9 @@ class BookController extends Controller
         ]);
 
         if ($manuscript) {
-            $book = Book::update([
+
+            $book = Book::findOrFail($id);
+            $book->update([
                 'category_id' => $request->category,
                 'manuscript_id' => $id,
                 'status_id' => Status::findOrFail(1)->id,
