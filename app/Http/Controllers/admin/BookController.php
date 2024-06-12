@@ -15,19 +15,23 @@ use App\Models\Category;
 class BookController extends Controller
 {
     public function index(Request $request) {
-        $request->validate([
-            'search' => 'required',
-        ]);
-
+        $query = Book::with(['manuscript.author', 'status']);
         $books = Book::all();
         $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
         $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->get();
         $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
-        $search  = Book::where('title', 'like', "%{$request->search}%")
-        ->orWhere('author', 'like', "%{$request->search}%")
-        ->paginate(10);
+        
+        if ($search = $request->input('search')) {
+            $query->whereHas('manuscript', function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                  ->orWhereHas('author', function ($q2) use ($search) {
+                      $q2->where('first_name', 'like', "%$search%")
+                         ->orWhere('last_name', 'like', "%$search%");
+                  });
+            });
+        }
 
-        return view('pages.admin.books.index', compact('books', 'title', 'status', 'author'));
+        return view('pages.admin.books.index', compact('books', 'title', 'status', 'author', 'query'));
     }
 
     public function create() {
@@ -64,9 +68,9 @@ class BookController extends Controller
                 'user_id' => Auth::id(),
                 'book_id' => $book->id,
             ]);
-            return redirect()->route('admin.index.book')->with('Success', 'Book created successfully.');
+            return redirect()->route('admin.index.book')->with('success', 'Book created successfully.');
         }
-        return redirect()->route('admin.create.book')->with('Error', 'Book not found.');
+        return redirect()->route('admin.create.book')->with('error', 'Book not found.');
     }
 
     public function edit($id) {
