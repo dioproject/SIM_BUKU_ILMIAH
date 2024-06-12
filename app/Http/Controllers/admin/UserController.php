@@ -13,19 +13,22 @@ use App\Models\History;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $users = User::all();
         return view('pages.admin.users.index', compact('users'));
     }
 
-    public function create() {
+    public function create()
+    {
         $gender = Gender::all();
         $religion = Religion::all();
 
         return view('pages.admin.users.create', compact('gender', 'religion'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'first_name' => 'required|max:30',
             'last_name' => 'required|max:100',
@@ -53,15 +56,17 @@ class UserController extends Controller
         ]);
 
         if ($user) {
+
             History::create([
-                'change_detail' => 'User created successfully.',
+                'change_detail' => Auth::user()->first_name . ' created user ' . $user->first_name . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.user')->with('Success', 'User created successfully.');
+            return redirect()->route('admin.index.user')->with('success', Auth::user()->first_name . ' created user ' . $user->first_name . ' successfully.');
         }
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::findOrFail($id);
         $gender = Gender::all();
         $religion = Religion::all();
@@ -69,7 +74,8 @@ class UserController extends Controller
         return view('pages.admin.users.edit', compact('user', 'gender', 'religion'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'first_name' => 'required|max:30',
             'last_name' => 'required|max:100',
@@ -98,25 +104,26 @@ class UserController extends Controller
 
         if ($user) {
             History::create([
-                'change_detail' => 'User updated successfully.',
+                'change_detail' => Auth::user()->first_name . ' updated user ' . $user->first_name . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.user')->with('Success', 'User updated successfully.');
+            return redirect()->route('admin.index.user')->with('success', Auth::user()->first_name . ' updated user ' . $user->first_name . ' successfully.');
         }
+        return redirect()->route('admin.create.book')->with('error', 'User not found.');
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = User::findOrFail($id);
         $user->delete();
 
-        if($user) {
+        if ($user) {
             History::create([
-                'change_detail' => 'User deleted successfully.',
+                'change_detail' => Auth::user()->first_name . ' deleted user ' . $user->first_name . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.user')->with('Success', 'User deleted successfully.');
-        } else {
-            return redirect()->route('admin.index.user')->with('Error', 'User not found.');
-        }
+            return redirect()->route('admin.index.user');
+        } 
+        return redirect()->route('admin.index.user');
     }
 }

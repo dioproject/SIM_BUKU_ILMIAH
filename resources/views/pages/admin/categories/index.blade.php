@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 @endpush
 
 @section('main')<div class="main-content">
@@ -50,11 +51,10 @@
                                                         title="Edit" href="{{ route('admin.edit.category', $cate->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
                                                     <form action="{{ route('admin.destroy.category', $cate->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
+                                                        method="POST" class="btn btn-danger p-0" type="button">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
+                                                        <button class="btn btn-danger btn-action delete-button"
                                                             title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
@@ -90,10 +90,8 @@
     </div>
 @endsection
 
-@push('scripts')
-    <!-- JS Libraies -->
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
 
-    <!-- Page Specific JS File -->
+@push('scripts')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

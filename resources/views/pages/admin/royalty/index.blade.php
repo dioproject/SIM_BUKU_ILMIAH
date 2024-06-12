@@ -54,14 +54,6 @@
                                                         title="Edit"
                                                         href="{{ route('admin.edit.royalty', $royal->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
-                                                    {{-- <form action="{{ route('admin.destroy.royalty', $royal->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
-                                                            title="Delete"><i class="fas fa-trash"></i></button>
-                                                    </form> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -34,20 +34,12 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>History</th>
-                                            <th>Users</th>
-                                            <th>Book Title</th>
                                             <th>Date</th>
                                         </tr>
                                         @foreach ($history as $key => $his)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $his->change_detail }}</td>
-                                                <td>{{ $name[$key]->first_name }}</td>
-                                                @foreach ($title as $tit)
-                                                    @if ($tit->book_id)
-                                                        <td>{{ $tit->title }}</td>
-                                                    @endif
-                                                @endforeach
                                                 <td>{{ $his->created_at }}</td>
                                             </tr>
                                         @endforeach

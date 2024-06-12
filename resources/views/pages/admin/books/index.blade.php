@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 @endpush
 
 @section('main')<div class="main-content">
@@ -23,9 +24,11 @@
                                 <div class="card-header-action">
                                     <form action="{{ route('admin.index.book') }}" method="GET">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search" name="search">
+                                            <input type="text" class="form-control" placeholder="Search" name="search"
+                                                value="{{ request('search') }}">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                                                <button class="btn btn-primary" type="submit"><i
+                                                        class="fas fa-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
@@ -56,11 +59,10 @@
                                                         title="Edit" href="{{ route('admin.edit.book', $book->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
                                                     <form action="{{ route('admin.destroy.book', $book->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
+                                                        method="POST" class="btn btn-danger p-0" type="button">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
+                                                        <button class="btn btn-danger btn-action delete-button"
                                                             title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
@@ -97,9 +99,6 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-
-    <!-- Page Specific JS File -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

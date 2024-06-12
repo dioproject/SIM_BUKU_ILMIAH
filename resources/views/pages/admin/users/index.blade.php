@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 @endpush
 
 @section('main')<div class="main-content">
@@ -16,6 +17,28 @@
                 </div>
             </div>
             <div class="section-body">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('success') }}.
+                        </div>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('error') }}.
+                        </div>
+                    </div>
+                @endif
+
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -56,11 +79,10 @@
                                                         title="Edit" href="{{ route('admin.edit.user', $user->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
                                                     <form action="{{ route('admin.destroy.user', $user->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button"
-                                                        onsubmit="return confirm('Are you sure want to delete it?')">
+                                                        method="POST" class="btn btn-danger p-0" type="button">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-danger" id="swal-6" data-toggle="tooltip"
+                                                        <button class="btn btn-danger btn-action delete-button"
                                                             title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
@@ -97,9 +119,9 @@
 @endsection
 
 @push('scripts')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
+
     <!-- JS Libraies -->
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-
-    <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

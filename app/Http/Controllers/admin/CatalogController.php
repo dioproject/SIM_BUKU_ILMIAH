@@ -21,7 +21,7 @@ class CatalogController extends Controller
             ->leftJoin('books', 'catalogs.book_id', '=', 'books.id')
             ->join('manuscripts', 'books.manuscript_id', '=', 'manuscripts.id')
             ->get();
-        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
+        $author = User::all();
 
         return view('pages.admin.catalogs.index', compact('catalog', 'bookTitle', 'author'));
     }
