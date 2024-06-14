@@ -14,34 +14,37 @@ use App\Models\Category;
 
 class BookController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $query = Book::with(['manuscript.author', 'status']);
         $books = Book::all();
         $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
         $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->get();
         $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
-        
+
         if ($search = $request->input('search')) {
             $query->whereHas('manuscript', function ($q) use ($search) {
                 $q->where('title', 'like', "%$search%")
-                  ->orWhereHas('author', function ($q2) use ($search) {
-                      $q2->where('first_name', 'like', "%$search%")
-                         ->orWhere('last_name', 'like', "%$search%");
-                  });
+                    ->orWhereHas('author', function ($q2) use ($search) {
+                        $q2->where('first_name', 'like', "%$search%")
+                            ->orWhere('last_name', 'like', "%$search%");
+                    });
             });
         }
 
         return view('pages.admin.books.index', compact('books', 'title', 'status', 'author', 'query'));
     }
 
-    public function create() {
+    public function create()
+    {
         $category = Category::all();
         $manuscript = Manuscript::all();
 
         return view('pages.admin.books.create', compact('category', 'manuscript'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'category' => 'required',
             'title' => 'required',
@@ -64,22 +67,24 @@ class BookController extends Controller
             ]);
 
             History::create([
-                'change_detail' => 'Book created successfully.',
+                'change_detail' => Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
                 'book_id' => $book->id,
             ]);
-            return redirect()->route('admin.index.book')->with('success', 'Book created successfully.');
+            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.');
         }
         return redirect()->route('admin.create.book')->with('error', 'Book not found.');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $book = Manuscript::select('manuscripts.*', 'books.*')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->where('books.id', $id)->first();
         $category = Category::all();
         return view('pages.admin.books.edit', compact('book', 'category'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'category' => 'required',
             'title' => 'required',
@@ -107,29 +112,29 @@ class BookController extends Controller
             ]);
 
             History::create([
-                'change_detail' => 'Book Updated successfully.',
+                'change_detail' => Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
                 'book_id' => $book->id,
             ]);
-            return redirect()->route('admin.index.book')->with('Success', 'Book Updated successfully.');
+            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.create.book')->with('Error', 'Book not found.');
+        return redirect()->route('admin.create.book')->with('error', 'Book not found.');
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $manuscript = Manuscript::findOrFail($id);
         $manuscript->delete();
 
-        if($manuscript) {
+        if ($manuscript) {
             $book = Book::where('manuscript_id', $id)->delete();
 
             History::where('book_id', $book)->update([
-                'change_detail' => 'Book deleted successfully.',
+                'change_detail' => Auth::user()->first_name . ' deleted book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.book')->with('Success', 'Book deleted successfully.');
-        } else {
-            return redirect()->route('admin.index.book')->with('Error', 'Failed to delete book.');
+            return redirect()->route('admin.index.book');
         }
+        return redirect()->route('admin.index.book');
     }
 }

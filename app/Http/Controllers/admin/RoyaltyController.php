@@ -57,9 +57,9 @@ class RoyaltyController extends Controller
 
         if ($royalty) {
 
-            return redirect()->route('admin.index.royalty')->with('Success', 'Royalty created successfully.');
+            return redirect()->route('admin.index.royalty')->with('success', 'Royalty created successfully.');
         }
-        return redirect()->route('admin.create.royalty')->with('Error', 'Royalty not found.');
+        return redirect()->route('admin.create.royalty')->with('error', 'Royalty not found.');
     }
 
     public function show($id)
@@ -104,9 +104,9 @@ class RoyaltyController extends Controller
 
         if ($royalty) {
 
-            return redirect()->route('admin.index.royalty')->with('Success', 'Royalty Updated successfully.');
+            return redirect()->route('admin.index.royalty')->with('success', 'Royalty Updated successfully.');
         }
-        return redirect()->route('admin.create.royalty')->with('Error', 'Royalty not found.');
+        return redirect()->route('admin.create.royalty')->with('error', 'Royalty not found.');
     }
 
     public function destroy($id)

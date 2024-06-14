@@ -9,6 +9,15 @@
 @endpush
 
 @section('main')
+    @php
+        use App\Models\User;
+        use App\Models\Book;
+
+        $author = User::where('user_role', 'AUTHOR')->count();
+        $editor = User::where('user_role', 'EDITOR')->count();
+        $users = User::all()->count();
+        $books = Book::all()->count();
+    @endphp
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -25,7 +34,7 @@
                                 <h4>Total Author</h4>
                             </div>
                             <div class="card-body">
-                                {{-- {{ auth()->users()->where('user_role', 'AUTHOR')->count() }} --}}
+                                {{ $author }}
                             </div>
                         </div>
                     </div>
@@ -40,7 +49,7 @@
                                 <h4>Total Editor</h4>
                             </div>
                             <div class="card-body">
-                                {{-- {{ auth()->users()->where('user_role', 'EDITOR')->count() }} --}}
+                                {{ $editor }}
                             </div>
                         </div>
                     </div>
@@ -54,9 +63,9 @@
                             <div class="card-header">
                                 <h4>Total Users</h4>
                             </div>
-                                <div class="card-body">
-                                    {{-- {{ $users->count }} --}}
-                                </div>
+                            <div class="card-body">
+                                {{ $users }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -70,7 +79,7 @@
                                 <h4>Total Books</h4>
                             </div>
                             <div class="card-body">
-                                {{-- {{ auth()->books()->count() }} --}}
+                                {{ $books }}
                             </div>
                         </div>
                     </div>
