@@ -11,6 +11,13 @@
 @endpush
 
 @section('main')
+@php
+        use App\Models\User;
+        use App\Models\Book;
+
+        $author = User::where('user_role', 'AUTHOR')->count();
+        $books = Book::all()->count();
+    @endphp
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -24,10 +31,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Writer</h4>
+                                <h4>Total Author</h4>
                             </div>
                             <div class="card-body">
-                                10
+                                {{ $author }}
                             </div>
                         </div>
                     </div>
@@ -39,10 +46,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Books</h4>
+                                <h4>Total Book</h4>
                             </div>
                             <div class="card-body">
-                                47
+                                {{ $books }}
                             </div>
                         </div>
                     </div>

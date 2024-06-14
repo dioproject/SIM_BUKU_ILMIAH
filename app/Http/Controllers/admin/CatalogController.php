@@ -59,11 +59,11 @@ class CatalogController extends Controller
             ]);
 
             History::create([
-                'change_detail' => 'Catalog created successfully.',
+                'change_detail' => Auth::user()->first_name . ' created catalog ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.catalog')->with('Success', 'Catalog created successfully.');
+            return redirect()->route('admin.index.catalog')->with('success', Auth::user()->first_name . ' created catalog ' . $book->manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.create.catalog')->with('Error', 'Catalog not found.');
+        return redirect()->route('admin.create.catalog')->with('error', 'Catalog not found.');
     }
 }

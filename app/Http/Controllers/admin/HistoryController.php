@@ -4,7 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\History;
-use App\Models\User;
 
 class HistoryController extends Controller
 {

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\author;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Manuscript;
 use App\Models\Royalty;
 use App\Models\Status;
-use App\Models\Book;
 use App\Models\User;
 
 class AuthorRoyaltyController extends Controller
