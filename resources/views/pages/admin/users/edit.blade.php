@@ -96,7 +96,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Contact</label>
-                                            <input type="text" class="form-control" tabindex="7" id="contact"
+                                            <input type="number" class="form-control" tabindex="7" id="contact"
                                                 name="contact" tabindex="7" value="{{ $user->contact }} {{ old('contact') }}">
                                         </div>
                                         <div class="form-group col-md-6">
