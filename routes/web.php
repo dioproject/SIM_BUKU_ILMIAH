@@ -46,6 +46,8 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/edit/book/{id}', [BookController::class, 'edit'])->name('admin.edit.book');
     Route::put('/admin/edit/book/{id}', [BookController::class, 'update'])->name('admin.update.book');
     Route::delete('/admin/delete/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
+    Route::get('/admin/edit/review/{id}', [BookController::class, 'editRev'])->name('admin.edit.review');
+    Route::put('/admin/edit/review/{id}', [BookController::class, 'updateRev'])->name('admin.update.review');
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
     Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
     Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');

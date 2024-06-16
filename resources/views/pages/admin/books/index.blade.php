@@ -80,12 +80,15 @@
                                                         title="Edit" href="{{ route('admin.edit.book', $book->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
                                                     <form action="{{ route('admin.destroy.book', $book->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button">
+                                                        method="POST" class="btn btn-danger p-0 mr-1" type="button">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-danger btn-action delete-button"
                                                             title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
+                                                    <a class="btn btn-primary btn-action" data-toggle="tooltip"
+                                                        title="Review" href="{{ route('admin.edit.review', $book->id) }}"><i
+                                                            class="fas fa-comment"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -11,13 +11,15 @@ use App\Models\Status;
 use App\Models\Manuscript;
 use App\Models\History;
 use App\Models\Category;
+use App\Models\Review;
 
 class BookController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Book::with(['manuscript.author', 'status']);
+        $query = Book::with(['manuscript.author', 'manuscript.title']);
         $books = Book::all();
+        $review = Review::all();
         $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
         $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->get();
         $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
@@ -32,7 +34,7 @@ class BookController extends Controller
             });
         }
 
-        return view('pages.admin.books.index', compact('books', 'title', 'status', 'author', 'query'));
+        return view('pages.admin.books.index', compact('books', 'title', 'status', 'author', 'search', 'review'));
     }
 
     public function create()
@@ -69,7 +71,6 @@ class BookController extends Controller
             History::create([
                 'change_detail' => Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
-                'book_id' => $book->id,
             ]);
             return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.');
         }
@@ -108,13 +109,12 @@ class BookController extends Controller
                 'category_id' => $request->category,
                 'manuscript_id' => $id,
                 'status_id' => Status::findOrFail(1)->id,
-                'updated_at',
+                'updated_at' => now(),
             ]);
 
             History::create([
                 'change_detail' => Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
-                'book_id' => $book->id,
             ]);
             return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.');
         }
@@ -136,5 +136,42 @@ class BookController extends Controller
             return redirect()->route('admin.index.book');
         }
         return redirect()->route('admin.index.book');
+    }
+
+    public function editRev($id)
+    {
+        $book = Manuscript::select('manuscripts.*', 'books.*')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->where('books.id', $id)->first();
+        $category = Category::all();
+        $review = Review::where('book_id', $id)->first();
+        return view('pages.admin.reviews.edit', compact('book', 'category', 'review'));
+    }
+
+    public function updateRev(Request $request, $id)
+    {
+        $request->validate([
+            'content' => 'required',
+        ]);
+
+        $review = Review::create([
+            'content' => $request->content,
+            'reviewer_id' => Auth::id(),
+            'updated_at' => now(),
+        ]);
+
+        if ($review) {
+            $book = Book::findOrFail($review->book_id);
+            $manuscript = Manuscript::findOrFail($book->manuscript_id);
+            $book->update([
+                'status_id' => Status::findOrFail(2)->id,
+                'updated_at' => now(),
+            ]);
+
+            History::create([
+                'change_detail' => Auth::user()->first_name . ' review ' . $manuscript->title . ' successfully.',
+                'user_id' => Auth::id(),
+            ]);
+            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' review ' . $manuscript->title . ' successfully.');
+        }
+        return redirect()->route('admin.edit.review')->with('error', 'Book not found.');
     }
 }
