@@ -86,20 +86,11 @@ class BookController extends Controller
             'fill' => $book->manuscript->fill,
         ];
 
-        // Load the HTML content
         $html = view('pages.print.book', $data)->render();
         $dompdf = new Dompdf();
-
-        // Load the HTML to Dompdf
         $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
         $dompdf->render();
-
-        // Output the generated PDF (1 = download and 0 = preview)
         return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
     }
 
