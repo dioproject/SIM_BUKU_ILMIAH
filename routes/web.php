@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\HistoryController;
 use App\Http\Controllers\admin\BookController;
+use App\Http\Controllers\admin\ReviewController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CatalogController;
 use App\Http\Controllers\admin\RoyaltyController;
@@ -19,7 +20,7 @@ Route::redirect('/', '/login');
 Route::controller(AuthController::class)->group(function() {
     //Login
     Route::get('/login', 'login')->name('login');
-    Route::post('/login/action', 'loginAction')->name('login.action');
+    Route::post('/login', 'loginAction')->name('login.action');
     //Logout
     Route::get('/logout', 'logout')->name('logout');
 });
@@ -43,11 +44,15 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
     Route::get('/admin/create/book', [BookController::class, 'create'])->name('admin.create.book');
     Route::post('/admin/create/book', [BookController::class, 'store'])->name('admin.store.book');
+    Route::get('/admin/show/book/{id}', [BookController::class, 'show'])->name('admin.show.book');
     Route::get('/admin/edit/book/{id}', [BookController::class, 'edit'])->name('admin.edit.book');
     Route::put('/admin/edit/book/{id}', [BookController::class, 'update'])->name('admin.update.book');
     Route::delete('/admin/delete/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
-    Route::get('/admin/edit/review/{id}', [BookController::class, 'editRev'])->name('admin.edit.review');
-    Route::put('/admin/edit/review/{id}', [BookController::class, 'updateRev'])->name('admin.update.review');
+    Route::get('/admin/reviews', [ReviewController::class, 'index'])->name('admin.index.review');
+    Route::get('/admin/create/review', [ReviewController::class, 'create'])->name('admin.create.review');
+    Route::post('/admin/create/review', [ReviewController::class, 'store'])->name('admin.store.review');
+    Route::get('/admin/edit/review/{id}', [ReviewController::class, 'edit'])->name('admin.edit.review');
+    Route::put('/admin/edit/review/{id}', [ReviewController::class, 'update'])->name('admin.update.review');
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
     Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
     Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');

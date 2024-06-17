@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Books')
+@section('title', 'Reviews')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -10,7 +10,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Books</h1>
+                <h1>Review</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -38,8 +38,8 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Book
+                                <a href="{{ route('admin.create.review') }}" class="btn btn-icon icon-left btn-primary"><i
+                                        class="far fa-edit"></i> Create Review
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
@@ -62,24 +62,22 @@
                                             <th>No.</th>
                                             <th>Book Title</th>
                                             <th>Author</th>
+                                            <th>Review</th>
                                             <th>Last Modified</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($books as $key => $book)
+                                        @foreach ($review as $key => $rev)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $title[$key]->title }}</td>
-                                                @foreach ($author as $aut)
-                                                    <td>{{ $aut->first_name }}</td>
-                                                @endforeach
-                                                <td>{{ $book->updated_at }}</td>
-                                                <td>{{ $status[$key]->option }}</td>
+                                                <td>{{ $rev->book->manuscript->title }}</td>
+                                                <td>{{ $rev->book->manuscript->author->first_name }}</td>
+                                                <td>{{ $rev->content }}</td>
+                                                <td>{{ $rev->updated_at }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.book', $book->id) }}"><i
+                                                        title="Edit" href="{{ route('admin.edit.review', $review->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.book', $book->id) }}"
+                                                    <form action="{{ route('admin.destroy.review', $review->id) }}"
                                                         method="POST" class="btn btn-danger p-0 mr-1" type="button">
                                                         @csrf
                                                         @method('DELETE')
@@ -87,8 +85,8 @@
                                                             title="Delete"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                     <a class="btn btn-primary btn-action" data-toggle="tooltip"
-                                                        title="Review" href="{{ route('admin.show.book', $book->id) }}"><i
-                                                            class="fas fa-download"></i></a>
+                                                        title="Review" href="{{ route('admin.edit.review', $book->id) }}"><i
+                                                            class="fas fa-comment"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

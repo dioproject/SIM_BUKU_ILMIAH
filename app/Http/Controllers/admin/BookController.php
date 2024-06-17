@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Status;
@@ -40,9 +41,8 @@ class BookController extends Controller
     public function create()
     {
         $category = Category::all();
-        $manuscript = Manuscript::all();
 
-        return view('pages.admin.books.create', compact('category', 'manuscript'));
+        return view('pages.admin.books.create', compact('category'));
     }
 
     public function store(Request $request)
@@ -75,6 +75,32 @@ class BookController extends Controller
             return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.');
         }
         return redirect()->route('admin.create.book')->with('error', 'Book not found.');
+    }
+
+    public function show($id)
+    {
+        $book = Book::with('manuscript')->findOrFail($id);
+        $data = [
+            'title' => $book->manuscript->title,
+            'abstract' => $book->manuscript->abstract,
+            'fill' => $book->manuscript->fill,
+        ];
+
+        // Load the HTML content
+        $html = view('pages.print.book', $data)->render();
+        $dompdf = new Dompdf();
+
+        // Load the HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF (1 = download and 0 = preview)
+        return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
     }
 
     public function edit($id)
@@ -136,42 +162,5 @@ class BookController extends Controller
             return redirect()->route('admin.index.book');
         }
         return redirect()->route('admin.index.book');
-    }
-
-    public function editRev($id)
-    {
-        $book = Manuscript::select('manuscripts.*', 'books.*')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->where('books.id', $id)->first();
-        $category = Category::all();
-        $review = Review::where('book_id', $id)->first();
-        return view('pages.admin.reviews.edit', compact('book', 'category', 'review'));
-    }
-
-    public function updateRev(Request $request, $id)
-    {
-        $request->validate([
-            'content' => 'required',
-        ]);
-
-        $review = Review::create([
-            'content' => $request->content,
-            'reviewer_id' => Auth::id(),
-            'updated_at' => now(),
-        ]);
-
-        if ($review) {
-            $book = Book::findOrFail($review->book_id);
-            $manuscript = Manuscript::findOrFail($book->manuscript_id);
-            $book->update([
-                'status_id' => Status::findOrFail(2)->id,
-                'updated_at' => now(),
-            ]);
-
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' review ' . $manuscript->title . ' successfully.',
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' review ' . $manuscript->title . ' successfully.');
-        }
-        return redirect()->route('admin.edit.review')->with('error', 'Book not found.');
     }
 }

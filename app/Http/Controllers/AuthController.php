@@ -48,7 +48,7 @@ class AuthController extends Controller
             }
 
         }
-        return view('pages.auth.login');
+        return redirect()->route('login');
     }
 
     public function logout()
