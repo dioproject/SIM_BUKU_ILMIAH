@@ -23,6 +23,10 @@
                 <a class="nav-link" href="{{ url('admin/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
+            <li class="{{ Request::is('admin/reviews') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('admin/reviews') }}"><i
+                    class="fas fa-solid fa-comment"></i><span>Reviews</span></a>
+            </li>
             <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/catalogs') }}"><i
                         class="fas fa-solid fa-book-open"></i><span>Catalogs</span></a>
