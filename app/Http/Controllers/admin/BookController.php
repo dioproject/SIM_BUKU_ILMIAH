@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Status;
@@ -77,8 +78,25 @@ class BookController extends Controller
         return redirect()->route('admin.create.book')->with('error', 'Book not found.');
     }
 
+
     public function show($id)
     {
+
+       // $book = Book::with('manuscript')->findOrFail($id);
+    
+        // function cleanText($text) {
+        //     return preg_replace('/[\x00-\x1F\x7F]/u', '', $text);
+        // }
+    
+        // $abstract = cleanText(mb_convert_encoding($book->manuscript->abstract, 'UTF-8', 'auto'));
+        // $fill = cleanText(mb_convert_encoding($book->manuscript->fill, 'UTF-8', 'auto'));
+    
+        // $data = [
+        //     'title' => $book->manuscript->title,
+        //     'abstract' => $abstract,
+        //     'fill' => $fill,
+        // ];
+
         $book = Book::with('manuscript')->findOrFail($id);
         $data = [
             'title' => $book->manuscript->title,
@@ -87,8 +105,19 @@ class BookController extends Controller
         ];
 
         $html = view('pages.print.book', $data)->render();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
+// Sett DomPDF
+        $options = new Options();
+$options->set('defaultFont', 'Times New Roman');
+$options->set('isFontSubsettingEnabled', true);
+$options->set('');
+
+// Debug
+$options->set('debugPng', true);
+$options->set('debugKeepTemp', true);
+$options->set('isHtml5ParserEnabled', false);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadhtml($html);
+       
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
