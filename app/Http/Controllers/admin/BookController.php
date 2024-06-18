@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
@@ -19,30 +18,27 @@ class BookController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Book::with(['manuscript.author', 'manuscript.title']);
-        $books = Book::all();
-        $review = Review::all();
-        $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
-        $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->get();
-        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
+        $search = $request->input('search');
+        $query = Book::with(['manuscript.author', 'status']);
 
-        if ($search = $request->input('search')) {
+        if ($search) {
             $query->whereHas('manuscript', function ($q) use ($search) {
-                $q->where('title', 'like', "%$search%")
-                    ->orWhereHas('author', function ($q2) use ($search) {
-                        $q2->where('first_name', 'like', "%$search%")
-                            ->orWhere('last_name', 'like', "%$search%");
-                    });
+                $q->where('title', 'like', "%$search%");
             });
         }
 
-        return view('pages.admin.books.index', compact('books', 'title', 'status', 'author', 'search', 'review'));
+        $books = $query->paginate(10);
+        $review = Review::all();
+        $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->paginate(10);
+        $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->paginate(10);
+        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->paginate(10);
+
+        return view('pages.admin.books.index', compact('books', 'review', 'title', 'status', 'author', 'search'));
     }
 
     public function create()
     {
         $category = Category::all();
-
         return view('pages.admin.books.create', compact('category'));
     }
 
@@ -78,25 +74,8 @@ class BookController extends Controller
         return redirect()->route('admin.create.book')->with('error', 'Book not found.');
     }
 
-
     public function show($id)
     {
-
-       // $book = Book::with('manuscript')->findOrFail($id);
-    
-        // function cleanText($text) {
-        //     return preg_replace('/[\x00-\x1F\x7F]/u', '', $text);
-        // }
-    
-        // $abstract = cleanText(mb_convert_encoding($book->manuscript->abstract, 'UTF-8', 'auto'));
-        // $fill = cleanText(mb_convert_encoding($book->manuscript->fill, 'UTF-8', 'auto'));
-    
-        // $data = [
-        //     'title' => $book->manuscript->title,
-        //     'abstract' => $abstract,
-        //     'fill' => $fill,
-        // ];
-
         $book = Book::with('manuscript')->findOrFail($id);
         $data = [
             'title' => $book->manuscript->title,
@@ -105,19 +84,10 @@ class BookController extends Controller
         ];
 
         $html = view('pages.print.book', $data)->render();
-// Sett DomPDF
-        $options = new Options();
-$options->set('defaultFont', 'Times New Roman');
-$options->set('isFontSubsettingEnabled', true);
-$options->set('');
 
-// Debug
-$options->set('debugPng', true);
-$options->set('debugKeepTemp', true);
-$options->set('isHtml5ParserEnabled', false);
+        $options = new Options();
         $dompdf = new Dompdf($options);
-        $dompdf->loadhtml($html);
-       
+        $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
@@ -125,7 +95,7 @@ $options->set('isHtml5ParserEnabled', false);
 
     public function edit($id)
     {
-        $book = Manuscript::select('manuscripts.*', 'books.*')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->where('books.id', $id)->first();
+        $book = Book::with('manuscript')->findOrFail($id);
         $category = Category::all();
         return view('pages.admin.books.edit', compact('book', 'category'));
     }
@@ -139,21 +109,19 @@ $options->set('isHtml5ParserEnabled', false);
             'fill' => 'required',
         ]);
 
-        $manuscript = Manuscript::findOrFail($id);
+        $book = Book::findOrFail($id);
+        $manuscript = $book->manuscript;
         $manuscript->update([
             'title' => $request->title,
             'abstract' => $request->abstract,
             'fill' => $request->fill,
             'author_id' => Auth::id(),
-            'updated_at',
         ]);
 
         if ($manuscript) {
-
-            $book = Book::findOrFail($id);
             $book->update([
                 'category_id' => $request->category,
-                'manuscript_id' => $id,
+                'manuscript_id' => $manuscript->id,
                 'status_id' => Status::findOrFail(1)->id,
                 'updated_at' => now(),
             ]);
@@ -169,13 +137,14 @@ $options->set('isHtml5ParserEnabled', false);
 
     public function destroy($id)
     {
-        $manuscript = Manuscript::findOrFail($id);
+        $book = Book::findOrFail($id);
+        $manuscript = $book->manuscript;
         $manuscript->delete();
 
         if ($manuscript) {
-            $book = Book::where('manuscript_id', $id)->delete();
+            $book->delete();
 
-            History::where('book_id', $book)->update([
+            History::create([
                 'change_detail' => Auth::user()->first_name . ' deleted book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);

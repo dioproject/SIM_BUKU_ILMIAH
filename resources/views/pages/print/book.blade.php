@@ -5,10 +5,10 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Book PDF</title>
     <style>
-        @font-face {
+        /* @font-face {
             font-family: 'Times New Roman';
             src: url('{{ public_path('fonts/times-new-roman.ttf') }}') format('truetype');
-        }
+        } */
 
         body {
             margin: 0;
@@ -39,6 +39,8 @@
         .bold {
             font-weight: bold;
         }
+
+       
     </style>
 </head>
 <body>

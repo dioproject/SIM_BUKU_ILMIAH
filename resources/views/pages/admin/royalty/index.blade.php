@@ -20,65 +20,77 @@
                                         class="far fa-edit"></i> Create Royalty
                                 </a>
                                 <h4></h4>
-                                <div class="card-header-action">
-                                    <form>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                            </div>
+                            <div class="card-header-action">
+                                <form method="GET" action="{{ route('admin.index.royalty') }}">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="search" value="{{ $search ?? '' }}" placeholder="Search">
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table-bordered table-md table">
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table-bordered table-md table">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Book Title</th>
+                                        <th>Author</th>
+                                        <th>Royalty</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    @foreach ($royalty as $key => $royal)
                                         <tr>
-                                            <th>No.</th>
-                                            <th>Book Title</th>
-                                            <th>Author</th>
-                                            <th>Royalty</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $royal->book->manuscript->title }}</td>
+                                            <td>{{ $royal->book->manuscript->author->first_name }}</td>
+                                            <td>{{ $royal->amount }}</td>
+                                            <td>{{ $royal->status->option }}</td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                    title="Edit"
+                                                    href="{{ route('admin.edit.royalty', $royal->id) }}"><i
+                                                        class="fas fa-pencil-alt"></i></a>
+                                            </td>
                                         </tr>
-                                        @foreach ($royalty as $key => $royal)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $royal->book->manuscript->title }}</td>
-                                                <td>{{ $royal->book->manuscript->author->first_name }}</td>
-                                                <td>{{ $royal->amount }}</td>
-                                                <td>{{ $royal->status->option }}</td>
-                                                <td>
-                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit"
-                                                        href="{{ route('admin.edit.royalty', $royal->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </table>
-                                </div>
+                                    @endforeach
+                                </table>
                             </div>
-                            <div class="card-footer text-right">
-                                <nav class="d-inline-block">
-                                    <ul class="pagination mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1"><i
-                                                    class="fas fa-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1 <span
-                                                    class="sr-only">(current)</span></a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+                        </div>
+                            <div class="card-footer">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                @if ($royalty->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Previous</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $royalty->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                    </li>
+                                @endif
+
+                                @foreach ($royalty->getUrlRange(1, $royalty->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $royalty->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                @if ($royalty->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $royalty->nextPageUrl() }}">Next</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next</span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
                         </div>
                     </div>
                 </div>

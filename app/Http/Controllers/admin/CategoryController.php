@@ -10,12 +10,20 @@ use App\Models\History;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $category = Category::all();
 
+
+            $search = $request->input('search');
+        if ($search) {
+            $category = Category::where('name', 'like', '%' . $search . '%')->paginate(10);
+        } else {
+            $category = Category::paginate(10);
+        }
+    
         return view('pages.admin.categories.index', compact('category'));
     }
+
 
     public function create()
     {

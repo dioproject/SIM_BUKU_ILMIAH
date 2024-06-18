@@ -15,22 +15,31 @@ use App\Models\Book;
 
 class CatalogController extends Controller
 {
-    public function index() {
-        $catalog = Catalog::all();
-        $bookTitle = Catalog::select('catalogs.*', 'books.*', 'manuscripts.*')
-            ->leftJoin('books', 'catalogs.book_id', '=', 'books.id')
-            ->join('manuscripts', 'books.manuscript_id', '=', 'manuscripts.id')
-            ->get();
-        $author = User::all();
+  public function index(Request $request)
+{
+    $search = $request->input('search');
 
-        return view('pages.admin.catalogs.index', compact('catalog', 'bookTitle', 'author'));
+    $catalogQuery = Catalog::query();
+    if ($search) {
+        $catalogQuery->whereHas('book.manuscript', function ($query) use ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        })->orWhereHas('book.manuscript.author', function ($query) use ($search) {
+            $query->where('first_name', 'like', '%' . $search . '%');
+        });
     }
 
-    public function create() {
-        $books = Book::with('manuscript')->get();
+    $catalog = $catalogQuery->paginate(10);
+    $author = User::paginate(10);
 
-        return view('pages.admin.catalogs.create', compact('books'));
-    }
+    return view('pages.admin.catalogs.index', compact('catalog', 'author', 'search'));
+}
+
+
+public function create() {
+    $books = Book::with('manuscript')->get();
+
+    return view('pages.admin.catalogs.create', compact('books'));
+}
 
     public function store(Request $request) {
         $request->validate([
