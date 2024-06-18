@@ -12,15 +12,24 @@ use App\Models\User;
 
 class RoyaltyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $book = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
-        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
-        $royalty = Royalty::all();
-        $status = Status::select('option')->rightJoin('royalties', 'statuses.id', '=', 'royalties.status_id')->get();
-
-        return view('pages.admin.royalty.index', compact('book', 'author', 'royalty', 'status'));
+        $search = $request->input('search');
+    
+        $royaltyQuery = Royalty::query();
+        if ($search) {
+            $royaltyQuery->whereHas('book.manuscript', function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%');
+            })->orWhereHas('book.manuscript.author', function ($query) use ($search) {
+                $query->where('first_name', 'like', '%' . $search . '%');
+            });
+        }
+    
+        $royalty = $royaltyQuery->with(['book.manuscript', 'status'])->paginate(10);
+    
+        return view('pages.admin.royalty.index', compact('royalty', 'search'));
     }
+    
 
     public function create()
     {

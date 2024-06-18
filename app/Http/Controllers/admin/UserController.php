@@ -13,9 +13,17 @@ use App\Models\History;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+
+        $search = $request->input('search');
+        if ($search) {
+            $users = User::where('first_name', 'LIKE', '%' . $search . '%')
+                         ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                         ->paginate(10); 
+        } else {
+        $users = User::paginate(10);
+        }
         return view('pages.admin.users.index', compact('users'));
     }
 

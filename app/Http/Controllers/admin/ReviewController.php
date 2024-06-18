@@ -14,12 +14,28 @@ use App\Models\Review;
 
 class ReviewController extends Controller
 {
-    public function index()
-    {
-        $review = Review::all();
 
+    public function index(Request $request)
+    {   
+        
+
+
+            $search = $request->input('search');
+        if ($search) {
+            $review = Review::where('name', 'like', '%' . $search . '%')->paginate(10);
+        } else {
+            $review = Review::paginate(10);
+        }
+    
         return view('pages.admin.reviews.index', compact('review'));
     }
+
+    // public function index()
+    // {
+    //     $review = Review::paginate(10);
+
+    //     return view('pages.admin.reviews.index', compact('review'));
+    // }
 
     public function create()
     {

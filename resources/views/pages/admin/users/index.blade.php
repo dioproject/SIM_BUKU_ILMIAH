@@ -42,16 +42,16 @@
                                         class="far fa-edit"></i> Create User
                                 </a>
                                 <h4></h4>
-                                <div class="card-header-action">
-                                    <form>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                            </div>
+                            <div class="card-header-action">
+                                <form action="{{ route('admin.index.book') }}" method="GET">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="search" placeholder="Search" value="{{ request()->query('search') }}">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
+                            </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -86,25 +86,37 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="card-footer text-right">
-                                <nav class="d-inline-block">
-                                    <ul class="pagination mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="" tabindex="-1"><i
-                                                    class="fas fa-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1 <span
-                                                    class="sr-only">(current)</span></a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                @if ($users->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Previous</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $users->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                    </li>
+                                @endif
+
+                                @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                @if ($users->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $users->nextPageUrl() }}">Next</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next</span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
                         </div>
                     </div>
                 </div>
