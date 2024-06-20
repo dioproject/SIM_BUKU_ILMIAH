@@ -7,19 +7,17 @@ use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Book;
-use App\Models\User;
 use App\Models\Status;
 use App\Models\Manuscript;
 use App\Models\History;
 use App\Models\Category;
-use App\Models\Review;
 
 class BookController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $query = Book::with(['manuscript.author', 'status']);
+        $query = Book::with(['manuscript', 'manuscript.author', 'status']);
 
         if ($search) {
             $query->whereHas('manuscript', function ($q) use ($search) {
@@ -28,12 +26,8 @@ class BookController extends Controller
         }
 
         $books = $query->paginate(10);
-        $review = Review::all();
-        $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->paginate(10);
-        $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->paginate(10);
-        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->paginate(10);
 
-        return view('pages.admin.books.index', compact('books', 'review', 'title', 'status', 'author', 'search'));
+        return view('pages.admin.books.index', compact('books', 'search'));
     }
 
     public function create()
@@ -59,7 +53,7 @@ class BookController extends Controller
         ]);
 
         if ($manuscript) {
-            $book = Book::create([
+            Book::create([
                 'category_id' => $request->category,
                 'manuscript_id' => $manuscript->id,
                 'status_id' => Status::findOrFail(1)->id,
@@ -84,9 +78,7 @@ class BookController extends Controller
         ];
 
         $html = view('pages.print.book', $data)->render();
-
-        $options = new Options();
-        $dompdf = new Dompdf($options);
+        $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();

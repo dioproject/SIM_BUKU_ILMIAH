@@ -69,12 +69,10 @@
                                         @foreach ($books as $key => $book)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $title[$key]->title }}</td>
-                                                @foreach ($author as $aut)
-                                                    <td>{{ $aut->first_name }}</td>
-                                                @endforeach
+                                                <td>{{ $book->manuscript->title }}</td>
+                                                <td>{{ $book->manuscript->author->first_name }}</td>
                                                 <td>{{ $book->updated_at }}</td>
-                                                <td>{{ $status[$key]->option }}</td>
+                                                <td>{{ $book->status->option }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                         title="Edit" href="{{ route('admin.edit.book', $book->id) }}"><i

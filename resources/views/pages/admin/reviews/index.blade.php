@@ -64,7 +64,7 @@
                                             <th>Last Modified</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($review as $key => $rev)
+                                        @foreach ($reviews as $key => $rev)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $rev->book->manuscript->title }}</td>

@@ -16,80 +16,65 @@ class ReviewController extends Controller
 {
 
     public function index(Request $request)
-    {   
-        
-
-
-            $search = $request->input('search');
+    {
+        $search = $request->input('search');
         if ($search) {
             $review = Review::where('name', 'like', '%' . $search . '%')->paginate(10);
         } else {
             $review = Review::paginate(10);
         }
-    
-        return view('pages.admin.reviews.index', compact('review'));
+
+        $title = Review::with('book.manuscript')->get();
+
+        return view('pages.admin.title.index', compact('review', 'title'));
     }
-
-    // public function index()
-    // {
-    //     $review = Review::paginate(10);
-
-    //     return view('pages.admin.reviews.index', compact('review'));
-    // }
 
     public function create()
     {
-        $review = Review::all();
         $category = Category::all();
         $books = Book::with('manuscript')->get();
 
-        return view('pages.admin.reviews.create', compact('review', 'category', 'books'));
+        return view('pages.admin.reviews.create', compact('category', 'books'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required',
-            'title' => 'required',
-            'abstract' => 'required',
-            'fill' => 'required',
+            'book_id' => 'required',
+            'content' => 'required',
         ]);
 
-        $manuscript = Manuscript::create([
-            'title' => $request->title,
-            'abstract' => $request->abstract,
-            'fill' => $request->fill,
-            'author_id' => Auth::id(),
+        $review = Review::create([
+            'book_id' => $request->book_id,
+            'content' => $request->content,
+            'reviewer_id' => Auth::id(),
         ]);
-        
-        if ($manuscript) {
-            $book = Book::create([
-                'category_id' => $request->category,
-                'manuscript_id' => $manuscript->id,
-                'status_id' => Status::findOrFail(1)->id,
-            ]);
 
+        if ($review) {
+            $book = Book::findOrFail($request->book_id);
             History::create([
-                'change_detail' => Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.',
+                'change_detail' => Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.');
+            return redirect()->route('admin.index.review')->with('success', Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.create.book')->with('error', 'Book not found.');
+        return redirect()->route('admin.create.review')->with('error', 'Review not found.');
     }
 
     public function edit($id)
     {
-        $book = Manuscript::select('manuscripts.*', 'books.*')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->where('books.id', $id)->first();
+        $book = Book::with('manuscript')->get();
         $category = Category::all();
-        $review = Review::where('book_id', $id)->first();
+        $review = Review::findOrFail($id);
         return view('pages.admin.reviews.edit', compact('book', 'category', 'review'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'content' => 'required',
+        $review = Review::create([
+            'book_id' => $request->book_id,
+            'content' => $request->content,
+            'reviewer_id' => Auth::id(),
         ]);
 
         $review = Review::findOrFail($id);
