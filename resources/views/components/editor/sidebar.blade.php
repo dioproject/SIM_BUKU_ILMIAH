@@ -18,6 +18,10 @@
             <li class="{{ Request::is('editor/books') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('editor/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
+            </li>            
+            <li class="{{ Request::is('editor/reviews') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('editor/reviews') }}"><i
+                    class="fas fa-solid fa-comment"></i><span>Reviews</span></a>
             </li>
             <li class="{{ Request::is('editor/history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('editor/history') }}"><i

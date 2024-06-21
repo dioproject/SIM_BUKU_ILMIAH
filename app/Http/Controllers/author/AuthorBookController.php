@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\author;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
 use App\Models\Book;
-use App\Models\User;
 use App\Models\Status;
 use App\Models\Manuscript;
 use App\Models\History;
@@ -14,23 +13,30 @@ use App\Models\Category;
 
 class AuthorBookController extends Controller
 {
-    public function index() {
-        $books = Book::all();
-        $title = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
-        $status = Status::select('option')->rightJoin('books', 'statuses.id', '=', 'books.status_id')->get();
-        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        $query = Book::with(['manuscript', 'manuscript.author', 'status']);
 
-        return view('pages.author.books.index', compact('books', 'title', 'status', 'author'));
+        if ($search) {
+            $query->whereHas('manuscript', function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%");
+            });
+        }
+
+        $books = $query->paginate(10);
+
+        return view('pages.author.books.index', compact('books', 'search'));
     }
 
-    public function create() {
+    public function create()
+    {
         $category = Category::all();
-        $manuscript = Manuscript::all();
-
-        return view('pages.author.books.create', compact('category', 'manuscript'));
+        return view('pages.author.books.create', compact('category'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'category' => 'required',
             'title' => 'required',
@@ -46,29 +52,47 @@ class AuthorBookController extends Controller
         ]);
 
         if ($manuscript) {
-            $book = Book::create([
+            Book::create([
                 'category_id' => $request->category,
                 'manuscript_id' => $manuscript->id,
                 'status_id' => Status::findOrFail(1)->id,
             ]);
 
             History::create([
-                'change_detail' => 'Book created successfully.',
+                'change_detail' => Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
-                'book_id' => $book->id,
             ]);
-            return redirect()->route('author.index.book')->with('Success', 'Book created successfully.');
+            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.');
         }
-        return redirect()->route('author.create.book')->with('Error', 'Book not found.');
+        return redirect()->route('author.create.book')->with('error', 'Book not found.');
     }
 
-    public function edit($id) {
-        $book = Manuscript::select('manuscripts.*', 'books.*')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->where('books.id', $id)->first();
+    public function show($id)
+    {
+        $book = Book::with('manuscript')->findOrFail($id);
+        $data = [
+            'title' => $book->manuscript->title,
+            'abstract' => $book->manuscript->abstract,
+            'fill' => $book->manuscript->fill,
+        ];
+
+        $html = view('pages.print.book', $data)->render();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
+    }
+
+    public function edit($id)
+    {
+        $book = Book::with('manuscript')->findOrFail($id);
         $category = Category::all();
         return view('pages.author.books.edit', compact('book', 'category'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'category' => 'required',
             'title' => 'required',
@@ -76,28 +100,47 @@ class AuthorBookController extends Controller
             'fill' => 'required',
         ]);
 
-        $manuscript = Manuscript::findOrFail($id);
+        $book = Book::findOrFail($id);
+        $manuscript = $book->manuscript;
         $manuscript->update([
             'title' => $request->title,
             'abstract' => $request->abstract,
             'fill' => $request->fill,
             'author_id' => Auth::id(),
-            'updated_at',
         ]);
 
         if ($manuscript) {
-            $book = new Book();
             $book->update([
-                'updated_at',
+                'category_id' => $request->category,
+                'manuscript_id' => $manuscript->id,
+                'status_id' => Status::findOrFail(1)->id,
+                'updated_at' => now(),
             ]);
 
             History::create([
-                'change_detail' => 'Book Updated successfully.',
+                'change_detail' => Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
-                'book_id' => $book->id,
             ]);
-            return redirect()->route('author.index.book')->with('Success', 'Book Updated successfully.');
+            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.');
         }
-        return redirect()->route('author.create.book')->with('Error', 'Book not found.');
+        return redirect()->route('author.create.book')->with('error', 'Book not found.');
+    }
+
+    public function destroy($id)
+    {
+        $book = Book::findOrFail($id);
+        $manuscript = $book->manuscript;
+        $manuscript->delete();
+
+        if ($manuscript) {
+            $book->delete();
+
+            History::create([
+                'change_detail' => Auth::user()->first_name . ' deleted book ' . $manuscript->title . ' successfully.',
+                'user_id' => Auth::id(),
+            ]);
+            return redirect()->route('author.index.book');
+        }
+        return redirect()->route('author.index.book');
     }
 }

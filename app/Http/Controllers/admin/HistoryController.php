@@ -12,5 +12,4 @@ class HistoryController extends Controller
 
         return view('pages.admin.history.index', compact('history'));
     }
-
 }
