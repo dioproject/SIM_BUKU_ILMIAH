@@ -1,4 +1,4 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-author')
 
 @section('title', 'Reviews')
 
@@ -38,12 +38,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.review') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-comment"></i> Create Review
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
-                                    <form action="{{ route('admin.index.review') }}" method="GET">
+                                    <form action="{{ route('author.index.review') }}" method="GET">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="search" placeholder="Search"
                                                 value="{{ request()->query('search') }}">
@@ -63,7 +60,6 @@
                                             <th>Author</th>
                                             <th>Review</th>
                                             <th>Last Modified</th>
-                                            <th>Action</th>
                                         </tr>
                                         @foreach ($reviews as $key => $rev)
                                             <tr>
@@ -72,18 +68,6 @@
                                                 <td>{{ $rev->book->manuscript->author->first_name ?? 'User not found.' }}</td>
                                                 <td>{{ $rev->content }}</td>
                                                 <td>{{ $rev->updated_at }}</td>
-                                                <td>
-                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('admin.edit.review', $rev->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i></a>
-                                                    <form action="{{ route('admin.destroy.review', $rev->id) }}"
-                                                        method="POST" class="btn btn-danger p-0" type="button">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger btn-action delete-button"
-                                                            title="Delete"><i class="fas fa-trash"></i></button>
-                                                    </form>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </table>

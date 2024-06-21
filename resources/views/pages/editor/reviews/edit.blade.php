@@ -1,4 +1,4 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-editor')
 
 @section('title', 'Edit Review')
 
@@ -30,7 +30,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form action="{{ route('admin.update.review', $review->id) }}" method="POST"
+                                <form action="{{ route('editor.update.review', $review->id) }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')

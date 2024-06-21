@@ -1,57 +1,125 @@
 @extends('layouts.app-editor')
 
-@section('title', 'Review Book')
+@section('title', 'Reviews')
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 @endpush
 
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Review Book</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active">Data</div>
-                    <div class="breadcrumb-item"><a href="/editor/bookdata">Book Data</a></div>
-                    <div class="breadcrumb-item"><a href="/editor/bookdata/review">Review Book</a></div>
-                </div>
+                <h1>Reviews</h1>
             </div>
-
             <div class="section-body">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('success') }}.
+                        </div>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('error') }}.
+                        </div>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <a href="{{ route('editor.create.review') }}" class="btn btn-icon icon-left btn-primary"><i
+                                        class="far fa-comment"></i> Create Review
+                                </a>
+                                <h4></h4>
+                                <div class="card-header-action">
+                                    <form action="{{ route('editor.index.review') }}" method="GET">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="search" placeholder="Search"
+                                                value="{{ request()->query('search') }}">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="card-body">
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Title</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <input type="text"
-                                            class="form-control">
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table-bordered table-md table">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Book Title</th>
+                                            <th>Author</th>
+                                            <th>Review</th>
+                                            <th>Last Modified</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        @foreach ($reviews as $key => $rev)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $rev->book->manuscript->title ?? 'Book not found.' }}</td>
+                                                <td>{{ $rev->book->manuscript->author->first_name ?? 'User not found.' }}</td>
+                                                <td>{{ $rev->content }}</td>
+                                                <td>{{ $rev->updated_at }}</td>
+                                                <td>
+                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                        title="Edit" href="{{ route('editor.edit.review', $rev->id) }}"><i
+                                                            class="fas fa-pencil-alt"></i></a>
+                                                    <form action="{{ route('editor.destroy.review', $rev->id) }}"
+                                                        method="POST" class="btn btn-danger p-0" type="button">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-action delete-button"
+                                                            title="Delete"><i class="fas fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
                                 </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sub TItle</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <select class="form-control selectric">
-                                            <option>Tech</option>
-                                            <option>News</option>
-                                            <option>Political</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Content</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <textarea class="summernote"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="...">
+                                    <ul class="pagination justify-content-center">
+                                        @if ($review->onFirstPage())
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Previous</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $review->previousPageUrl() }}"
+                                                    tabindex="-1">Previous</a>
+                                            </li>
+                                        @endif
+
+                                        @foreach ($review->getUrlRange(1, $review->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $review->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endforeach
+
+                                        @if ($review->hasMorePages())
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $review->nextPageUrl() }}">Next</a>
+                                            </li>
+                                        @else
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -62,6 +130,6 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
-    <script src="{{ asset('library/summernote/dist/summernote-bs4.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

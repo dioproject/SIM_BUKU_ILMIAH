@@ -8,7 +8,6 @@ use App\Models\Manuscript;
 use App\Models\Royalty;
 use App\Models\Status;
 use App\Models\Book;
-use App\Models\User;
 
 class RoyaltyController extends Controller
 {
@@ -28,8 +27,7 @@ class RoyaltyController extends Controller
         $royalty = $royaltyQuery->with(['book.manuscript', 'status'])->paginate(10);
     
         return view('pages.admin.royalty.index', compact('royalty', 'search'));
-    }
-    
+    }    
 
     public function create()
     {

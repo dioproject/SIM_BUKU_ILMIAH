@@ -18,11 +18,13 @@
                             <div class="card-header">
                                 <h4></h4>
                                 <div class="card-header-action">
-                                    <form>
+                                    <form method="GET" action="{{ route('author.index.royalty') }}">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search">
+                                            <input type="text" class="form-control" name="search"
+                                                value="{{ $search ?? '' }}" placeholder="Search">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                                <button type="submit" class="btn btn-primary"><i
+                                                        class="fas fa-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
@@ -50,22 +52,35 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="card-footer text-right">
-                                <nav class="d-inline-block">
-                                    <ul class="pagination mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1"><i
-                                                    class="fas fa-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1 <span
-                                                    class="sr-only">(current)</span></a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                        </li>
+                            <div class="card-footer">
+                                <nav aria-label="...">
+                                    <ul class="pagination justify-content-center">
+                                        @if ($royalty->onFirstPage())
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Previous</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $royalty->previousPageUrl() }}"
+                                                    tabindex="-1">Previous</a>
+                                            </li>
+                                        @endif
+
+                                        @foreach ($royalty->getUrlRange(1, $royalty->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $royalty->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endforeach
+
+                                        @if ($royalty->hasMorePages())
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $royalty->nextPageUrl() }}">Next</a>
+                                            </li>
+                                        @else
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </nav>
                             </div>

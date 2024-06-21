@@ -5,7 +5,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
-use Dompdf\Options;
 use App\Models\Book;
 use App\Models\Status;
 use App\Models\Manuscript;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\editor;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +11,7 @@ use App\Models\Category;
 use App\Models\Review;
 use App\Models\Status;
 
-class ReviewController extends Controller
+class EditorReviewController extends Controller
 {
 
     public function index(Request $request)
@@ -25,7 +25,7 @@ class ReviewController extends Controller
 
         $reviews = Review::with(['book.manuscript', 'book.manuscript.author'])->get();
 
-        return view('pages.admin.reviews.index', compact('review', 'reviews'));
+        return view('pages.editor.reviews.index', compact('review', 'reviews'));
     }
 
     public function create()
@@ -33,7 +33,7 @@ class ReviewController extends Controller
         $category = Category::all();
         $books = Book::with('manuscript')->get();
 
-        return view('pages.admin.reviews.create', compact('category', 'books'));
+        return view('pages.editor.reviews.create', compact('category', 'books'));
     }
 
     public function store(Request $request)
@@ -44,7 +44,7 @@ class ReviewController extends Controller
         ]);
 
         // if (Review::where('book_id', $request->book_id)) {
-        //     return redirect()->route('admin.create.review')->with('error', 'Review does not exist.');            
+        //     return redirect()->route('editor.create.review')->with('error', 'Review does not exist.');            
         // }
         
         $review = Review::create([
@@ -63,9 +63,9 @@ class ReviewController extends Controller
                 'change_detail' => Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.review')->with('success', Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.');
+            return redirect()->route('editor.index.review')->with('success', Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.create.review')->with('error', 'Review not found.');
+        return redirect()->route('editor.create.review')->with('error', 'Review not found.');
     }
 
     public function edit($id)
@@ -73,7 +73,7 @@ class ReviewController extends Controller
         $review = Review::findOrFail($id);
         $books = Book::with('manuscript')->get();
 
-        return view('pages.admin.reviews.edit', compact( 'review', 'books'));
+        return view('pages.editor.reviews.edit', compact( 'review', 'books'));
     }
 
     public function update(Request $request, $id)
@@ -95,9 +95,9 @@ class ReviewController extends Controller
                 'change_detail' => Auth::user()->first_name . ' updated review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.review')->with('success', Auth::user()->first_name . ' updated review ' . $book->manuscript->title . ' successfully.');
+            return redirect()->route('editor.index.review')->with('success', Auth::user()->first_name . ' updated review ' . $book->manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.edit.review')->with('error', 'Review not found.');
+        return redirect()->route('editor.edit.review')->with('error', 'Review not found.');
     }
 
     public function destroy($id)
@@ -111,8 +111,8 @@ class ReviewController extends Controller
                 'change_detail' => Auth::user()->first_name . ' deleted review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('admin.index.review');
+            return redirect()->route('editor.index.review');
         } 
-        return redirect()->route('admin.index.review');
+        return redirect()->route('editor.index.review');
     }
 }

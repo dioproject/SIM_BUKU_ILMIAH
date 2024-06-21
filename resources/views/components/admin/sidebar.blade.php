@@ -33,7 +33,7 @@
             </li>
             <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/royalty') }}"><i
-                        class="fas fa-solid fa-crown"></i><span>Royalty</span></a>
+                        class="fas fa-solid fa-box"></i><span>Royalty</span></a>
             </li>
             <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/history') }}"><i

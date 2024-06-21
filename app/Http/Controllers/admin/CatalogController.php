@@ -4,9 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use App\Models\Manuscript;
 use App\Models\History;
 use App\Models\Catalog;
 use App\Models\Status;

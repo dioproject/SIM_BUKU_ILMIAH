@@ -4,6 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 @endpush
 
 @section('main')<div class="main-content">
@@ -12,6 +13,27 @@
                 <h1>Books</h1>
             </div>
             <div class="section-body">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('success') }}.
+                        </div>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        <div class="alert-body">
+                            <button class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                            {{ session('error') }}.
+                        </div>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -21,11 +43,13 @@
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
-                                    <form>
+                                    <form action="{{ route('editor.index.book') }}" method="GET">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search">
+                                            <input type="text" class="form-control" placeholder="Search" name="search"
+                                                value="{{ request('search') }}">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                                <button class="btn btn-primary" type="submit"><i
+                                                        class="fas fa-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
@@ -45,41 +69,54 @@
                                         @foreach ($books as $key => $book)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $title[$key]->title }}</td>
-                                                @foreach ($author as $aut)
-                                                    <td>{{ $aut->first_name }}</td>
-                                                @endforeach
+                                                <td>{{ $book->manuscript->title }}</td>
+                                                <td>{{ $book->manuscript->author->first_name }}</td>
                                                 <td>{{ $book->updated_at }}</td>
-                                                <td>{{ $status[$key]->option }}</td>
+                                                <td>{{ $book->status->option }}</td>
                                                 <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                         title="Edit" href="{{ route('author.edit.book', $book->id) }}"><i
                                                             class="fas fa-pencil-alt"></i></a>
+                                                    <a class="btn btn-primary btn-action" data-toggle="tooltip"
+                                                        title="Review" href="{{ route('author.show.book', $book->id) }}"><i
+                                                            class="fas fa-download"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </table>
                                 </div>
                             </div>
-                            <div class="card-footer text-right">
-                                <nav class="d-inline-block">
-                                    <ul class="pagination mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1"><i
-                                                    class="fas fa-chevron-left"></i></a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1<span
-                                                    class="sr-only">(current)</span></a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+                            <div class="card-footer">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                @if ($books->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Previous</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $books->previousPageUrl() }}" tabindex="-1">Previous</a>
+                                    </li>
+                                @endif
+
+                                @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $books->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                @if ($books->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next</span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
                         </div>
                     </div>
                 </div>
@@ -89,9 +126,6 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
-
-    <!-- Page Specific JS File -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
 @endpush

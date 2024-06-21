@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Reviews')
+@section('title', 'Create Review')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -15,6 +15,17 @@
                     <div class="breadcrumb-item">Create</div>
                 </div>
             </div>
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible show fade">
+                    <div class="alert-body">
+                        <button class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
+                        {{ session('error') }}.
+                    </div>
+                </div>
+            @endif
 
             <div class="section-body">
                 <div class="row">
@@ -34,7 +45,7 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <div class="form-group col-md-8">
+                                        <div class="form-group col-md-6">
                                             <label>Title</label>
                                             <select class="form-control selectric" tabindex="1" id="book_id"
                                                 name="book_id" value="{{ old('book_id') }}">
