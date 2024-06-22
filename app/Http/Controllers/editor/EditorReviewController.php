@@ -17,15 +17,17 @@ class EditorReviewController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $query = Review::with(['book.manuscript', 'book.manuscript.author']);
+
         if ($search) {
-            $review = Review::where('name', 'like', '%' . $search . '%')->paginate(10);
-        } else {
-            $review = Review::paginate(10);
+            $query->whereHas('book.manuscript', function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%');
+            })->orWhere('content', 'like', '%' . $search . '%');
         }
 
-        $reviews = Review::with(['book.manuscript', 'book.manuscript.author'])->get();
+        $reviews = $query->paginate(10);
 
-        return view('pages.editor.reviews.index', compact('review', 'reviews'));
+        return view('pages.editor.reviews.index', compact('search', 'reviews'));
     }
 
     public function create()

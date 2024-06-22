@@ -43,7 +43,7 @@
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
-                                    <form action="{{ route('editor.index.book') }}" method="GET">
+                                    <form action="{{ route('author.index.book') }}" method="GET">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="search"
                                                 value="{{ request('search') }}">

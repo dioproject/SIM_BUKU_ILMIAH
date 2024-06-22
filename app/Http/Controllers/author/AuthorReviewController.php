@@ -12,17 +12,17 @@ class AuthorReviewController extends Controller
     {
         $search = $request->input('search');
     
-        $royaltyQuery = Royalty::query();
+        $reviewsQuery = Royalty::query();
         if ($search) {
-            $royaltyQuery->whereHas('book.manuscript', function ($query) use ($search) {
+            $reviewsQuery->whereHas('book.manuscript', function ($query) use ($search) {
                 $query->where('title', 'like', '%' . $search . '%');
             })->orWhereHas('book.manuscript.author', function ($query) use ($search) {
                 $query->where('first_name', 'like', '%' . $search . '%');
             });
         }
     
-        $royalty = $royaltyQuery->with(['book.manuscript', 'status'])->paginate(10);
+        $reviews = $reviewsQuery->with(['book.manuscript', 'status'])->paginate(10);
     
-        return view('pages.author.royalty.index', compact('royalty', 'search'));
+        return view('pages.author.reviews.index', compact('reviews', 'search'));
     }
 }
