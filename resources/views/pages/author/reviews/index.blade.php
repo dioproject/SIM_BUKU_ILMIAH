@@ -76,26 +76,26 @@
                             <div class="card-footer">
                                 <nav aria-label="...">
                                     <ul class="pagination justify-content-center">
-                                        @if ($review->onFirstPage())
+                                        @if ($reviews->onFirstPage())
                                             <li class="page-item disabled">
                                                 <span class="page-link">Previous</span>
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $review->previousPageUrl() }}"
+                                                <a class="page-link" href="{{ $reviews->previousPageUrl() }}"
                                                     tabindex="-1">Previous</a>
                                             </li>
                                         @endif
 
-                                        @foreach ($review->getUrlRange(1, $review->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $review->currentPage() ? 'active' : '' }}">
+                                        @foreach ($reviews->getUrlRange(1, $reviews->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $reviews->currentPage() ? 'active' : '' }}">
                                                 <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                             </li>
                                         @endforeach
 
-                                        @if ($review->hasMorePages())
+                                        @if ($reviews->hasMorePages())
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $review->nextPageUrl() }}">Next</a>
+                                                <a class="page-link" href="{{ $reviews->nextPageUrl() }}">Next</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">

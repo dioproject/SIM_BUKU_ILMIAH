@@ -7,16 +7,26 @@ use App\Models\Manuscript;
 use App\Models\Royalty;
 use App\Models\Status;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class AuthorRoyaltyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $book = Manuscript::select('title')->rightJoin('books', 'manuscripts.id', '=', 'books.manuscript_id')->get();
-        $author = User::select('first_name')->rightJoin('manuscripts', 'users.id', '=', 'manuscripts.author_id')->get();
-        $royalty = Royalty::all();
-        $status = Status::select('option')->rightJoin('royalties', 'statuses.id', '=', 'royalties.status_id')->get();
+        $search = $request->input('search');
 
-        return view('pages.author.royalty.index', compact('book', 'author', 'royalty', 'status'));
+        $query = Royalty::query();
+
+        if ($search) {
+            $query->whereHas('book.manuscript', function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%');
+            })->orWhereHas('book.manuscript.author', function ($q) use ($search) {
+                $q->where('first_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        $royalty = $query->paginate(10);
+
+        return view('pages.author.royalty.index', compact('royalty', 'search'));
     }
 }

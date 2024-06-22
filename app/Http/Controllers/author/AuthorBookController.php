@@ -15,6 +15,7 @@ class AuthorBookController extends Controller
 {
     public function index(Request $request)
     {
+       
         $search = $request->input('search');
         $query = Book::with(['manuscript', 'manuscript.author', 'status']);
 
