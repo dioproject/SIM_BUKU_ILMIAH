@@ -12,7 +12,10 @@ class EditorBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $query = Book::with(['manuscript', 'manuscript.author', 'status']);
+        $query = Book::with(['manuscript', 'manuscript.author', 'status'])
+            ->whereHas('manuscript.author', function ($q) {
+                $q->where('user_role', 'AUTHOR');
+            });
 
         if ($search) {
             $query->whereHas('manuscript', function ($q) use ($search) {
