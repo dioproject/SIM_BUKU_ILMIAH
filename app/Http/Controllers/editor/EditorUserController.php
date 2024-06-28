@@ -10,15 +10,16 @@ class EditorUserController extends Controller
 {
     public function index(Request $request)
     {
-
         $search = $request->input('search');
+        
+        $query = User::where('user_role', 'AUTHOR');
         if ($search) {
-            $users = User::where('first_name', 'LIKE', '%' . $search . '%')
-                         ->orWhere('last_name', 'LIKE', '%' . $search . '%')
-                         ->paginate(10); 
-        } else {
-        $users = User::paginate(10);
+            $query->where('first_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $search . '%');
         }
+
+        $users = $query->paginate(10);
+
         return view('pages.editor.users.index', compact('users'));
     }
 }

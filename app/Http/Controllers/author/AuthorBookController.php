@@ -17,7 +17,10 @@ class AuthorBookController extends Controller
     {
        
         $search = $request->input('search');
-        $query = Book::with(['manuscript', 'manuscript.author', 'status']);
+        $query = Book::with(['manuscript', 'manuscript.author', 'status'])
+                ->whereHas('manuscript', function ($q) {
+                    $q->where('author_id', Auth::id());
+                });
 
         if ($search) {
             $query->whereHas('manuscript', function ($q) use ($search) {

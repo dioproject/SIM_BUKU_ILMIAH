@@ -45,9 +45,9 @@ class EditorReviewController extends Controller
             'content' => 'required',
         ]);
 
-        // if (Review::where('book_id', $request->book_id)) {
-        //     return redirect()->route('editor.create.review')->with('error', 'Review does not exist.');            
-        // }
+        if (Review::where('book_id', $request->book_id)->exists()) {
+            return redirect()->route('editor.create.review')->with('error', 'Review does not exist.');            
+        }
         
         $review = Review::create([
             'book_id' => $request->book_id,
@@ -62,10 +62,10 @@ class EditorReviewController extends Controller
             ]);
             
             History::create([
-                'change_detail' => Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.',
+                'change_detail' => Auth::user()->first_name . ' reviewed ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('editor.index.review')->with('success', Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.');
+            return redirect()->route('editor.index.review')->with('success', Auth::user()->first_name . ' reviewed ' . $book->manuscript->title . ' successfully.');
         }
         return redirect()->route('editor.create.review')->with('error', 'Review not found.');
     }
@@ -94,7 +94,7 @@ class EditorReviewController extends Controller
         if ($review) {
             $book = Book::findOrFail($id);            
             History::create([
-                'change_detail' => Auth::user()->first_name . ' updated review ' . $book->manuscript->title . ' successfully.',
+                'change_detail' => Auth::user()->first_name . ' change review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
             return redirect()->route('editor.index.review')->with('success', Auth::user()->first_name . ' updated review ' . $book->manuscript->title . ' successfully.');
@@ -110,7 +110,7 @@ class EditorReviewController extends Controller
         if ($review) {
             $book = $review->book;
             History::create([
-                'change_detail' => Auth::user()->first_name . ' deleted review ' . $book->manuscript->title . ' successfully.',
+                'change_detail' => Auth::user()->first_name . ' delete review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
             ]);
             return redirect()->route('editor.index.review');

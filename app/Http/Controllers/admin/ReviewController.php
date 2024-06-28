@@ -46,9 +46,9 @@ class ReviewController extends Controller
             'content' => 'required',
         ]);
 
-        // if (Review::where('book_id', $request->book_id)) {
-        //     return redirect()->route('admin.create.review')->with('error', 'Review does not exist.');            
-        // }
+        if (Review::where('book_id', $request->book_id)->exists()) {
+            return redirect()->route('admin.create.review')->with('error', 'Review does not exist.');            
+        }
         
         $review = Review::create([
             'book_id' => $request->book_id,
