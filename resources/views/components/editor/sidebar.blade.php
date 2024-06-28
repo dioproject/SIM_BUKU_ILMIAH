@@ -13,7 +13,7 @@
             </li>
             <li class="{{ Request::is('editor/users') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('editor/users') }}"><i
-                    class="fas fa-solid fa-user-group"></i><span>Authors</span></a>
+                    class="fas fa-solid fa-feather"></i><span>Authors</span></a>
             </li>
             <li class="{{ Request::is('editor/books') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('editor/books') }}"><i
