@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\History;
 use App\Models\Catalog;
 use App\Models\Status;
-use App\Models\User;
 use App\Models\Book;
 
 class CatalogController extends Controller
@@ -26,10 +25,8 @@ class CatalogController extends Controller
         });
     }
 
-    $catalog = $catalogQuery->paginate(10);
-    $author = User::paginate(10);
-
-    return view('pages.admin.catalogs.index', compact('catalog', 'author', 'search'));
+    $catalog = $catalogQuery->with(['book.manuscript', 'book.manuscript.author'])->paginate(10);
+    return view('pages.admin.catalogs.index', compact('catalog', 'search'));
 }
 
 

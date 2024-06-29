@@ -34,9 +34,10 @@
                                 <form id="create-book-form" action="{{ route('admin.store.book') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <label>Category</label>
+                                    <div class="form-group row mb-4">
+                                        <label
+                                            class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Category :</label>
+                                        <div class="col-sm-12 col-md-10">
                                             <select class="form-control selectric" tabindex="1" id="category"
                                                 name="category" value="{{ old('category') }}">
                                                 @foreach ($category as $cate)
@@ -46,11 +47,23 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-8">
-                                            <label>Title</label>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Title :</label>
+                                        <div class="col-sm-12 col-md-10">
                                             <input type="text" tabindex="2" class="form-control" id="title"
                                                 name="title" value="{{ old('title') }}">
                                         </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Script :</label>
+                                            <div class="form-control custom-file col-sm-12 col-md-9">
+                                                <input type="file" tabindex="5" name="path_foto" class="custom-file-input"
+                                                    id="path_foto" value="{{ old('path_foto') }}" accept="image/*">
+                                                <label class="custom-file-label">Choose File</label>
+                                            </div>
+                                            <div class="form-text text-muted">The image must have a maximum size of 1MB
+                                            </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-12">
