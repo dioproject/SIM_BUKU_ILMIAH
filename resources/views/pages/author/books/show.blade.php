@@ -76,6 +76,15 @@
                                                     @endif
                                                 </td>
                                             </tr>
+                                            @if ($book->review !== null)
+                                                <tr>
+                                                    <td class="text-center">3.</td>
+                                                    <td>{{ $book->title }}</td>
+                                                    <td><a href="{{ Storage::url('upload/books/') . $book->review }}"
+                                                            download="{{ $book->review }}">{{ $book->review }}</a></td>
+                                                    <td>Review</td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

@@ -14,6 +14,47 @@
                 <h1>Book Detail</h1>
             </div>
             <div class="section-body">
+                @if ($book->status->option == 'APPROVE')
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Review Book</h4>
+                                </div>
+                                <div class="card-body">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <form id="create-review-form" action="{{ route('editor.review.book', $book->id) }}"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Review
+                                                :</label>
+                                            <div class="col-sm-12 col-md-10">
+                                                <input type="file" tabindex="1" class="form-control" id="review"
+                                                    name="review" value="{{ old('review') }}" accept=".doc,.docx">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
+                                            <div class="col-sm-12 col-md-9">
+                                                <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+                                                    Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -49,7 +90,8 @@
                                                     @elseif($book->status->option == 'REJECTED')
                                                         <span class="badge badge-danger">{{ $book->status->option }}</span>
                                                     @elseif($book->status->option == 'PENDING')
-                                                        <span class="badge badge-warning">{{ $book->status->option }}</span>
+                                                        <span
+                                                            class="badge badge-warning">{{ $book->status->option }}</span>
                                                     @else
                                                         <span
                                                             class="badge badge-secondary">{{ $book->status->option }}</span>
@@ -58,13 +100,15 @@
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         @if ($book->status->option == 'PENDING')
-                                                            <form action="{{ route('editor.approve.book', $book->id) }}" method="POST">
+                                                            <form action="{{ route('editor.approve.book', $book->id) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 <button class="btn btn-success mr-1" type="submit">
                                                                     <i class="fas fa-check"></i>
                                                                 </button>
                                                             </form>
-                                                            <form action="{{ route('editor.rejected.book', $book->id) }}" method="POST">
+                                                            <form action="{{ route('editor.rejected.book', $book->id) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 <button class="btn btn-danger mr-1" type="submit">
                                                                     <i class="fas fa-ban"></i>
@@ -83,6 +127,15 @@
                                                         download="{{ $book->template }}">{{ $book->template }}</a></td>
                                                 <td>Template</td>
                                             </tr>
+                                            @if ($book->review !== null)
+                                                <tr>
+                                                    <td class="text-center">3.</td>
+                                                    <td>{{ $book->title }}</td>
+                                                    <td><a href="{{ Storage::url('upload/books/') . $book->review }}"
+                                                            download="{{ $book->review }}">{{ $book->review }}</a></td>
+                                                    <td>Review</td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

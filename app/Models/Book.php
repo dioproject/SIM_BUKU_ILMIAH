@@ -18,9 +18,11 @@ class Book extends Model
         'title',        
         'script',
         'template',
+        'review',
         'category_id',
         'status_id',
         'author_id',
+        'reviewer_id',
     ];
 
     /**
@@ -32,6 +34,8 @@ class Book extends Model
         'id' => 'integer',
         'category_id' => 'integer',
         'status_id' => 'integer',
+        'author_id' => 'integer',
+        'reviewer_id' => 'integer',
     ];
 
     public function category()
@@ -45,6 +49,11 @@ class Book extends Model
     }
 
     public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reviewer()
     {
         return $this->belongsTo(User::class);
     }

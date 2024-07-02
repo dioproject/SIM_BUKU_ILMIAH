@@ -28,9 +28,11 @@ class BookFactory extends Factory
             'title' => $this->faker->sentence(4),
             'script' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'template' => $this->faker->regexify('[A-Za-z0-9]{200}'),
+            'review' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'category_id' => Category::factory(),
             'status_id' => Status::factory(),
             'author_id' => User::factory(),
+            'reviewer_id' => User::factory(),
         ];
     }
 }

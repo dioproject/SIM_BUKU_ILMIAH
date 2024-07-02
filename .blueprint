@@ -36,7 +36,7 @@ created:
     - app/Models/Royalty.php
     - app/Models/History.php
 models:
-    Book: { title: 'string:250 nullable', script: 'string:200 nullable', template: 'string:200 nullable', category_id: 'id foreign:Category nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete' }
+    Book: { title: 'string:250 nullable', script: 'string:200 nullable', template: 'string:200 nullable', review: 'string:200 nullable',, category_id: 'id foreign:Category nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete', reviewer_id: 'id foreign:User nullable onUpdate onDelete' }
     Catalog: { book_id: 'id foreign:Book nullable onUpdate onDelete', description: 'text nullable', path_foto: 'string:200 nullable' }
     Category: { name: 'string:100 nullable' }
     Citation: { citation: 'string:200 nullable', bibliography: 'text nullable' }
