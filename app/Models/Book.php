@@ -15,9 +15,12 @@ class Book extends Model
      * @var array
      */
     protected $fillable = [
+        'title',        
+        'script',
+        'template',
         'category_id',
-        'manuscript_id',
         'status_id',
+        'author_id',
     ];
 
     /**
@@ -28,7 +31,6 @@ class Book extends Model
     protected $casts = [
         'id' => 'integer',
         'category_id' => 'integer',
-        'manuscript_id' => 'integer',
         'status_id' => 'integer',
     ];
 
@@ -37,13 +39,13 @@ class Book extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function manuscript()
-    {
-        return $this->belongsTo(Manuscript::class);
-    }
-
     public function status()
     {
         return $this->belongsTo(Status::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
     }
 }

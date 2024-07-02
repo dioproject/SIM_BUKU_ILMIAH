@@ -49,7 +49,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
     Route::get('/admin/create/book', [BookController::class, 'create'])->name('admin.create.book');
     Route::post('/admin/create/book', [BookController::class, 'store'])->name('admin.store.book');
-    Route::get('/admin/show/book/{id}', [BookController::class, 'show'])->name('admin.show.book');
+    Route::get('/admin/book/{id}', [BookController::class, 'show'])->name('admin.show.book');
     Route::get('/admin/edit/book/{id}', [BookController::class, 'edit'])->name('admin.edit.book');
     Route::put('/admin/edit/book/{id}', [BookController::class, 'update'])->name('admin.update.book');
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
@@ -76,7 +76,9 @@ Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
     Route::get('/editor/dashboard', [HomeController::class, 'editorPage'])->name('editor.dashboard');
     Route::get('/editor/users', [EditorUserController::class, 'index'])->name('editor.index.user');
     Route::get('/editor/books', [EditorBookController::class, 'index'])->name('editor.index.book');
-    Route::get('/editor/show/book/{id}', [EditorBookController::class, 'show'])->name('editor.show.book');
+    Route::get('/editor/book/{id}', [EditorBookController::class, 'show'])->name('editor.show.book');
+    Route::post('/editor/book/{id}/approve', [EditorBookController::class, 'approve'])->name('editor.approve.book');
+    Route::post('/editor/book/{id}//rejected', [EditorBookController::class, 'rejected'])->name('editor.rejected.book');
     Route::get('/editor/reviews', [EditorReviewController::class, 'index'])->name('editor.index.review');
     Route::get('/editor/create/review', [EditorReviewController::class, 'create'])->name('editor.create.review');
     Route::post('/editor/create/review', [EditorReviewController::class, 'store'])->name('editor.store.review');
@@ -93,7 +95,7 @@ Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
     Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');
     Route::get('/author/create/book', [AuthorBookController::class, 'create'])->name('author.create.book');
     Route::post('/author/create/book', [AuthorBookController::class, 'store'])->name('author.store.book');
-    Route::get('/author/show/book/{id}', [AuthorBookController::class, 'show'])->name('author.show.book');
+    Route::get('/author/book/{id}', [AuthorBookController::class, 'show'])->name('author.show.book');
     Route::get('/author/edit/book/{id}', [AuthorBookController::class, 'edit'])->name('author.edit.book');
     Route::put('/author/edit/book/{id}', [AuthorBookController::class, 'update'])->name('author.update.book');
     Route::get('/author/reviews', [AuthorReviewController::class, 'index'])->name('author.index.review');

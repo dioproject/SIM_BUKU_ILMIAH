@@ -3,8 +3,6 @@
 @section('title', 'Create Book')
 
 @push('style')
-    <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
@@ -21,6 +19,9 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <h4>Submission Book</h4>
+                            </div>
                             <div class="card-body">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
@@ -34,9 +35,10 @@
                                 <form id="create-book-form" action="{{ route('author.store.book') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <label>Category</label>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Category
+                                            :</label>
+                                        <div class="col-sm-12 col-md-10">
                                             <select class="form-control selectric" tabindex="1" id="category"
                                                 name="category" value="{{ old('category') }}">
                                                 @foreach ($category as $cate)
@@ -46,27 +48,27 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-8">
-                                            <label>Title</label>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Title :</label>
+                                        <div class="col-sm-12 col-md-10">
                                             <input type="text" tabindex="2" class="form-control" id="title"
                                                 name="title" value="{{ old('title') }}">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label>Abstract</label>
-                                            <textarea class="summernote" tabindex="3" id="abstract" name="abstract" value="{{ old('abstract') }}"></textarea>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Script
+                                            :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="file" tabindex="3" class="form-control" id="script"
+                                                name="script" value="{{ old('script') }}" accept=".doc,.docx">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label>Fill</label>
-                                            <textarea class="summernote" tabindex="4" id="fill" name="fill" value="{{ old('fill') }}"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
+                                        <div class="col-sm-12 col-md-9">
+                                            <button type="submit" class="btn btn-primary"><i
+                                                    class="far fa-save"></i>
                                                 Submit</button>
                                         </div>
                                     </div>
@@ -81,6 +83,4 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
-    <script src="{{ asset('library/summernote/dist/summernote-bs4.js') }}"></script>
 @endpush

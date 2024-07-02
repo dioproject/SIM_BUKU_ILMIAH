@@ -11,7 +11,7 @@ class StatusSeeder extends Seeder
     {
         $StatusData = [
             [
-               'option' => 'SUBMITTED',
+               'option' => 'PENDING',
             ],
             [
                'option' => 'REVIEWING',
@@ -20,10 +20,10 @@ class StatusSeeder extends Seeder
                'option' => 'PUBLISHED',
             ],
             [
-               'option' => 'REJECTED',
+               'option' => 'APPROVE',
             ],
             [
-               'option' => 'FAILED',
+               'option' => 'REJECTED',
             ],
             [
                'option' => 'SUCCESS',

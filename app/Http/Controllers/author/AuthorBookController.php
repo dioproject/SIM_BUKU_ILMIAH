@@ -1,34 +1,26 @@
 <?php
+
 namespace App\Http\Controllers\author;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Dompdf\Dompdf;
 use App\Models\Book;
 use App\Models\Status;
-use App\Models\Manuscript;
 use App\Models\History;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class AuthorBookController extends Controller
 {
     public function index(Request $request)
     {
-       
         $search = $request->input('search');
-        $query = Book::with(['manuscript', 'manuscript.author', 'status'])
-                ->whereHas('manuscript', function ($q) {
-                    $q->where('author_id', Auth::id());
-                });
 
+        $books = Book::where('author_id', Auth::id())->paginate(10);
         if ($search) {
-            $query->whereHas('manuscript', function ($q) use ($search) {
-                $q->where('title', 'like', "%$search%");
-            });
+            $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
-
-        $books = $query->paginate(10);
 
         return view('pages.author.books.index', compact('books', 'search'));
     }
@@ -43,54 +35,46 @@ class AuthorBookController extends Controller
     {
         $request->validate([
             'category' => 'required',
-            'title' => 'required',
-            'abstract' => 'required',
-            'fill' => 'required',
+            'title' => 'required|max:250',
+            'script' => 'required|file|mimes:doc,docx',
         ]);
 
-        $manuscript = Manuscript::create([
+        $fileName = null;
+
+        if ($request->hasFile('script')) {
+            $file = $request->file('script');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('upload/books', $fileName, 'public');
+        }
+
+        $book = Book::create([
             'title' => $request->title,
-            'abstract' => $request->abstract,
-            'fill' => $request->fill,
+            'script' => $fileName,
             'author_id' => Auth::id(),
+            'category_id' => $request->category,
+            'status_id' => Status::findOrFail(1)->id,
         ]);
 
-        if ($manuscript) {
-            Book::create([
-                'category_id' => $request->category,
-                'manuscript_id' => $manuscript->id,
-                'status_id' => Status::findOrFail(1)->id,
-            ]);
-
+        if ($book) {
             History::create([
-                'change_detail' => Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.',
+                'change_detail' => Auth::user()->first_name . ' added ' . $book->title . ' book.',
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' created book ' . $manuscript->title . ' successfully.');
+            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' created book ' . $book->title . ' successfully.');
         }
         return redirect()->route('author.create.book')->with('error', 'Book not found.');
     }
 
     public function show($id)
     {
-        $book = Book::with('manuscript')->findOrFail($id);
-        $data = [
-            'title' => $book->manuscript->title,
-            'abstract' => $book->manuscript->abstract,
-            'fill' => $book->manuscript->fill,
-        ];
+        $book = Book::with('status')->findOrFail($id);
 
-        $html = view('pages.print.book', $data)->render();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
+        return view('pages.author.books.show', compact('book'));
     }
 
     public function edit($id)
     {
-        $book = Book::with('manuscript')->findOrFail($id);
+        $book = Book::findOrFail($id);
         $category = Category::all();
         return view('pages.author.books.edit', compact('book', 'category'));
     }
@@ -99,33 +83,38 @@ class AuthorBookController extends Controller
     {
         $request->validate([
             'category' => 'required',
-            'title' => 'required',
-            'abstract' => 'required',
-            'fill' => 'required',
+            'title' => 'required|max:250',
+            'script' => 'required|file|mimes:doc,docx',
         ]);
 
         $book = Book::findOrFail($id);
-        $manuscript = $book->manuscript;
-        $manuscript->update([
+        $oldFile = $book->script;
+
+        $fileName = $oldFile;
+
+        if ($request->hasFile('script')) {
+            $file = $request->file('script');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('upload/books', $fileName, 'public');            
+        }
+        
+        $book->update([
             'title' => $request->title,
-            'abstract' => $request->abstract,
-            'fill' => $request->fill,
-            'author_id' => Auth::id(),
+            'script' => $fileName,
+            'category_id' => $request->category,
+            'updated_at' => now(),
         ]);
 
-        if ($manuscript) {
-            $book->update([
-                'category_id' => $request->category,
-                'manuscript_id' => $manuscript->id,
-                'status_id' => Status::findOrFail(1)->id,
-                'updated_at' => now(),
-            ]);
+        if ($oldFile) {
+            Storage::disk('public')->delete('upload/books/' . $oldFile);
+        }
 
+        if ($book) {
             History::create([
-                'change_detail' => Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.',
+                'change_detail' => Auth::user()->first_name . ' updated book ' . $book->title,
                 'user_id' => Auth::id(),
             ]);
-            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $manuscript->title . ' successfully.');
+            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $book->title . ' successfully.');
         }
         return redirect()->route('author.create.book')->with('error', 'Book not found.');
     }
