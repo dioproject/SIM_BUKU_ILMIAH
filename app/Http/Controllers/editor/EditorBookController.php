@@ -3,45 +3,44 @@
 namespace App\Http\Controllers\editor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use Illuminate\Http\Request;
-use Dompdf\Dompdf;
+use App\Models\Book;
+use App\Models\Status;
 
 class EditorBookController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $query = Book::with(['manuscript', 'manuscript.author', 'status'])
-            ->whereHas('manuscript.author', function ($q) {
-                $q->where('user_role', 'AUTHOR');
-            });
 
+        $books = Book::paginate(10);
         if ($search) {
-            $query->whereHas('manuscript', function ($q) use ($search) {
-                $q->where('title', 'like', "%$search%");
-            });
+            $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
-
-        $books = $query->paginate(10);
 
         return view('pages.editor.books.index', compact('books', 'search'));
     }
 
     public function show($id)
     {
-        $book = Book::with('manuscript')->findOrFail($id);
-        $data = [
-            'title' => $book->manuscript->title,
-            'abstract' => $book->manuscript->abstract,
-            'fill' => $book->manuscript->fill,
-        ];
+        $book = Book::with('status')->findOrFail($id);
 
-        $html = view('pages.print.book', $data)->render();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        return $dompdf->stream($book->manuscript->title . '.pdf', ["Attachment" => 1]);
+        return view('pages.editor.books.show', compact('book'));
+    }
+
+    public function approve($id)
+    {
+        $book = Book::with('status')->findOrFail($id);
+        $book->update(['status_id' => Status::findOrFail(4)->id]);
+
+        return redirect()->route('editor.show.book', $id);
+    }
+
+    public function rejected($id)
+    {
+        $book = Book::with('status')->findOrFail($id);
+        $book->update(['status_id' => Status::findOrFail(5)->id]);
+
+        return redirect()->route('editor.show.book', $id);
     }
 }

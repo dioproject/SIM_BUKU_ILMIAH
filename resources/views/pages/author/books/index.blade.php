@@ -5,6 +5,7 @@
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
@@ -57,66 +58,93 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table-bordered table-md table">
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Book Title</th>
-                                            <th>Author</th>
-                                            <th>Last Modified</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        @foreach ($books as $key => $book)
+                                    <table class="table-striped table" id="table-2">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $book->manuscript->title }}</td>
-                                                <td>{{ $book->manuscript->author->first_name }}</td>
-                                                <td>{{ $book->updated_at }}</td>
-                                                <td>{{ $book->status->option }}</td>
-                                                <td>
-                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit" href="{{ route('author.edit.book', $book->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i></a>
-                                                    <a class="btn btn-primary btn-action" data-toggle="tooltip"
-                                                        title="Review" href="{{ route('author.show.book', $book->id) }}"><i
-                                                            class="fas fa-download"></i></a>
-                                                </td>
+                                                <th>No.</th>
+                                                <th>Book Title</th>
+                                                <th>Author</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
-                                        @endforeach
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($books as $key => $book)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $book->title }}</td>
+                                                    <td>{{ $book->author->first_name }}</td>
+                                                    <td>
+                                                        {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($book->status->option == 'REVIEWING')
+                                                            <span
+                                                                class="badge badge-primary">{{ $book->status->option }}</span>
+                                                        @elseif($book->status->option == 'APPROVE')
+                                                            <span
+                                                                class="badge badge-success">{{ $book->status->option }}</span>
+                                                        @elseif($book->status->option == 'REJECTED')
+                                                            <span
+                                                                class="badge badge-danger">{{ $book->status->option }}</span>
+                                                        @elseif($book->status->option == 'PENDING')
+                                                            <span
+                                                                class="badge badge-warning">{{ $book->status->option }}</span>
+                                                        @else
+                                                            <span
+                                                                class="badge badge-secondary">{{ $book->status->option }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-success btn-action mr-1" title="Detail"
+                                                            href="{{ route('author.show.book', $book->id) }}"
+                                                            data-toggle="tooltip">
+                                                            <i class="fas fa-list"></i>
+                                                        </a>
+                                                        <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                            title="Detail"
+                                                            href="{{ route('author.edit.book', $book->id) }}"><i
+                                                                class="fas fa-pencil-alt"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div class="card-footer">
-                        <nav aria-label="...">
-                            <ul class="pagination justify-content-center">
-                                @if ($books->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Previous</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $books->previousPageUrl() }}" tabindex="-1">Previous</a>
-                                    </li>
-                                @endif
+                                <nav aria-label="...">
+                                    <ul class="pagination justify-content-center">
+                                        @if ($books->onFirstPage())
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Previous</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $books->previousPageUrl() }}"
+                                                    tabindex="-1">Previous</a>
+                                            </li>
+                                        @endif
 
-                                @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
-                                    <li class="page-item {{ $page == $books->currentPage() ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
-                                @endforeach
+                                        @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $books->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endforeach
 
-                                @if ($books->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Next</span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </nav>
-                    </div>
+                                        @if ($books->hasMorePages())
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
+                                            </li>
+                                        @else
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,4 +156,7 @@
 @push('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
+    <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 @endpush

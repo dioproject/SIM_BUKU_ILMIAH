@@ -30,7 +30,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form id="create-user-form" action="{{ route('admin.store.category') }}" method="POST"
+                                <form id="create-category-form" action="{{ route('admin.store.category') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">

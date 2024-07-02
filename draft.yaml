@@ -21,9 +21,12 @@ models:
     name: string:100 nullable
 
   Book:
+    title: string:250 nullable
+    script: string:200 nullable
+    template: string:200 nullable
     category_id: id foreign:Category nullable onUpdate onDelete
-    manuscript_id: id foreign:Manuscript nullable onUpdate onDelete
     status_id: id foreign:Status nullable onUpdate onDelete
+    author_id: id foreign:User nullable onUpdate onDelete
 
   Manuscript:
     title: string:250 nullable

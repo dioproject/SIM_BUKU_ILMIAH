@@ -35,6 +35,9 @@ $("#table-1").dataTable({
 });
 $("#table-2").dataTable({
   "columnDefs": [
-    { "sortable": false, "targets": [0,2,3] }
-  ]
+    { "sortable": true, "targets": [0,2,3] }
+  ],
+  "bPaginate": false,
+  "bFilter": false,
+  "bInfo": true
 });
