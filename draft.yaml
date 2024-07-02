@@ -24,9 +24,11 @@ models:
     title: string:250 nullable
     script: string:200 nullable
     template: string:200 nullable
+    review: string:200 nullable
     category_id: id foreign:Category nullable onUpdate onDelete
     status_id: id foreign:Status nullable onUpdate onDelete
     author_id: id foreign:User nullable onUpdate onDelete
+    reviewer_id: id foreign:User nullable onUpdate onDelete
 
   Manuscript:
     title: string:250 nullable

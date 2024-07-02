@@ -17,7 +17,6 @@ use App\Http\Controllers\author\AuthorHistoryController;
 use App\Http\Controllers\author\AuthorReviewController;
 use App\Http\Controllers\editor\EditorBookController;
 use App\Http\Controllers\editor\EditorHistoryController;
-use App\Http\Controllers\editor\EditorReviewController;
 use App\Http\Controllers\editor\EditorUserController;
 
 Route::redirect('/', '/login');
@@ -79,12 +78,7 @@ Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
     Route::get('/editor/book/{id}', [EditorBookController::class, 'show'])->name('editor.show.book');
     Route::post('/editor/book/{id}/approve', [EditorBookController::class, 'approve'])->name('editor.approve.book');
     Route::post('/editor/book/{id}//rejected', [EditorBookController::class, 'rejected'])->name('editor.rejected.book');
-    Route::get('/editor/reviews', [EditorReviewController::class, 'index'])->name('editor.index.review');
-    Route::get('/editor/create/review', [EditorReviewController::class, 'create'])->name('editor.create.review');
-    Route::post('/editor/create/review', [EditorReviewController::class, 'store'])->name('editor.store.review');
-    Route::get('/editor/edit/review/{id}', [EditorReviewController::class, 'edit'])->name('editor.edit.review');
-    Route::put('/editor/edit/review/{id}', [EditorReviewController::class, 'update'])->name('editor.update.review');
-    Route::delete('/editor/review/{id}', [EditorReviewController::class, 'destroy'])->name('editor.destroy.review');
+    Route::post('/editor/book/{id}/review', [EditorBookController::class, 'review'])->name('editor.review.book');    
     Route::get('/editor/history', [EditorHistoryController::class, 'index'])->name('editor.index.history');
 });
 

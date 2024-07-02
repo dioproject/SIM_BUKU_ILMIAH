@@ -77,10 +77,6 @@
                                                             data-toggle="tooltip">
                                                             <i class="fas fa-list"></i>
                                                         </a>
-                                                        <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                            title="Detail"
-                                                            href="{{ route('author.edit.book', $book->id) }}"><i
-                                                                class="fas fa-pencil-alt"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -20,9 +20,11 @@ return new class extends Migration
             $table->string('title', 250)->nullable();
             $table->string('script', 200)->nullable();
             $table->string('template', 200)->nullable();
+            $table->string('review', 200)->nullable();
             $table->foreignId('category_id')->nullable()->constrained('Categories')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('set null')->onDelete('set null');
             $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
 
