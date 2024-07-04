@@ -18,13 +18,8 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title', 250)->nullable();
-            $table->string('script', 200)->nullable();
-            $table->string('template', 200)->nullable();
-            $table->string('review', 200)->nullable();
-            $table->foreignId('category_id')->nullable()->constrained('Categories')->onUpdate('set null')->onDelete('set null');
+            $table->string('template', 250)->nullable();
             $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
 

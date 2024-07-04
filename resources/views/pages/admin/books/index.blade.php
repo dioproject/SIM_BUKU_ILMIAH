@@ -40,6 +40,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
+                                        class="far fa-edit"></i> Create Book
+                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form action="{{ route('admin.index.book') }}" method="GET">
@@ -61,7 +64,6 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
-                                                <th>Author</th>
                                                 <th>Date</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
@@ -72,7 +74,6 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $book->title }}</td>
-                                                    <td>{{ $book->author->first_name }}</td>
                                                     <td>
                                                         {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>

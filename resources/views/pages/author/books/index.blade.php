@@ -39,9 +39,6 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('author.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Book
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form action="{{ route('author.index.book') }}" method="GET">
@@ -63,7 +60,6 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
-                                                <th>Author</th>
                                                 <th>Date</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
@@ -74,38 +70,36 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $book->title }}</td>
-                                                    <td>{{ $book->author->first_name }}</td>
                                                     <td>
                                                         {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($book->status->option == 'REVIEWING')
+                                                        @if ($book->status->option == 'Reviewing')
                                                             <span
                                                                 class="badge badge-primary">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'APPROVE')
+                                                        @elseif($book->status->option == 'Approve')
                                                             <span
                                                                 class="badge badge-success">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'REJECTED')
+                                                        @elseif($book->status->option == 'Rejected')
                                                             <span
                                                                 class="badge badge-danger">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'PENDING')
+                                                        @elseif($book->status->option == 'Pending')
                                                             <span
-                                                                class="badge badge-warning">{{ $book->status->option }}</span>
-                                                        @else
-                                                            <span
-                                                                class="badge badge-secondary">{{ $book->status->option }}</span>
+                                                                class="badge badge-warning">{{ $book->status->option }}</span>                                                        
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-success btn-action mr-1" title="Detail"
-                                                            href="{{ route('author.show.book', $book->id) }}"
-                                                            data-toggle="tooltip">
-                                                            <i class="fas fa-list"></i>
-                                                        </a>
-                                                        <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                            title="Detail"
-                                                            href="{{ route('author.edit.book', $book->id) }}"><i
-                                                                class="fas fa-pencil-alt"></i></a>
+                                                        @if ($book->status->option == 'Pending')
+                                                            <form action="{{ route('author.submit.book', $book->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <button class="btn btn-success mr-1" type="submit">
+                                                                    <i class="fas fa-check"></i> Submit
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <div class="none"></div>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

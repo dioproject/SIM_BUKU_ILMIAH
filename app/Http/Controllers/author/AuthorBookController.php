@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Status;
 use App\Models\History;
-use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 class AuthorBookController extends Controller
@@ -16,8 +15,7 @@ class AuthorBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-        $books = Book::where('author_id', Auth::id())->paginate(10);
+        $books = Book::paginate(10);
         if ($search) {
             $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
@@ -25,9 +23,19 @@ class AuthorBookController extends Controller
         return view('pages.author.books.index', compact('books', 'search'));
     }
 
+    public function submit($id)
+    {
+        $book = Book::findOrFail($id);
+        $book->update([
+            'status_id' => Status::findOrFail(6)->id,
+        ]);
+
+        return redirect()->route('author.index.book');
+    }
+
     public function create()
     {
-        $category = Category::all();
+        
         return view('pages.author.books.create', compact('category'));
     }
 
@@ -75,7 +83,6 @@ class AuthorBookController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
-        $category = Category::all();
         return view('pages.author.books.edit', compact('book', 'category'));
     }
 
