@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Chapter;
 use App\Models\Status;
 use App\Models\History;
 use Illuminate\Support\Facades\Storage;
@@ -15,12 +16,12 @@ class AuthorBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $books = Book::paginate(10);
+        $chapters = Chapter::with(['book', 'book.status'])->paginate(10);
         if ($search) {
-            $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
+            $chapters = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
 
-        return view('pages.author.books.index', compact('books', 'search'));
+        return view('pages.author.books.index', compact('chapters', 'search'));
     }
 
     public function submit($id)
@@ -28,6 +29,7 @@ class AuthorBookController extends Controller
         $book = Book::findOrFail($id);
         $book->update([
             'status_id' => Status::findOrFail(6)->id,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('author.index.book');
