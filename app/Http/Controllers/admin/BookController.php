@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Status;
 use App\Models\History;
-use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -26,29 +25,25 @@ class BookController extends Controller
 
     public function create()
     {
-        $category = Category::all();
-        return view('pages.admin.books.create', compact('category'));
+        return view('pages.admin.books.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required',
             'title' => 'required',
-            'script' => 'required|file|mimes:doc,docx',
+            'template' => 'required|file|mimes:doc,docx',
         ]);
 
-        if ($request->hasFile('script')) {
-            $file = $request->file('script');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('upload/books', $fileName, 'public');
+        if ($request->hasFile('template')) {
+            $file = $request->file('template');
+            $fileName = time() . '_' . 'template' . '_' . $file->getClientOriginalName();
+            $file->storeAs('upload/books', $fileName, 'public');
         }
 
         $book = Book::create([
             'title' => $request->title,
-            'script' => $filePath,
-            'title' => $request->category,
-            'author_id' => Auth::id(),
+            'template' => $fileName,
             'status_id' => Status::findOrFail(1)->id,
         ]);
 
@@ -72,8 +67,7 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
-        $category = Category::all();
-        return view('pages.admin.books.edit', compact('book', 'category'));
+        return view('pages.admin.books.edit', compact('book'));
     }
 
     public function update(Request $request, $id)

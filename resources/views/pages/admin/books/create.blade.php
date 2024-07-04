@@ -37,36 +37,18 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Category
-                                            :</label>
-                                        <div class="col-sm-12 col-md-10">
-                                            <select class="form-control selectric" tabindex="1" id="category"
-                                                name="category" value="{{ old('category') }}">
-                                                @foreach ($category as $cate)
-                                                    <option value="{{ $cate->id }}"
-                                                        @if (old('category') == $cate->id) selected @endif>
-                                                        {{ $cate->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-4">
                                         <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Title :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="text" tabindex="2" class="form-control" id="title"
+                                            <input type="text" tabindex="1" class="form-control" id="title"
                                                 name="title" value="{{ old('title') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
                                         <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Template
                                             :</label>
-                                        <div class="col-sm-12 col-md-8">
-                                            <input type="file" tabindex="3" name="template"
-                                                class="custom-file-input" id="template"
-                                                value="{{ old('template') }}" accept=".doc,.docx" required>
-                                            <label class="custom-file-label">Choose File</label>
-                                        </div>
-                                        <div class="form-text text-muted">The image must have a maximum size of 1MB
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="file" tabindex="1" class="form-control" id="template"
+                                                name="template" value="{{ old('template') }}" accept=".doc,.docx">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
@@ -77,36 +59,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Document Collection</h4>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table-striped table" id="table-2">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>File Name</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td><span class="badge badge-warning">Pending</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>

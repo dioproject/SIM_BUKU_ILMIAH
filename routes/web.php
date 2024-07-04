@@ -86,10 +86,9 @@ Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
     
     //Author
     Route::get('/author/dashboard', [HomeController::class, 'authorPage'])->name('author.dashboard');
-    Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');
-    Route::get('/author/create/book', [AuthorBookController::class, 'create'])->name('author.create.book');
-    Route::post('/author/create/book', [AuthorBookController::class, 'store'])->name('author.store.book');
+    Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');    
     Route::get('/author/book/{id}', [AuthorBookController::class, 'show'])->name('author.show.book');
+    Route::post('/author/book/{id}/submit', [AuthorBookController::class, 'submit'])->name('author.submit.book');
     Route::get('/author/edit/book/{id}', [AuthorBookController::class, 'edit'])->name('author.edit.book');
     Route::put('/author/edit/book/{id}', [AuthorBookController::class, 'update'])->name('author.update.book');
     Route::get('/author/reviews', [AuthorReviewController::class, 'index'])->name('author.index.review');

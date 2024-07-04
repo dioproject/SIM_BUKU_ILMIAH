@@ -11,25 +11,31 @@ class StatusSeeder extends Seeder
     {
         $StatusData = [
             [
-               'option' => 'PENDING',
+               'option' => 'Pending',
             ],
             [
-               'option' => 'REVIEWING',
+               'option' => 'Reviewing',
             ],
             [
-               'option' => 'PUBLISHED',
+               'option' => 'Published',
             ],
             [
-               'option' => 'APPROVE',
+               'option' => 'Approve',
+            ],            
+            [
+               'option' => 'Accept',
             ],
             [
-               'option' => 'REJECTED',
+               'option' => 'Submit',
             ],
             [
-               'option' => 'SUCCESS',
+               'option' => 'Rejected',
             ],
             [
-               'option' => 'PROCESS',
+               'option' => 'Success',
+            ],
+            [
+               'option' => 'Process',
             ],
         ];
         foreach ($StatusData as $key => $val) {

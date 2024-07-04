@@ -4,9 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Book;
-use App\Models\Category;
 use App\Models\Status;
-use App\Models\User;
 
 class BookFactory extends Factory
 {
@@ -26,13 +24,8 @@ class BookFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(4),
-            'script' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'template' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'review' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'category_id' => Category::factory(),
+            'template' => $this->faker->regexify('[A-Za-z0-9]{250}'),
             'status_id' => Status::factory(),
-            'author_id' => User::factory(),
-            'reviewer_id' => User::factory(),
         ];
     }
 }
