@@ -65,7 +65,6 @@
                                                 <th>No.</th>
                                                 <th>Book Title</th>
                                                 <th>Date</th>
-                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -78,33 +77,11 @@
                                                         {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($book->status->option == 'REVIEWING')
-                                                            <span
-                                                                class="badge badge-primary">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'APPROVE')
-                                                            <span
-                                                                class="badge badge-success">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'REJECTED')
-                                                            <span
-                                                                class="badge badge-danger">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'PENDING')
-                                                            <span
-                                                                class="badge badge-warning">{{ $book->status->option }}</span>
-                                                        @else
-                                                            <span
-                                                                class="badge badge-secondary">{{ $book->status->option }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
                                                         <a class="btn btn-success btn-action mr-1" title="Detail"
                                                             href="{{ route('admin.show.book', $book->id) }}"
                                                             data-toggle="tooltip">
                                                             <i class="fas fa-list"></i>
                                                         </a>
-                                                        <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                            title="Edit"
-                                                            href="{{ route('admin.edit.book', $book->id) }}"><i
-                                                                class="fas fa-pencil-alt"></i></a>
                                                         <form action="{{ route('admin.destroy.book', $book->id) }}"
                                                             method="POST" class="btn btn-danger p-0" type="button">
                                                             @csrf

@@ -18,6 +18,7 @@ class Book extends Model
         'title',  
         'template',
         'status_id',
+        'user_id',
     ];
 
     /**
@@ -27,11 +28,17 @@ class Book extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'status_id' => 'integer',
+        'status_id' => 'integer',        
+        'user_id' => 'integer',
     ];
 
     public function status()
     {
         return $this->belongsTo(Status::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

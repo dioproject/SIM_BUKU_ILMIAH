@@ -60,37 +60,42 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
+                                                <th>Chapter</th>
                                                 <th>Date</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($books as $key => $book)
+                                            @foreach ($chapters as $key => $chapter)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title }}</td>
+                                                    <td>{{ $chapter->book->title }}</td>
+                                                    <td>{{ $chapter->chapter }}</td>
                                                     <td>
-                                                        {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
+                                                        {{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($book->status->option == 'Reviewing')
+                                                        @if ($chapter->book->status->option == 'Reviewing')
                                                             <span
-                                                                class="badge badge-primary">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'Approve')
+                                                                class="badge badge-primary">{{ $chapter->book->status->option }}</span>
+                                                        @elseif($chapter->book->status->option == 'Approve')
                                                             <span
-                                                                class="badge badge-success">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'Rejected')
+                                                                class="badge badge-success">{{ $chapter->book->status->option }}</span>
+                                                        @elseif($chapter->book->status->option == 'Rejected')
                                                             <span
-                                                                class="badge badge-danger">{{ $book->status->option }}</span>
-                                                        @elseif($book->status->option == 'Pending')
+                                                                class="badge badge-danger">{{ $chapter->book->status->option }}</span>
+                                                        @elseif($chapter->book->status->option == 'Submit')
                                                             <span
-                                                                class="badge badge-warning">{{ $book->status->option }}</span>                                                        
+                                                                class="badge badge-success">{{ $chapter->book->status->option }}</span>                                                        
+                                                        @elseif($chapter->book->status->option == 'Pending')
+                                                            <span
+                                                                class="badge badge-warning">{{ $chapter->book->status->option }}</span>                                                        
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($book->status->option == 'Pending')
-                                                            <form action="{{ route('author.submit.book', $book->id) }}"
+                                                        @if ($chapter->book->status->option == 'Pending')
+                                                            <form action="{{ route('author.submit.book', $chapter->id) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 <button class="btn btn-success mr-1" type="submit">
@@ -110,26 +115,26 @@
                             <div class="card-footer">
                                 <nav aria-label="...">
                                     <ul class="pagination justify-content-center">
-                                        @if ($books->onFirstPage())
+                                        @if ($chapters->onFirstPage())
                                             <li class="page-item disabled">
                                                 <span class="page-link">Previous</span>
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $books->previousPageUrl() }}"
+                                                <a class="page-link" href="{{ $chapters->previousPageUrl() }}"
                                                     tabindex="-1">Previous</a>
                                             </li>
                                         @endif
 
-                                        @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $books->currentPage() ? 'active' : '' }}">
+                                        @foreach ($chapters->getUrlRange(1, $chapters->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $chapters->currentPage() ? 'active' : '' }}">
                                                 <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                             </li>
                                         @endforeach
 
-                                        @if ($books->hasMorePages())
+                                        @if ($chapters->hasMorePages())
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
+                                                <a class="page-link" href="{{ $chapters->nextPageUrl() }}">Next</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">

@@ -64,6 +64,22 @@ class BookController extends Controller
         return view('pages.admin.books.show', compact('book'));
     }
 
+    public function accept($id)
+    {
+        $book = Book::with('status')->findOrFail($id);
+        $book->update(['status_id' => Status::findOrFail(5)->id]);
+
+        return redirect()->route('admin.show.book', $id);
+    }
+
+    public function reject($id)
+    {
+        $book = Book::with('status')->findOrFail($id);
+        $book->update(['status_id' => Status::findOrFail(7)->id]);
+
+        return redirect()->route('admin.show.book', $id);
+    }
+
     public function edit($id)
     {
         $book = Book::findOrFail($id);
