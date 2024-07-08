@@ -17,7 +17,6 @@ class Book extends Model
     protected $fillable = [
         'title',  
         'template',
-        'status_id',
         'user_id',
     ];
 
@@ -27,15 +26,9 @@ class Book extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'status_id' => 'integer',        
+        'id' => 'integer',       
         'user_id' => 'integer',
     ];
-
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
 
     public function user()
     {

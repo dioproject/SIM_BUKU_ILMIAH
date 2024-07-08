@@ -26,7 +26,6 @@ class BookFactory extends Factory
         return [
             'title' => $this->faker->sentence(4),
             'template' => $this->faker->regexify('[A-Za-z0-9]{250}'),
-            'status_id' => Status::factory(),
             'user_id' => User::factory(),
         ];
     }

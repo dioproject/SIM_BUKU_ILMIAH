@@ -3,28 +3,20 @@
 namespace App\Http\Controllers\author;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
+use App\Models\Chapter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthorReviewController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
 
-        $query = Review::with(['book', 'book.manuscript', 'book.manuscript.author'])
-            ->whereHas('book.manuscript', function ($q) {
-                $q->where('author_id', Auth::id());
-            });
+        $search = $request->input('search');
+        $reviews = Chapter::with(['book'])->paginate(10);
 
         if ($search) {
-            $query->whereHas('book.manuscript', function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%');
-            })->orWhere('content', 'like', '%' . $search . '%');
+            $reviews = Chapter::where('title', 'like', '%' . $search . '%')->paginate(10);
         }
-
-        $reviews = $query->paginate(10);
 
         return view('pages.author.reviews.index', compact('reviews', 'search'));
     }

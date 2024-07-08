@@ -39,6 +39,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                {{-- <a href="{{ route('author.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
+                                        class="far fa-edit"></i> Create Chapter
+                                </a> --}}
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form action="{{ route('author.index.book') }}" method="GET">
@@ -76,25 +79,25 @@
                                                         {{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->book->status->option == 'Reviewing')
+                                                        @if ($chapter->status->option == 'Reviewing')
                                                             <span
-                                                                class="badge badge-primary">{{ $chapter->book->status->option }}</span>
-                                                        @elseif($chapter->book->status->option == 'Approve')
+                                                                class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Approve')
                                                             <span
-                                                                class="badge badge-success">{{ $chapter->book->status->option }}</span>
-                                                        @elseif($chapter->book->status->option == 'Rejected')
+                                                                class="badge badge-success">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Rejected')
                                                             <span
-                                                                class="badge badge-danger">{{ $chapter->book->status->option }}</span>
-                                                        @elseif($chapter->book->status->option == 'Submit')
+                                                                class="badge badge-danger">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Submit')
                                                             <span
-                                                                class="badge badge-success">{{ $chapter->book->status->option }}</span>                                                        
-                                                        @elseif($chapter->book->status->option == 'Pending')
+                                                                class="badge badge-success">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Pending')
                                                             <span
-                                                                class="badge badge-warning">{{ $chapter->book->status->option }}</span>                                                        
+                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->book->status->option == 'Pending')
+                                                        @if ($chapter->status->option == 'Pending')
                                                             <form action="{{ route('author.submit.book', $chapter->id) }}"
                                                                 method="POST">
                                                                 @csrf

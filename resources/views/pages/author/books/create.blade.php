@@ -34,28 +34,21 @@
                                 @endif
                                 <form id="create-book-form" action="{{ route('author.store.book') }}" method="POST"
                                     enctype="multipart/form-data">
-                                    @csrf
+                                    @csrf                                    
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Title :</label>
-                                        <div class="col-sm-12 col-md-10">
-                                            <input type="text" tabindex="2" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Script
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Chapter
                                             :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="file" tabindex="3" class="form-control" id="script"
-                                                name="script" value="{{ old('script') }}" accept=".doc,.docx">
+                                            <input type="file" tabindex="3" class="form-control" id="file_chapter"
+                                                name="file_chapter" value="{{ old('file_chapter') }}" accept=".doc,.docx">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
-                                        <div class="col-sm-12 col-md-9">
-                                            <button type="submit" class="btn btn-primary"><i
-                                                    class="far fa-save"></i>
-                                                Submit</button>
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">File Chapter
+                                            :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="file" tabindex="3" class="form-control" id="file_chapter"
+                                                name="file_chapter" value="{{ old('file_chapter') }}" accept=".doc,.docx">
                                         </div>
                                     </div>
                                 </form>

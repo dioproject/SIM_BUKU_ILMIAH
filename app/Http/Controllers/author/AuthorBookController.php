@@ -16,7 +16,7 @@ class AuthorBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $chapters = Chapter::with(['book', 'book.status'])->paginate(10);
+        $chapters = Chapter::with(['status'])->paginate(10);
         if ($search) {
             $chapters = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
@@ -26,10 +26,10 @@ class AuthorBookController extends Controller
 
     public function submit($id)
     {
-        $book = Book::findOrFail($id);
-        $book->update([
+        $chapter = Chapter::findOrFail($id);
+        $chapter->update([
             'status_id' => Status::findOrFail(6)->id,
-            'user_id' => Auth::id(),
+            'author_id  ' => Auth::id(),
         ]);
 
         return redirect()->route('author.index.book');
@@ -37,8 +37,8 @@ class AuthorBookController extends Controller
 
     public function create()
     {
-        
-        return view('pages.author.books.create', compact('category'));
+        $chapter_user = Chapter::where('status_id', 5)->where('author_id', Auth::id())->get();
+        return view('pages.author.books.create', compact('chapter'));
     }
 
     public function store(Request $request)

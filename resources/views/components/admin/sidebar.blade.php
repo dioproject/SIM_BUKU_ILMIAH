@@ -23,7 +23,7 @@
                 <a class="nav-link" href="{{ url('admin/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
-            <li class="{{ Request::is('admin/reviews') ? 'active' : '' }}">
+            {{-- <li class="{{ Request::is('admin/reviews') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/reviews') }}"><i
                     class="fas fa-solid fa-comment"></i><span>Reviews</span></a>
             </li>
@@ -34,7 +34,7 @@
             <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/royalty') }}"><i
                         class="fas fa-solid fa-box"></i><span>Royalty</span></a>
-            </li>
+            </li> --}}
             <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/history') }}"><i
                         class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->id();
             $table->string('title', 250)->nullable();
             $table->string('template', 250)->nullable();
-            $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('set null')->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });

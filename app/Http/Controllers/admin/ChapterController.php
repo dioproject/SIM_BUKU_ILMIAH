@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Chapter;
 use App\Models\History;
+use App\Models\Status;
 
 class ChapterController extends Controller
 {
@@ -42,6 +43,7 @@ class ChapterController extends Controller
         $chapter = Chapter::create([
             'chapter' => $request->chapter,
             'book_id' => $request->book_id,
+            'status_id' => Status::findOrFail(1)->id,
         ]);
 
         if ($chapter) {
@@ -52,6 +54,12 @@ class ChapterController extends Controller
             return redirect()->route('admin.index.chapter')->with('success', Auth::user()->first_name . ' created chapter ' . $chapter->name . ' successfully.');
         }
         return redirect()->route('admin.create.chapter')->with('error', 'Chapter not found.');
+    }
+
+    public function show($id)
+    {
+        $chapter = Chapter::with(['book', 'status'])->findOrFail($id);
+        return view('pages.admin.chapters.show', compact('chapter'));
     }
 
     public function edit($id)
