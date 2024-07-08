@@ -39,6 +39,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/edit/user/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
     Route::put('/admin/edit/user/{id}', [UserController::class, 'update'])->name('admin.update.user');
     Route::delete('/admin/user/{id}', [UserController::class, 'destroy'])->name('admin.destroy.user');
+    Route::get('/admin/chapter/{id}', [ChapterController::class, 'show'])->name('admin.show.chapter');
     Route::get('/admin/chapters', [ChapterController::class, 'index'])->name('admin.index.chapter');
     Route::get('/admin/create/chapter', [ChapterController::class, 'create'])->name('admin.create.chapter');
     Route::post('/admin/create/chapter', [ChapterController::class, 'store'])->name('admin.store.chapter');
@@ -87,6 +88,8 @@ Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
     //Author
     Route::get('/author/dashboard', [HomeController::class, 'authorPage'])->name('author.dashboard');
     Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');    
+    Route::get('/author/book/create', [AuthorBookController::class, 'create'])->name('author.create.book');    
+    Route::get('/author/book/create', [AuthorBookController::class, 'store'])->name('author.store.book');    
     Route::get('/author/book/{id}', [AuthorBookController::class, 'show'])->name('author.show.book');
     Route::post('/author/book/{id}/submit', [AuthorBookController::class, 'submit'])->name('author.submit.book');
     Route::get('/author/edit/book/{id}', [AuthorBookController::class, 'edit'])->name('author.edit.book');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Chapter;
 use App\Models\Status;
 use App\Models\History;
 use Illuminate\Support\Facades\Storage;
@@ -44,7 +45,6 @@ class BookController extends Controller
         $book = Book::create([
             'title' => $request->title,
             'template' => $fileName,
-            'status_id' => Status::findOrFail(1)->id,
         ]);
 
         if ($book) {
@@ -59,14 +59,14 @@ class BookController extends Controller
 
     public function show($id)
     {
-        $book = Book::with('status')->findOrFail($id);
+        $book = Book::findOrFail($id);
 
         return view('pages.admin.books.show', compact('book'));
     }
 
     public function accept($id)
     {
-        $book = Book::with('status')->findOrFail($id);
+        $book = Chapter::with(['status', 'author'])->findOrFail($id);
         $book->update(['status_id' => Status::findOrFail(5)->id]);
 
         return redirect()->route('admin.show.book', $id);

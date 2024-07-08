@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\History;
 use App\Models\Category;
-use App\Models\Review;
+use App\Models\Chapter;
 use App\Models\Status;
 
 class ReviewController extends Controller
@@ -18,15 +18,11 @@ class ReviewController extends Controller
     {
 
         $search = $request->input('search');
-        $query = Review::with(['book.manuscript', 'book.manuscript.author']);
+        $reviews = Chapter::with(['book', 'book.status'])->paginate(10);
 
         if ($search) {
-            $query->whereHas('book.manuscript', function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%');
-            })->orWhere('content', 'like', '%' . $search . '%');
+            $reviews = Chapter::where('title', 'like', '%' . $search . '%')->paginate(10);
         }
-
-        $reviews = $query->paginate(10);
 
         return view('pages.admin.reviews.index', compact('reviews', 'search'));
     }
@@ -46,11 +42,11 @@ class ReviewController extends Controller
             'content' => 'required',
         ]);
 
-        if (Review::where('book_id', $request->book_id)->exists()) {
-            return redirect()->route('admin.create.review')->with('error', 'Review does not exist.');            
+        if (Chapter::where('book_id', $request->book_id)->exists()) {
+            return redirect()->route('admin.create.review')->with('error', 'Chapter does not exist.');            
         }
         
-        $review = Review::create([
+        $review = Chapter::create([
             'book_id' => $request->book_id,
             'content' => $request->content,
             'reviewer_id' => Auth::id(),
@@ -68,12 +64,12 @@ class ReviewController extends Controller
             ]);
             return redirect()->route('admin.index.review')->with('success', Auth::user()->first_name . ' created review ' . $book->manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.create.review')->with('error', 'Review not found.');
+        return redirect()->route('admin.create.review')->with('error', 'Chapter not found.');
     }
 
     public function edit($id)
     {        
-        $review = Review::findOrFail($id);
+        $review = Chapter::findOrFail($id);
         $books = Book::with('manuscript')->get();
 
         return view('pages.admin.reviews.edit', compact( 'review', 'books'));
@@ -85,7 +81,7 @@ class ReviewController extends Controller
             'content' => 'required',
         ]);
 
-        $review = Review::findOrFail($id);
+        $review = Chapter::findOrFail($id);
         $review->update([
             'content' => $request->content,
             'reviewer_id' => Auth::id(),
@@ -100,12 +96,12 @@ class ReviewController extends Controller
             ]);
             return redirect()->route('admin.index.review')->with('success', Auth::user()->first_name . ' updated review ' . $book->manuscript->title . ' successfully.');
         }
-        return redirect()->route('admin.edit.review')->with('error', 'Review not found.');
+        return redirect()->route('admin.edit.review')->with('error', 'Chapter not found.');
     }
 
     public function destroy($id)
     {
-        $review = Review::findOrFail($id);
+        $review = Chapter::findOrFail($id);
         $review->delete();
 
         if ($review) {

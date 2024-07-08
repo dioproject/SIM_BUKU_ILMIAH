@@ -69,6 +69,11 @@
                                                 <td>{{ $chapter->book->title }}</td>
                                                 <td>{{ $chapter->chapter }}</td>
                                                 <td>
+                                                    <a class="btn btn-success btn-action mr-1" title="Detail"
+                                                            href="{{ route('admin.show.chapter', $chapter->id) }}"
+                                                            data-toggle="tooltip">
+                                                            <i class="fas fa-list"></i>
+                                                        </a>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                         title="Edit"
                                                         href="{{ route('admin.edit.chapter', $chapter->id) }}"><i
