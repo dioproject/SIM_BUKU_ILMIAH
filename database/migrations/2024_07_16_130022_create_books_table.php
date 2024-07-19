@@ -13,17 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title', 250)->nullable();
             $table->string('template', 250)->nullable();
-            $table->foreignId('user_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
+            $table->string('total_chapter', 7)->nullable();
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

@@ -15,14 +15,14 @@
                 <a class="nav-link" href="{{ url('admin/users') }}"><i
                     class="fas fa-solid fa-user-group"></i><span>Users</span></a>
             </li>
-            <li class="{{ Request::is('admin/chapters') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/chapters') }}"><i
-                    class="fas fa-solid fa-book-open"></i><span>Chapters</span></a>
-            </li>
             <li class="{{ Request::is('admin/books') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
+            {{-- <li class="{{ Request::is('admin/books') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('admin/books') }}"><i
+                    class="fas fa-solid fa-book"></i><span>Books</span></a>
+            </li> --}}
             {{-- <li class="{{ Request::is('admin/reviews') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/reviews') }}"><i
                     class="fas fa-solid fa-comment"></i><span>Reviews</span></a>

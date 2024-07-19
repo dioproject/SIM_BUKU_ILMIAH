@@ -11,37 +11,35 @@ class User extends Model implements Authenticatable
 {
     use HasFactory, AuthenticatableTrait;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
+        'name',
+        'username',
         'email',
         'password',
-        'user_role',
-        'first_name',
-        'last_name',
-        'place_of_birth',
-        'date_of_birth',
         'contact',
-        'religion_id',
-        'gender_id',
+        'user_role',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
     protected $hidden = [
         'password',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'id' => 'integer',
-        'date_of_birth' => 'date',
-        'religion_id' => 'integer',
-        'gender_id' => 'integer',
     ];
-
-    public function religion()
-    {
-        return $this->belongsTo(Religion::class);
-    }
-
-    public function gender()
-    {
-        return $this->belongsTo(Gender::class);
-    }
 }

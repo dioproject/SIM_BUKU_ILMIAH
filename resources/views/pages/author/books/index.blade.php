@@ -39,9 +39,6 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                {{-- <a href="{{ route('author.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Chapter
-                                </a> --}}
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form action="{{ route('author.index.book') }}" method="GET">
@@ -63,51 +60,22 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
-                                                <th>Chapter</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
+                                                <th>Total Chapter</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($chapters as $key => $chapter)
+                                            @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $chapter->book->title }}</td>
-                                                    <td>{{ $chapter->chapter }}</td>
+                                                    <td>{{ $book->title }}</td>
+                                                    <td>{{ $book->total_chapter }}</td>
                                                     <td>
-                                                        {{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($chapter->status->option == 'Reviewing')
-                                                            <span
-                                                                class="badge badge-primary">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Approve')
-                                                            <span
-                                                                class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Rejected')
-                                                            <span
-                                                                class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Submit')
-                                                            <span
-                                                                class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Pending')
-                                                            <span
-                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($chapter->status->option == 'Pending')
-                                                            <form action="{{ route('author.submit.book', $chapter->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button class="btn btn-success mr-1" type="submit">
-                                                                    <i class="fas fa-check"></i> Submit
-                                                                </button>
-                                                            </form>
-                                                        @else
-                                                            <div class="none"></div>
-                                                        @endif
+                                                        <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
+                                                            title="Detail" href="{{ route('author.show.book', $book->id) }}"
+                                                            data-toggle="tooltip">
+                                                            <i class="fas fa-list"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -118,26 +86,26 @@
                             <div class="card-footer">
                                 <nav aria-label="...">
                                     <ul class="pagination justify-content-center">
-                                        @if ($chapters->onFirstPage())
+                                        @if ($books->onFirstPage())
                                             <li class="page-item disabled">
                                                 <span class="page-link">Previous</span>
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $chapters->previousPageUrl() }}"
+                                                <a class="page-link" href="{{ $books->previousPageUrl() }}"
                                                     tabindex="-1">Previous</a>
                                             </li>
                                         @endif
 
-                                        @foreach ($chapters->getUrlRange(1, $chapters->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $chapters->currentPage() ? 'active' : '' }}">
+                                        @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $books->currentPage() ? 'active' : '' }}">
                                                 <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                             </li>
                                         @endforeach
 
-                                        @if ($chapters->hasMorePages())
+                                        @if ($books->hasMorePages())
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $chapters->nextPageUrl() }}">Next</a>
+                                                <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">

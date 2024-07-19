@@ -64,7 +64,7 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
-                                                <th>Date</th>
+                                                <th>Total Chapter</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -72,16 +72,13 @@
                                             @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title }}</td>
+                                                    <td>{{ $book->title ?? '' }}</td>
+                                                    <td>{{ $book->total_chapter ?? '' }}</td>
                                                     <td>
-                                                        {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
-                                                    </td>
-                                                    <td>
-                                                        <a class="btn btn-success btn-action mr-1" title="Detail"
-                                                            href="{{ route('admin.show.book', $book->id) }}"
+                                                        <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
+                                                            title="Detail" href="{{ route('admin.show.book', $book->id) }}"
                                                             data-toggle="tooltip">
                                                             <i class="fas fa-list"></i>
-                                                        </a>
                                                         <form action="{{ route('admin.destroy.book', $book->id) }}"
                                                             method="POST" class="btn btn-danger p-0" type="button">
                                                             @csrf

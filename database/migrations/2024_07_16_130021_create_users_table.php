@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
-
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('option', 15)->nullable();
+            $table->string('name', 100)->nullable();
+            $table->string('username', 30)->nullable();
+            $table->string('email', 100)->unique()->nullable();
+            $table->string('password', 250)->nullable();
+            $table->string('contact', 30)->nullable();
+            $table->enum('user_role', ["ADMIN","REVIEWER","AUTHOR"])->nullable();
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('users');
     }
 };

@@ -15,9 +15,9 @@ class Book extends Model
      * @var array
      */
     protected $fillable = [
-        'title',  
+        'title',
         'template',
-        'user_id',
+        'total_chapter',
     ];
 
     /**
@@ -26,12 +26,6 @@ class Book extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',       
-        'user_id' => 'integer',
+        'id' => 'integer',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

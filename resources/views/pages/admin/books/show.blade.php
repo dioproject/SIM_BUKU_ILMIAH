@@ -9,29 +9,129 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Book Detail</h1>
+                <h1>{{ $book->title }} Book Detail</h1>
             </div>
+            @php
+                $totalChapters = (int) $book->total_chapter;
+                $currentChaptersCount = $chapters->count();
+            @endphp
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table-striped table" id="table-2">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Book Title</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1.</td>
-                                                <td>{{ $book->title }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                @if ($currentChaptersCount < $totalChapters)
+                                    <form action="{{ route('admin.store.chapter', $book->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+
+                                        @for ($i = $currentChaptersCount + 1; $i <= $totalChapters; $i++)
+                                            <div class="form-group row mb-4">
+                                                <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Chapter
+                                                    {{ $i }}
+                                                    :</label>
+                                                <div class="col-sm-12 col-md-10">
+                                                    <input type="text" tabindex="1" class="form-control" id="chapter"
+                                                        name="chapter[]" value="{{ old('chapter.' . ($i - 1)) }}">
+                                                </div>
+                                            </div>
+                                        @endfor
+
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
+                                            <div class="col-sm-12 col-md-9">
+                                                <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+                                                    Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                @endif
+
+                                @foreach ($chapters as $key => $chapter)
+                                    <div class="d-flex justify-content-between">
+                                        <strong>{{ $key + 1 }}. {{ $chapter->chapter }}</strong>
+                                        @if ($chapter->status->option == 'Revisi')
+                                            <span class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Accept')
+                                            <span class="badge badge-success">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Reject')
+                                            <span class="badge badge-danger">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Submit')
+                                            <span class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Pending')
+                                            <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                        @endif
+                                    </div>
+                                    <ul class="list-group py-2">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <i class="fas fa-file"></i>
+                                                    <strong>{{ $chapter->book->template }}</strong>
+                                                </div>
+                                                <div class="col-md-4 text-right">
+                                                    @if ($chapter->status->option == 'Accept' || $chapter->status->option == 'Revision')
+                                                        <a class="btn btn-secondary"
+                                                            href="{{ Storage::url('upload/books/') . $chapter->book->template }}"
+                                                            download="{{ $chapter->book->template }}"><i
+                                                                class="fas fa-download"></i></a></td>
+                                                    @endif
+                                                    @if ($chapter->author_id !== null && $chapter->status->option == 'Submit')
+                                                        <a class="btn btn-success"
+                                                            href="{{ route('admin.accept.chapter', $chapter->id) }}"><i
+                                                                class="fas fa-check"></i></a>
+                                                        <a class="btn btn-danger"
+                                                            href="{{ route('admin.reject.chapter', $chapter->id) }}"><i
+                                                                class="fas fa-ban"></i></a>
+                                                    @endif
+                                                </div>
+                                                <div class="d-flex justify-content-between col-md-12 py-1">
+                                                    @if ($chapter->status->option == 'Accept')
+                                                        <small class="text-danger align-middle">Deadline :
+                                                            {{ \Carbon\Carbon::parse($chapter->deadline)->translatedFormat('l, d F Y') }}
+                                                        </small>
+                                                    @endif
+                                                    @if ($chapter->status->option != 'Pending')
+                                                        <small>Verified : {{ $chapter->created_at }}</small>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @if ($chapter->status->option == 'Accept' && $chapter->file_chapter !== null)
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-md-11">
+                                                        <i class="fas fa-file"></i>
+                                                        <strong>{{ $chapter->file_chapter }}</strong>
+                                                    </div>
+                                                    <div class="col-md-1 text-right">
+                                                        <a class="btn btn-secondary"
+                                                            href="{{ Storage::url('upload/books/') . $chapter->file_chapter }}"
+                                                            download="{{ $chapter->file_chapter }}"><i
+                                                                class="fas fa-download"></i></a></td>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between col-md-12 py-1">
+                                                        <small>Author : {{ $chapter->author->username }}</small>
+                                                        @if ($chapter->status->option != 'Pending')
+                                                            <small>Uploaded : {{ $chapter->updated_at }}</small>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                        @if ($chapter->status->option == 'Revision')
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <strong>Notes :</strong>
+                                                        <br>
+                                                        <p>{{ $chapter->notes }}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                @endforeach
                             </div>
                         </div>
                     </div>

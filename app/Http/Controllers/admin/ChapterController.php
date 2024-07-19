@@ -33,27 +33,24 @@ class ChapterController extends Controller
         return view('pages.admin.chapters.create', compact('chapter', 'books'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $request->validate([
-            'book_id' => 'required',
-            'chapter' => 'required',
+        $book = Book::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'chapters' => 'required|array',
+            'chapters.*' => 'required|string|max:100',
         ]);
 
-        $chapter = Chapter::create([
-            'chapter' => $request->chapter,
-            'book_id' => $request->book_id,
-            'status_id' => Status::findOrFail(1)->id,
-        ]);
-
-        if ($chapter) {
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' added chapter ' . $chapter->chapter,
-                'user_id' => Auth::id(),
+        foreach ($validatedData['chapters'] as $chapter) {
+            Chapter::create([
+                'chapter' => $chapter,
+                'book_id' => $book->id,
+                'status_id' => Status::findOrFail(1)->id,
             ]);
-            return redirect()->route('admin.index.chapter')->with('success', Auth::user()->first_name . ' created chapter ' . $chapter->name . ' successfully.');
         }
-        return redirect()->route('admin.create.chapter')->with('error', 'Chapter not found.');
+
+        return redirect()->route('admin.show.book', $book->id)->with('success', 'Chapters saved successfully!');
     }
 
     public function show($id)

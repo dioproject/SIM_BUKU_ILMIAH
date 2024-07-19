@@ -12,22 +12,22 @@ class UserSeeder extends Seeder
     {
         $usersData = [
             [
-               'first_name' => 'admin',
-               'email'  =>'admin@admin.com',
-               'user_role' => 'ADMIN',
-               'password' => Hash::make('admin123'),
+                'username' => 'admin',
+                'email'  => 'admin@admin.com',
+                'user_role' => 'ADMIN',
+                'password' => Hash::make('admin123'),
             ],
             [
-               'first_name' => 'editor',
-               'email' => 'editor@editor.com',
-               'user_role' => 'EDITOR',
-               'password' => Hash::make('editor123'),
+                'username' => 'reviewer',
+                'email' => 'reviewer@reviewer.com',
+                'user_role' => 'REVIEWER',
+                'password' => Hash::make('reviewer123'),
             ],
             [
-               'first_name' => 'author',
-               'email' => 'author@author.com',
-               'user_role' => 'AUTHOR',
-               'password' => Hash::make('author123'),
+                'username' => 'author',
+                'email' => 'author@author.com',
+                'user_role' => 'AUTHOR',
+                'password' => Hash::make('author123'),
             ],
         ];
         foreach ($usersData as $key => $val) {

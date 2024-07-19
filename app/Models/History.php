@@ -16,8 +16,6 @@ class History extends Model
      */
     protected $fillable = [
         'change_detail',
-        'book_id',
-        'user_id',
     ];
 
     /**
@@ -27,17 +25,5 @@ class History extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'book_id' => 'integer',
-        'user_id' => 'integer',
     ];
-
-    public function book()
-    {
-        return $this->belongsTo(Book::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

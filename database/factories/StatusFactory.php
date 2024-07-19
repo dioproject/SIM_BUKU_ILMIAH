@@ -23,7 +23,7 @@ class StatusFactory extends Factory
     public function definition()
     {
         return [
-            'option' => $this->faker->regexify('[A-Za-z0-9]{15}'),
+            'option' => $this->faker->regexify('[A-Za-z0-9]{20}'),
         ];
     }
 }
