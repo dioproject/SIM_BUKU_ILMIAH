@@ -16,12 +16,26 @@ class AuthorBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $chapters = Chapter::with(['status'])->paginate(10);
         if ($search) {
-            $chapters = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
+            $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
+        $books = Book::paginate(10);
+        $chapters = Chapter::all();
+        $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
+            $filledChaptersCount = $chapters->where('book_id', $book->id)->whereNotNull('chapter')->count();
+            $book->filledChaptersCount = $filledChaptersCount;
+            return $book;
+        });
 
-        return view('pages.author.books.index', compact('chapters', 'search'));
+        return view('pages.author.books.index', compact('books', 'search', 'chapters'));
+    }
+
+    public function show($id)
+    {
+        $book = Book::findOrFail($id);
+        $chapters = Chapter::where('book_id', $book->id)->get();
+
+        return view('pages.author.books.show', compact('book', 'chapters'));
     }
 
     public function submit($id)
@@ -29,57 +43,38 @@ class AuthorBookController extends Controller
         $chapter = Chapter::findOrFail($id);
         $chapter->update([
             'status_id' => Status::findOrFail(6)->id,
-            'author_id  ' => Auth::id(),
+            'author_id' => Auth::id(),
+            'created_at' => now()
         ]);
 
-        return redirect()->route('author.index.book');
+        return redirect()->route('author.show.book', $chapter->book_id);
     }
 
-    public function create()
-    {
-        $chapter_user = Chapter::where('status_id', 5)->where('author_id', Auth::id())->get();
-        return view('pages.author.books.create', compact('chapter'));
-    }
-
-    public function store(Request $request)
+    public function upload(Request $request, $id)
     {
         $request->validate([
-            'category' => 'required',
-            'title' => 'required|max:250',
-            'script' => 'required|file|mimes:doc,docx',
+            'file_chapter' => 'required|file|mimes:doc,docx|max:2048',
         ]);
 
-        $fileName = null;
+        $chapter = Chapter::findOrFail($id);
+        $oldFile = $chapter->file_chapter;
+        $fileName = $oldFile;
 
-        if ($request->hasFile('script')) {
-            $file = $request->file('script');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+        if ($request->hasFile('file_chapter')) {
+            $file = $request->file('file_chapter');
+            $fileName = time() . '_chapter_' . $file->getClientOriginalName();
             $file->storeAs('upload/books', $fileName, 'public');
         }
 
-        $book = Book::create([
-            'title' => $request->title,
-            'script' => $fileName,
-            'author_id' => Auth::id(),
-            'category_id' => $request->category,
-            'status_id' => Status::findOrFail(1)->id,
+        $chapter->update([
+            'file_chapter' => $fileName,
         ]);
 
-        if ($book) {
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' added ' . $book->title . ' book.',
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' created book ' . $book->title . ' successfully.');
+        if ($oldFile) {
+            Storage::disk('public')->delete('upload/books/' . $oldFile);
         }
-        return redirect()->route('author.create.book')->with('error', 'Book not found.');
-    }
 
-    public function show($id)
-    {
-        $book = Book::with('status')->findOrFail($id);
-
-        return view('pages.author.books.show', compact('book'));
+        return redirect()->route('author.show.book', $chapter->book_id);
     }
 
     public function edit($id)
@@ -104,9 +99,9 @@ class AuthorBookController extends Controller
         if ($request->hasFile('script')) {
             $file = $request->file('script');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('upload/books', $fileName, 'public');            
+            $file->storeAs('upload/books', $fileName, 'public');
         }
-        
+
         $book->update([
             'title' => $request->title,
             'script' => $fileName,

@@ -18,8 +18,6 @@ return new class extends Migration
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
             $table->text('change_detail')->nullable();
-            $table->foreignId('book_id')->nullable()->constrained('Books')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('user_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
 

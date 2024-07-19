@@ -17,12 +17,13 @@ class Chapter extends Model
     protected $fillable = [
         'chapter',
         'deadline',
+        'notes',
         'file_chapter',
         'file_review',
-        'status_id',
         'book_id',
         'author_id',
         'reviewer_id',
+        'status_id',
     ];
 
     /**
@@ -33,10 +34,10 @@ class Chapter extends Model
     protected $casts = [
         'id' => 'integer',
         'deadline' => 'date',
-        'status_id' => 'integer',
         'book_id' => 'integer',
         'author_id' => 'integer',
         'reviewer_id' => 'integer',
+        'status_id' => 'integer',
     ];
 
     public function book()

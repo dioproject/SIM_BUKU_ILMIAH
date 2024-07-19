@@ -12,82 +12,114 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Book Detail</h1>
+                <h1>{{ $book->title }} Book Detail</h1>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table-striped table" id="table-2">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Book Title</th>
-                                                <th>File Name</th>
-                                                <th>Information</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center">1.</td>
-                                                <td>{{ $book->title }}</td>
-                                                <td><a href="{{ Storage::url('upload/books/') . $book->script }}"
-                                                        download="{{ $book->script }}">{{ $book->script }}</a></td>
-                                                <td>Script</td>
-                                                <td>
-                                                    @if ($book->status->option == 'REVIEWING')
-                                                        <span class="badge badge-primary">{{ $book->status->option }}</span>
-                                                    @elseif($book->status->option == 'APPROVE')
-                                                        <span class="badge badge-success">{{ $book->status->option }}</span>
-                                                    @elseif($book->status->option == 'REJECTED')
-                                                        <span class="badge badge-danger">{{ $book->status->option }}</span>
-                                                    @elseif($book->status->option == 'PENDING')
-                                                        <span class="badge badge-warning">{{ $book->status->option }}</span>
-                                                    @else
-                                                        <span
-                                                            class="badge badge-secondary">{{ $book->status->option }}</span>
+                                @foreach ($chapters as $key => $chapter)
+                                    <div class="d-flex justify-content-between">
+                                        <strong>{{ $key + 1 }}. {{ $chapter->chapter }}</strong>
+                                        @if ($chapter->status->option == 'Revisi')
+                                            <span class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Accept')
+                                            <span class="badge badge-success">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Reject')
+                                            <span class="badge badge-danger">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Submit')
+                                            <span class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                        @elseif($chapter->status->option == 'Pending')
+                                            <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                        @endif
+                                    </div>
+                                    <ul class="list-group py-2">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <i class="fas fa-file"></i>
+                                                    <strong>{{ $chapter->book->template }}</strong>
+                                                </div>
+                                                <div class="col-md-4 text-right">
+                                                    @if ($chapter->status->option == 'Accept' || $chapter->status->option == 'Revision')
+                                                        <a class="btn btn-secondary"
+                                                            href="{{ Storage::url('upload/books/') . $chapter->book->template }}"
+                                                            download="{{ $chapter->book->template }}"><i
+                                                                class="fas fa-download"></i></a></td>
                                                     @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center">2.</td>
-                                                <td>{{ $book->title }}</td>
-                                                <td><a href="{{ Storage::url('upload/books/') . $book->template }}"
-                                                        download="{{ $book->template }}">{{ $book->template }}</a></td>
-                                                <td>Template</td>
-                                                <td>
-                                                    @if ($book->status->option == 'REVIEWING')
-                                                        <span
-                                                            class="badge badge-primary">{{ $book->status->option }}</span>
-                                                    @elseif($book->status->option == 'APPROVE')
-                                                        <span
-                                                            class="badge badge-success">{{ $book->status->option }}</span>
-                                                    @elseif($book->status->option == 'REJECTED')
-                                                        <span class="badge badge-danger">{{ $book->status->option }}</span>
-                                                    @elseif($book->status->option == 'PENDING')
-                                                        <span
-                                                            class="badge badge-warning">{{ $book->status->option }}</span>
-                                                    @else
-                                                        <span
-                                                            class="badge badge-secondary">{{ $book->status->option }}</span>
+                                                    @if ($chapter->status->option == 'Pending')
+                                                        <a class="btn btn-success"
+                                                            href="{{ route('author.submit.chapter', $chapter->id) }}"><i
+                                                                class="fas fa-check"></i></a>
                                                     @endif
-                                                </td>
-                                            </tr>
-                                            @if ($book->review !== null)
-                                                <tr>
-                                                    <td class="text-center">3.</td>
-                                                    <td>{{ $book->title }}</td>
-                                                    <td><a href="{{ Storage::url('upload/books/') . $book->review }}"
-                                                            download="{{ $book->review }}">{{ $book->review }}</a></td>
-                                                    <td>Review</td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between col-md-12 py-1">
+                                                    @if ($chapter->status->option == 'Accept')
+                                                        <small class="text-danger align-middle">Deadline :
+                                                            {{ \Carbon\Carbon::parse($chapter->deadline)->translatedFormat('l, d F Y') }}
+                                                        </small>
+                                                    @endif
+                                                    @if ($chapter->status->option != 'Pending')
+                                                        <small>Verified : {{ $chapter->created_at }}</small>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @if ($chapter->status->option == 'Accept' && $chapter->file_chapter !== null)
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-md-11">
+                                                        <i class="fas fa-file"></i>
+                                                        <strong>{{ $chapter->file_chapter }}</strong>
+                                                    </div>
+                                                    <div class="col-md-1 text-right">
+                                                        <a class="btn btn-secondary"
+                                                            href="{{ Storage::url('upload/books/') . $chapter->file_chapter }}"
+                                                            download="{{ $chapter->file_chapter }}"><i
+                                                                class="fas fa-download"></i></a></td>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between col-md-12 py-1">
+                                                        <small>Author : {{ $chapter->author->username }}</small>
+                                                        @if ($chapter->status->option != 'Pending')
+                                                            <small>Uploaded : {{ $chapter->updated_at }}</small>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                        @if ($chapter->status->option == 'Revision')
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <strong>Notes :</strong>
+                                                        <br>
+                                                        <p>{{ $chapter->notes }}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endif
+                                        @if ($chapter->status->option == 'Accept' && Auth::user()->id == $chapter->author_id)
+                                            <li class="list-group-item">
+                                                <form action="{{ route('author.upload.chapter', $chapter->id) }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <input type="file" name="file_chapter"
+                                                                class="form-control-file" accept=".doc,.docx" required>
+                                                        </div>
+                                                        <div class="col-md-2 text-right">
+                                                            <button type="submit" class="btn btn-primary"><i
+                                                                    class="fas fa-upload"></i> Upload</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                @endforeach
                             </div>
                         </div>
                     </div>

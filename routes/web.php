@@ -21,7 +21,7 @@ use App\Http\Controllers\editor\EditorUserController;
 
 Route::redirect('/', '/login');
 
-Route::controller(AuthController::class)->group(function() {
+Route::controller(AuthController::class)->group(function () {
     //Login
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginAction')->name('login.action');
@@ -39,59 +39,38 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/edit/user/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
     Route::put('/admin/edit/user/{id}', [UserController::class, 'update'])->name('admin.update.user');
     Route::delete('/admin/user/{id}', [UserController::class, 'destroy'])->name('admin.destroy.user');
-    Route::get('/admin/chapter/{id}', [ChapterController::class, 'show'])->name('admin.show.chapter');
-    Route::get('/admin/chapters', [ChapterController::class, 'index'])->name('admin.index.chapter');
-    Route::get('/admin/create/chapter', [ChapterController::class, 'create'])->name('admin.create.chapter');
-    Route::post('/admin/create/chapter', [ChapterController::class, 'store'])->name('admin.store.chapter');
-    Route::get('/admin/edit/chapter/{id}', [ChapterController::class, 'edit'])->name('admin.edit.chapter');
-    Route::put('/admin/edit/chapter/{id}', [ChapterController::class, 'update'])->name('admin.update.chapter');
-    Route::delete('/admin/chapter/{id}', [ChapterController::class, 'destroy'])->name('admin.destroy.chapter');
     Route::get('/admin/books', [BookController::class, 'index'])->name('admin.index.book');
     Route::get('/admin/create/book', [BookController::class, 'create'])->name('admin.create.book');
     Route::post('/admin/create/book', [BookController::class, 'store'])->name('admin.store.book');
+    Route::post('/admin/chapter/{id}', [BookController::class, 'storeChapter'])->name('admin.store.chapter');
     Route::get('/admin/book/{id}', [BookController::class, 'show'])->name('admin.show.book');
-    Route::post('/admi//book/{id}/accept', [BookController::class, 'accept'])->name('admin.accept.book');
-    Route::post('/admi//book/{id}/reject', [BookController::class, 'reject'])->name('admin.reject.book');
+    Route::get('/admin/chapter/{id}/accept', [BookController::class, 'accept'])->name('admin.accept.chapter');
+    Route::get('/admin/chapter/{id}/reject', [BookController::class, 'reject'])->name('admin.reject.chapter');
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
-    Route::get('/admin/reviews', [ReviewController::class, 'index'])->name('admin.index.review');
-    Route::get('/admin/create/review', [ReviewController::class, 'create'])->name('admin.create.review');
-    Route::post('/admin/create/review', [ReviewController::class, 'store'])->name('admin.store.review');
-    Route::get('/admin/edit/review/{id}', [ReviewController::class, 'edit'])->name('admin.edit.review');
-    Route::put('/admin/edit/review/{id}', [ReviewController::class, 'update'])->name('admin.update.review');
-    Route::delete('/admin/review/{id}', [ReviewController::class, 'destroy'])->name('admin.destroy.review');
-    Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
-    Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
-    Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
-    Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
-    Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
-    Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
-    Route::get('/admin/edit/royalty/{id}', [RoyaltyController::class, 'edit'])->name('admin.edit.royalty');
-    Route::put('/admin/edit/royalty/{id}', [RoyaltyController::class, 'update'])->name('admin.update.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
 });
 
-Route::middleware(['auth', 'user-role:EDITOR'])->group(function() {
-    
+Route::middleware(['auth', 'user-role:REVIEWER'])->group(function () {
+
     //Editor
-    Route::get('/editor/dashboard', [HomeController::class, 'editorPage'])->name('editor.dashboard');
-    Route::get('/editor/users', [EditorUserController::class, 'index'])->name('editor.index.user');
-    Route::get('/editor/books', [EditorBookController::class, 'index'])->name('editor.index.book');
-    Route::get('/editor/book/{id}', [EditorBookController::class, 'show'])->name('editor.show.book');
-    Route::post('/editor/book/{id}/approve', [EditorBookController::class, 'approve'])->name('editor.approve.book');
-    Route::post('/editor/book/{id}//rejected', [EditorBookController::class, 'rejected'])->name('editor.rejected.book');
-    Route::post('/editor/book/{id}/review', [EditorBookController::class, 'review'])->name('editor.review.book');    
-    Route::get('/editor/history', [EditorHistoryController::class, 'index'])->name('editor.index.history');
+    Route::get('/reviewer/dashboard', [HomeController::class, 'editorPage'])->name('reviewer.dashboard');
+    Route::get('/reviewer/users', [EditorUserController::class, 'index'])->name('reviewer.index.user');
+    Route::get('/reviewer/books', [EditorBookController::class, 'index'])->name('reviewer.index.book');
+    Route::get('/reviewer/book/{id}', [EditorBookController::class, 'show'])->name('reviewer.show.book');
+    Route::post('/reviewer/book/{id}/approve', [EditorBookController::class, 'approve'])->name('reviewer.approve.book');
+    Route::post('/reviewer/book/{id}//rejected', [EditorBookController::class, 'rejected'])->name('reviewer.rejected.book');
+    Route::post('/reviewer/book/{id}/review', [EditorBookController::class, 'review'])->name('reviewer.review.book');
+    Route::get('/reviewer/history', [EditorHistoryController::class, 'index'])->name('reviewer.index.history');
 });
 
-Route::middleware(['auth', 'user-role:AUTHOR'])->group(function() {
-    
+Route::middleware(['auth', 'user-role:AUTHOR'])->group(function () {
+
     //Author
     Route::get('/author/dashboard', [HomeController::class, 'authorPage'])->name('author.dashboard');
-    Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');    
-    Route::get('/author/book/create', [AuthorBookController::class, 'create'])->name('author.create.book');    
-    Route::get('/author/book/create', [AuthorBookController::class, 'store'])->name('author.store.book');    
+    Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');
     Route::get('/author/book/{id}', [AuthorBookController::class, 'show'])->name('author.show.book');
-    Route::post('/author/book/{id}/submit', [AuthorBookController::class, 'submit'])->name('author.submit.book');
+    Route::put('/author/chapter/{id}/upload', [AuthorBookController::class, 'upload'])->name('author.upload.chapter');
+    Route::get('/author/chapter/{id}/submit', [AuthorBookController::class, 'submit'])->name('author.submit.chapter');
     Route::get('/author/edit/book/{id}', [AuthorBookController::class, 'edit'])->name('author.edit.book');
     Route::put('/author/edit/book/{id}', [AuthorBookController::class, 'update'])->name('author.update.book');
     Route::get('/author/reviews', [AuthorReviewController::class, 'index'])->name('author.index.review');

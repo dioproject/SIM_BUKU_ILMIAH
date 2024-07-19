@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Chapter Detail')
+@section('title', 'Book Detail')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
@@ -9,7 +9,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Chapter Detail</h1>
+                <h1>Book Detail</h1>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -22,16 +22,12 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
-                                                <th>Chapter</th>
-                                                <th>File Chapter</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>1.</td>
-                                                <td>{{ $chapter->book->title }}</td>
-                                                <td>{{ $chapter->chapter }}</td>
-                                                <td>{{ $chapter->file_chapter }}</td>
+                                                <td>{{ $book->title }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

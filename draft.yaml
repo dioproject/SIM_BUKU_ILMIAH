@@ -1,68 +1,30 @@
 models:
   User:
-    email: string:50 unique nullable
-    password: string:150 nullable
-    user_role: enum:ADMIN,EDITOR,AUTHOR nullable
-    first_name: string:30 nullable
-    last_name: string:100 nullable
-    place_of_birth: string:100 nullable
-    date_of_birth: date nullable
-    contact: string:30 nullable
-    religion_id: id foreign:Religion nullable onUpdate onDelete
-    gender_id: id foreign:Gender nullable onUpdate onDelete
-
-  Religion:
-    option: string:10 nullable
-
-  Gender:
-    option: string:6 nullable
-
-  Category:
     name: string:100 nullable
+    username: string:30 nullable
+    email: string:100 unique nullable
+    password: string:250 nullable
+    contact: string:30 nullable
+    user_role: enum:ADMIN,REVIEWER,AUTHOR nullable
 
   Book:
     title: string:250 nullable
-    script: string:200 nullable
-    template: string:200 nullable
-    review: string:200 nullable
-    category_id: id foreign:Category nullable onUpdate onDelete
-    status_id: id foreign:Status nullable onUpdate onDelete
+    template: string:250 nullable
+    total_chapter: string:7 nullable
+
+  Chapter:
+    chapter: string:100 nullable
+    deadline: date nullable
+    notes: string:200 nullable
+    file_chapter: string:250 nullable
+    file_review: string:250 nullable
+    book_id: id foreign:Book nullable onUpdate onDelete
     author_id: id foreign:User nullable onUpdate onDelete
     reviewer_id: id foreign:User nullable onUpdate onDelete
-
-  Manuscript:
-    title: string:250 nullable
-    abstract: text nullable
-    fill: longtext nullable
-    path_foto: string:200 nullable
-    citation_id: id foreign:Citation nullable onUpdate onDelete
-    author_id: id foreign:User nullable onUpdate onDelete
+    status_id: id foreign:Status nullable onUpdate onDelete
 
   Status:
-    option: string:15 nullable
-
-  Citation:
-    citation: string:200 nullable
-    bibliography: text nullable
-
-  Review:
-    book_id: id foreign:Book nullable onUpdate onDelete
-    content: text nullable
-    reviewer_id: id foreign:User nullable onUpdate onDelete
-
-  Catalog:
-    book_id: id foreign:Book nullable onUpdate onDelete
-    description: text nullable
-    path_foto: string:200 nullable
-
-  Royalty:
-    book_id: id foreign:Book nullable onUpdate onDelete
-    amount: decimal nullable
-    path_foto: string:200 nullable
-    status_id: id foreign:Status nullable onUpdate onDelete
-    author_id: id foreign:User nullable onUpdate onDelete
+    option: string:20 nullable
 
   History:
     change_detail: text nullable
-    book_id: id foreign:Book nullable onUpdate onDelete
-    user_id: id foreign:User nullable onUpdate onDelete

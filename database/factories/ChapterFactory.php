@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\Status;
 use App\Models\User;
@@ -25,14 +26,15 @@ class ChapterFactory extends Factory
     public function definition()
     {
         return [
-            'chapter' => $this->faker->regexify('[A-Za-z0-9]{200}'),
+            'chapter' => $this->faker->regexify('[A-Za-z0-9]{100}'),
             'deadline' => $this->faker->date(),
+            'notes' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'file_chapter' => $this->faker->regexify('[A-Za-z0-9]{250}'),
-            'file_review' => $this->faker->regexify('[A-Za-z0-9]{250}'),            
-            'status_id' => Status::factory(),
+            'file_review' => $this->faker->regexify('[A-Za-z0-9]{250}'),
             'book_id' => Book::factory(),
             'author_id' => User::factory(),
             'reviewer_id' => User::factory(),
+            'status_id' => Status::factory(),
         ];
     }
 }

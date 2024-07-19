@@ -16,10 +16,10 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $books = Book::paginate(10);
         if ($search) {
             $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
         }
+        $books = Book::paginate(10);
 
         return view('pages.admin.books.index', compact('books', 'search'));
     }
@@ -33,6 +33,7 @@ class BookController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'total_chapter' => 'required|numeric',
             'template' => 'required|file|mimes:doc,docx',
         ]);
 
@@ -45,39 +46,72 @@ class BookController extends Controller
         $book = Book::create([
             'title' => $request->title,
             'template' => $fileName,
+            'total_chapter' => $request->total_chapter,
         ]);
 
         if ($book) {
             History::create([
                 'change_detail' => Auth::user()->first_name . ' added ' . $book->title . ' book.',
-                'user_id' => Auth::id(),
             ]);
             return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' added ' . $book->title . ' book success.');
         }
-        return redirect()->route('admin.create.book')->with('error', 'Book not found.');
+        return redirect()->route('admin.create.book');
     }
+
+    public function storeChapter(Request $request, $id)
+    {
+        $book = Book::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'chapter' => 'required|array',
+            'chapter.*' => 'required|string|max:100',
+        ]);
+
+        foreach ($validatedData['chapter'] as $chapter) {
+            Chapter::create([
+                'chapter' => $chapter,
+                'book_id' => $book->id,
+                'status_id' => Status::findOrFail(1)->id,
+            ]);
+        }
+
+        return redirect()->route('admin.show.book', $book->id)->with('success', 'Chapters saved successfully!');
+    }
+
 
     public function show($id)
     {
         $book = Book::findOrFail($id);
+        $chapters = Chapter::where('book_id', $book->id)->get();
 
-        return view('pages.admin.books.show', compact('book'));
+        return view('pages.admin.books.show', compact('book', 'chapters'));
     }
 
     public function accept($id)
     {
-        $book = Chapter::with(['status', 'author'])->findOrFail($id);
-        $book->update(['status_id' => Status::findOrFail(5)->id]);
+        $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
+        $chapter->update([
+            'status_id' => Status::findOrFail(5)->id,
+            'updated_at' => now(),
+            'deadline' => now()->addWeeks(2),
+        ]);
 
-        return redirect()->route('admin.show.book', $id);
+        $book = $chapter->book_id;
+
+        return redirect()->route('admin.show.book', $book);
     }
 
     public function reject($id)
     {
-        $book = Book::with('status')->findOrFail($id);
-        $book->update(['status_id' => Status::findOrFail(7)->id]);
+        $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
+        $chapter->update([
+            'status_id' => Status::findOrFail(7)->id,
+            'author_id' => null,
+        ]);
 
-        return redirect()->route('admin.show.book', $id);
+        $book = $chapter->book_id;
+
+        return redirect()->route('admin.show.book', $book);
     }
 
     public function edit($id)
