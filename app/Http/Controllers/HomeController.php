@@ -15,9 +15,9 @@ class HomeController extends Controller
     {
         return view('pages.admin.dashboard.index');
     }
-    public function editorPage()
+    public function reviewerPage()
     {
-        return view('pages.editor.dashboard.index');
+        return view('pages.reviewer.dashboard.index');
     }
     public function authorPage()
     {

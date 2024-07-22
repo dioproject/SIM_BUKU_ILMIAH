@@ -14,31 +14,16 @@ class StatusSeeder extends Seeder
                 'option' => 'Pending',
             ],
             [
-                'option' => 'Reviewing',
-            ],
-            [
-                'option' => 'Published',
+                'option' => 'Submit',
             ],
             [
                 'option' => 'Approve',
             ],
             [
-                'option' => 'Accept',
+                'option' => 'Reject',
             ],
             [
-                'option' => 'Submit',
-            ],
-            [
-                'option' => 'Rejected',
-            ],
-            [
-                'option' => 'Success',
-            ],
-            [
-                'option' => 'Process',
-            ],
-            [
-                'option' => 'Revision',
+                'option' => 'Revisi',
             ],
         ];
         foreach ($StatusData as $key => $val) {

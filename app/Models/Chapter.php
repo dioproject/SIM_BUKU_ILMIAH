@@ -24,6 +24,9 @@ class Chapter extends Model
         'author_id',
         'reviewer_id',
         'status_id',
+        'approvedAt',
+        'uploadedAt',
+        'reviewedAt',
     ];
 
     /**
@@ -38,6 +41,9 @@ class Chapter extends Model
         'author_id' => 'integer',
         'reviewer_id' => 'integer',
         'status_id' => 'integer',
+        'approvedAt' => 'datetime',
+        'uploadedAt' => 'datetime',
+        'reviewedAt' => 'datetime',
     ];
 
     public function book()

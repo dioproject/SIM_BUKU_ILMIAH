@@ -1,4 +1,4 @@
-@extends('layouts.app-editor')
+@extends('layouts.app-reviewer')
 
 @section('title', 'Dashboard')
 
@@ -181,7 +181,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>                            
+                            </div>
                             <nav aria-label="...">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item disabled">

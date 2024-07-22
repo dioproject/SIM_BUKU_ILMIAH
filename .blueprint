@@ -4,11 +4,11 @@ created:
     - database/factories/ChapterFactory.php
     - database/factories/StatusFactory.php
     - database/factories/HistoryFactory.php
-    - database/migrations/2024_07_16_130021_create_users_table.php
-    - database/migrations/2024_07_16_130022_create_books_table.php
-    - database/migrations/2024_07_16_130023_create_chapters_table.php
-    - database/migrations/2024_07_16_130024_create_statuses_table.php
-    - database/migrations/2024_07_16_130025_create_histories_table.php
+    - database/migrations/2024_07_20_121229_create_users_table.php
+    - database/migrations/2024_07_20_121230_create_books_table.php
+    - database/migrations/2024_07_20_121231_create_chapters_table.php
+    - database/migrations/2024_07_20_121232_create_statuses_table.php
+    - database/migrations/2024_07_20_121233_create_histories_table.php
     - app/Models/User.php
     - app/Models/Book.php
     - app/Models/Chapter.php
@@ -27,4 +27,4 @@ models:
     Religion: { option: 'string:10 nullable' }
     Gender: { option: 'string:6 nullable' }
     Status: { option: 'string:20 nullable' }
-    Chapter: { chapter: 'string:100 nullable', deadline: 'date nullable', notes: 'string:200 nullable', file_chapter: 'string:250 nullable', file_review: 'string:250 nullable', book_id: 'id foreign:Book nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete', reviewer_id: 'id foreign:User nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete' }
+    Chapter: { chapter: 'string:100 nullable', deadline: 'date nullable', notes: 'string:200 nullable', file_chapter: 'string:250 nullable', file_review: 'string:250 nullable', book_id: 'id foreign:Book nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete', reviewer_id: 'id foreign:User nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete', approvedAt: 'datetime nullable', uploadedAt: 'datetime nullable', reviewedAt: 'datetime nullable' }

@@ -44,16 +44,16 @@
     <div id="app">
         <div class="main-wrapper">
             <!-- Header -->
-            @include('components.editor.header')
+            @include('components.reviewer.header')
 
             <!-- Sidebar -->
-            @include('components.editor.sidebar')
+            @include('components.reviewer.sidebar')
 
             <!-- Content -->
             @yield('main')
 
             <!-- Footer -->
-            @include('components.editor.footer')
+            @include('components.reviewer.footer')
         </div>
     </div>
 
