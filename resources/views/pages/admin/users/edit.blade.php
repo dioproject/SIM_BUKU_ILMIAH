@@ -11,9 +11,8 @@
             <div class="section-header">
                 <h1>Edit User</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item">Data</div>
-                    <div class="breadcrumb-item active">Users</div>
-                    <div class="breadcrumb-item active">Edit User</div>
+                    <div class="breadcrumb-item">Users</div>
+                    <div class="breadcrumb-item">Edit User</div>
                 </div>
             </div>
 
@@ -35,87 +34,65 @@
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>First Name</label>
-                                            <input type="text" class="form-control" tabindex="1" id="first_name"
-                                                name="first_name" value="{{ $user->first_name }} {{ old('first_name') }}">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Last Name</label>
-                                            <input type="text" class="form-control" tabindex="2" id="last_name"
-                                                name="last_name" value="{{ $user->last_name }} {{ old('last_name') }}">
+                                    <div class="form-group row mb-4">
+                                        <label
+                                            class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Username</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="text" tabindex="1" class="form-control" id="username"
+                                                name="username" value="{{ $user->username }} {{ old('username') }}">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Email</label>
-                                            <input type="email" aria-hidden="true" disabled class="form-control" tabindex="3" id="email"
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Name</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="text" tabindex="2" class="form-control" id="name"
+                                                name="name" value="{{ $user->name }} {{ old('name') }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Email</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="email" tabindex="3" class="form-control" id="email"
                                                 name="email" value="{{ $user->email }} {{ old('email') }}">
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Password</label>
-                                            <input type="text" class="form-control" tabindex="4" id="password"
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label
+                                            class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Password</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="text" tabindex="4" class="form-control" id="password"
                                                 name="password" value="{{ $user->password }} {{ old('password') }}">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Religion</label>
-                                            <select class="form-control selectric" tabindex="5" id="religion"
-                                                name="religion" value="{{ $user->religion }} {{ old('religion') }}">
-                                                @foreach ($religion as $rel)
-                                                    <option value="{{ $rel->id }}"
-                                                        {{ $rel->id == $user->religion_id ? 'selected' : '' }}>{{ $rel->option }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Gender</label>
-                                            <select class="form-control selectric" tabindex="6" id="gender"
-                                                name="gender" value="{{ $user->gender }} {{ old('gender') }}">
-                                                @foreach ($gender as $gen)
-                                                    <option value="{{ $gen->id }}"
-                                                        {{ $gen->id == $user->gender_id ? 'selected' : '' }}>{{ $gen->option }}</option>
-                                                @endforeach
-                                            </select>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Contact</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="number" tabindex="5" class="form-control" id="contact"
+                                                name="contact" value="{{ old('contact', $user->contact) }}">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Place of Birth</label>
-                                            <input type="text" class="form-control" tabindex="7" id="place_of_birth"
-                                                name="place_of_birth" tabindex="7" value="{{ $user->place_of_birth }} {{ old('place_of_dirth') }}">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Date of Birth</label>
-                                            <input type="date" class="form-control" tabindex="8" id="date_of_birth"
-                                            name="date_of_birth" value="{{ $user->date_of_birth }} {{ old('date_of_dirth') }}">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Contact</label>
-                                            <input type="number" class="form-control" tabindex="7" id="contact"
-                                                name="contact" tabindex="7" value="{{ $user->contact }} {{ old('contact') }}">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>User Role</label>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">User
+                                            Role</label>
+                                        <div class="col-sm-12 col-md-10">
                                             <select class="form-control selectric" tabindex="9" id="user_role"
                                                 name="user_role" value="{{ $user->user_role }} {{ old('user_role') }}">
-                                                <option value="ADMIN" {{  $user->user_role == 'ADMIN' ? 'selected' : '' }}>
+                                                <option value="ADMIN" {{ $user->user_role == 'ADMIN' ? 'selected' : '' }}>
                                                     ADMIN</option>
                                                 <option value="EDITOR"
-                                                    {{  $user->user_role == 'EDITOR' ? 'selected' : '' }}>EDITOR</option>
+                                                    {{ $user->user_role == 'EDITOR' ? 'selected' : '' }}>
+                                                    EDITOR</option>
                                                 <option value="AUTHOR"
-                                                    {{  $user->user_role == 'AUTHOR' ? 'selected' : '' }}>AUTHOR</option>
+                                                    {{ $user->user_role == 'AUTHOR' ? 'selected' : '' }}>
+                                                    AUTHOR</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
+                                        <div class="col-sm-12 col-md-9">
                                             <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-                                                Edit</button>
+                                                Submit</button>
                                         </div>
                                     </div>
                                 </form>
