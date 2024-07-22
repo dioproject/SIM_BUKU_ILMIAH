@@ -22,6 +22,9 @@ models:
     author_id: id foreign:User nullable onUpdate onDelete
     reviewer_id: id foreign:User nullable onUpdate onDelete
     status_id: id foreign:Status nullable onUpdate onDelete
+    approvedAt: datetime nullable
+    uploadedAt: datetime nullable
+    reviewedAt: datetime nullable
 
   Status:
     option: string:20 nullable

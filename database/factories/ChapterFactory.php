@@ -35,6 +35,9 @@ class ChapterFactory extends Factory
             'author_id' => User::factory(),
             'reviewer_id' => User::factory(),
             'status_id' => Status::factory(),
+            'approvedAt' => $this->faker->dateTime(),
+            'uploadedAt' => $this->faker->dateTime(),
+            'reviewedAt' => $this->faker->dateTime(),
         ];
     }
 }

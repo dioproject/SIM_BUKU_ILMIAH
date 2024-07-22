@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\editor;
+namespace App\Http\Controllers\reviewer;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class EditorUserController extends Controller
+class ReviewerUserController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         $query = User::where('user_role', 'AUTHOR');
         if ($search) {
             $query->where('first_name', 'LIKE', '%' . $search . '%')

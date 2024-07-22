@@ -1,4 +1,4 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-reviewer')
 
 @section('title', 'Books')
 
@@ -6,7 +6,6 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/prismjs/themes/prism.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
@@ -40,12 +39,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Book
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
-                                    <form action="{{ route('admin.index.book') }}" method="GET">
+                                    <form action="{{ route('reviewer.index.book') }}" method="GET">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="search"
                                                 value="{{ request('search') }}">
@@ -72,20 +68,14 @@
                                             @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title ?? '' }}</td>
-                                                    <td>{{ $book->total_chapter ?? '' }}</td>
+                                                    <td>{{ $book->title }}</td>
+                                                    <td>{{ $book->total_chapter }}</td>
                                                     <td>
-                                                        <a class="btn btn-success btn-action mr-1" data-toggle="tooltip"
-                                                            title="Detail"
-                                                            href="{{ route('admin.show.book', $book->id) }}"><i
-                                                                class="fas fa-list"></i></a>
-                                                        <form action="{{ route('admin.destroy.book', $book->id) }}"
-                                                            method="POST" class="btn btn-danger p-0" type="button">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-danger btn-action delete-button"
-                                                                title="Delete"><i class="fas fa-trash"></i></button>
-                                                        </form>
+                                                        <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
+                                                            title="Detail" href="{{ route('reviewer.show.book', $book->id) }}"
+                                                            data-toggle="tooltip">
+                                                            <i class="fas fa-list"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -93,7 +83,6 @@
                                     </table>
                                 </div>
                             </div>
-
                             <div class="card-footer">
                                 <nav aria-label="...">
                                     <ul class="pagination justify-content-center">

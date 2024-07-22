@@ -23,9 +23,12 @@ return new class extends Migration
             $table->string('file_chapter', 250)->nullable();
             $table->string('file_review', 250)->nullable();
             $table->foreignId('book_id')->nullable()->constrained('Books')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('cascade')->onDelete('cascade');
+            $table->dateTime('approvedAt')->nullable();
+            $table->dateTime('uploadedAt')->nullable();
+            $table->dateTime('reviewedAt')->nullable();
             $table->timestamps();
         });
 

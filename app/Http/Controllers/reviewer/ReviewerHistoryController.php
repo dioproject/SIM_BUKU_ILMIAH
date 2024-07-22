@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\editor;
+namespace App\Http\Controllers\reviewer;
 
 use App\Http\Controllers\Controller;
 use App\Models\History;
 use Illuminate\Support\Facades\Auth;
 
-class EditorHistoryController extends Controller
+class ReviewerHistoryController extends Controller
 {
     public function index() {
         $history = History::where('user_id', Auth::id())->paginate(10);

@@ -1,9 +1,12 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-reviewer')
 
 @section('title', 'Book Detail')
 
 @push('style')
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/prismjs/themes/prism.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
@@ -11,42 +14,11 @@
             <div class="section-header">
                 <h1>{{ $book->title }} Book Detail</h1>
             </div>
-            @php
-                $totalChapters = (int) $book->total_chapter;
-                $currentChaptersCount = $chapters->count();
-            @endphp
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                @if ($currentChaptersCount < $totalChapters)
-                                    <form action="{{ route('admin.store.chapter', $book->id) }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-
-                                        @for ($i = $currentChaptersCount + 1; $i <= $totalChapters; $i++)
-                                            <div class="form-group row mb-4">
-                                                <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Chapter
-                                                    {{ $i }}
-                                                    :</label>
-                                                <div class="col-sm-12 col-md-10">
-                                                    <input type="text" tabindex="1" class="form-control" id="chapter"
-                                                        name="chapter[]" value="{{ old('chapter.' . ($i - 1)) }}">
-                                                </div>
-                                            </div>
-                                        @endfor
-
-                                        <div class="form-group row mb-4">
-                                            <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
-                                            <div class="col-sm-12 col-md-9">
-                                                <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-                                                    Submit</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                @endif
-
                                 @foreach ($chapters as $key => $chapter)
                                     <div class="d-flex justify-content-between">
                                         <strong>{{ $key + 1 }}. {{ $chapter->chapter }}</strong>
@@ -137,11 +109,48 @@
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <strong>Notes :</strong>
-                                                        <br>
-                                                        <p>{{ $chapter->notes }}</p>
+                                                        <strong>Notes : </strong>
+                                                        <small>{{ $chapter->notes }}</small>
                                                     </div>
                                                 </div>
+                                            </li>
+                                        @endif
+                                        @if (!is_null($chapter->file_review) && $chapter->reviewer_id !== null)
+                                            <li class="list-group-item">
+                                                <form action="{{ route('reviewer.notes.review', $chapter->id) }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <input type="text" name="notes" placeholder="Notes"
+                                                                class="form-control" required>
+                                                        </div>
+                                                        <div class="col-md-2 text-right">
+                                                            <button type="submit" class="btn btn-primary"><i
+                                                                    class="fas fa-save"></i> Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </li>
+                                        @endif
+                                        @if (!is_null($chapter->file_chapter) && $chapter->author_id !== null)
+                                            <li class="list-group-item">
+                                                <form action="{{ route('reviewer.upload.review', $chapter->id) }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <input type="file" name="file_review"
+                                                                class="form-control-file" accept=".doc,.docx" required>
+                                                        </div>
+                                                        <div class="col-md-2 text-right">
+                                                            <button type="submit" class="btn btn-primary"><i
+                                                                    class="fas fa-upload"></i> Upload</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </li>
                                         @endif
                                     </ul>
@@ -156,6 +165,8 @@
 @endsection
 
 @push('scripts')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
     <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/page/modules-datatables.js') }}"></script>

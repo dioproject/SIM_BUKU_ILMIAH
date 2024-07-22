@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('notifications', $notifications);
         });
 
-        View::composer('components.editor.header', function ($view) {
+        View::composer('components.reviewer.header', function ($view) {
             $notifications = History::where(function ($query) {
                 $query->where('change_detail', 'like', '%created book%')
                     ->orWhere('change_detail', 'like', '%updated book%');

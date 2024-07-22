@@ -42,7 +42,7 @@ class AuthorBookController extends Controller
     {
         $chapter = Chapter::findOrFail($id);
         $chapter->update([
-            'status_id' => Status::findOrFail(6)->id,
+            'status_id' => Status::findOrFail(2)->id,
             'author_id' => Auth::id(),
             'created_at' => now()
         ]);
@@ -68,6 +68,7 @@ class AuthorBookController extends Controller
 
         $chapter->update([
             'file_chapter' => $fileName,
+            'uploadedAt' => now()
         ]);
 
         if ($oldFile) {
@@ -123,21 +124,4 @@ class AuthorBookController extends Controller
         return redirect()->route('author.create.book')->with('error', 'Book not found.');
     }
 
-    public function destroy($id)
-    {
-        $book = Book::findOrFail($id);
-        $manuscript = $book->manuscript;
-        $manuscript->delete();
-
-        if ($manuscript) {
-            $book->delete();
-
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' deleted book ' . $manuscript->title . ' successfully.',
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('author.index.book');
-        }
-        return redirect()->route('author.index.book');
-    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\editor;
+namespace App\Http\Controllers\reviewer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +11,7 @@ use App\Models\Category;
 use App\Models\Review;
 use App\Models\Status;
 
-class EditorReviewController extends Controller
+class ReviewerReviewController extends Controller
 {
 
     public function index(Request $request)
@@ -44,9 +44,9 @@ class EditorReviewController extends Controller
         ]);
 
         if (Review::where('book_id', $request->book_id)->exists()) {
-            return redirect()->route('editor.create.review')->with('error', 'Review does not exist.');            
+            return redirect()->route('editor.create.review')->with('error', 'Review does not exist.');
         }
-        
+
         $review = Review::create([
             'book_id' => $request->book_id,
             'content' => $request->content,
@@ -58,7 +58,7 @@ class EditorReviewController extends Controller
             $book->update([
                 'status_id' => Status::findOrFail(2)->id,
             ]);
-            
+
             History::create([
                 'change_detail' => Auth::user()->first_name . ' reviewed ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
@@ -69,7 +69,7 @@ class EditorReviewController extends Controller
     }
 
     public function edit($id)
-    {        
+    {
         $review = Review::findOrFail($id);
         $books = Book::with('manuscript')->get();
 
@@ -90,7 +90,7 @@ class EditorReviewController extends Controller
         ]);
 
         if ($review) {
-            $book = Book::findOrFail($id);            
+            $book = Book::findOrFail($id);
             History::create([
                 'change_detail' => Auth::user()->first_name . ' change review ' . $book->manuscript->title . ' successfully.',
                 'user_id' => Auth::id(),
@@ -112,7 +112,7 @@ class EditorReviewController extends Controller
                 'user_id' => Auth::id(),
             ]);
             return redirect()->route('editor.index.review');
-        } 
+        }
         return redirect()->route('editor.index.review');
     }
 }

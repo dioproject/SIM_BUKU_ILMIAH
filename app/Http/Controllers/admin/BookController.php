@@ -39,7 +39,7 @@ class BookController extends Controller
 
         if ($request->hasFile('template')) {
             $file = $request->file('template');
-            $fileName = time() . '_' . 'template' . '_' . $file->getClientOriginalName();
+            $fileName = time() . '_template_' . $file->getClientOriginalName();
             $file->storeAs('upload/books', $fileName, 'public');
         }
 
@@ -87,12 +87,12 @@ class BookController extends Controller
         return view('pages.admin.books.show', compact('book', 'chapters'));
     }
 
-    public function accept($id)
+    public function approve($id)
     {
         $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
         $chapter->update([
-            'status_id' => Status::findOrFail(5)->id,
-            'updated_at' => now(),
+            'status_id' => Status::findOrFail(3)->id,
+            'approvedAt' => now(),
             'deadline' => now()->addWeeks(2),
         ]);
 
@@ -105,7 +105,7 @@ class BookController extends Controller
     {
         $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
         $chapter->update([
-            'status_id' => Status::findOrFail(7)->id,
+            'status_id' => Status::findOrFail(4)->id,
             'author_id' => null,
         ]);
 
