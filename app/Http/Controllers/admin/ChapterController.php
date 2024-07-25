@@ -16,7 +16,12 @@ class ChapterController extends Controller
         $search = $request->input('search');
         
         if ($search) {
-            $chapters = Chapter::where('name', 'like', '%' . $search . '%')->paginate(10);
+            $chapters = Chapter::where('chapter', 'like', '%' . $search . '%')
+                ->orWhereHas('book', function ($query) use ($search) {
+                    $query->where('title', 'like', '%' . $search . '%');
+                })
+                ->with(['book', 'status'])
+                ->paginate(10);
         } else {
             $chapters = Chapter::with(['book', 'status'])->paginate(10);
         }

@@ -52,6 +52,16 @@ class Chapter extends Model
         return $this->belongsTo(Book::class);
     }
 
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function status()
     {
         return $this->belongsTo(Status::class);

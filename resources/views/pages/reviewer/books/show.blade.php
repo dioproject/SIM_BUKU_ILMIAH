@@ -34,34 +34,8 @@
                                             <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
                                         @endif
                                     </div>
-                                    <ul class="list-group py-2">
-                                        <li class="list-group-item">
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <i class="fas fa-file"></i>
-                                                    <strong>{{ $chapter->book->template }}</strong>
-                                                </div>
-                                                <div class="col-md-4 text-right">
-                                                    @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi')
-                                                        <a class="btn btn-secondary"
-                                                            href="{{ Storage::url('upload/books/') . $chapter->book->template }}"
-                                                            download="{{ $chapter->book->template }}"><i
-                                                                class="fas fa-download"></i></a></td>
-                                                    @endif
-                                                </div>
-                                                <div class="d-flex justify-content-between col-md-12 py-1">
-                                                    @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi')
-                                                        <small class="text-danger align-middle">Deadline :
-                                                            {{ \Carbon\Carbon::parse($chapter->deadline)->translatedFormat('l, d F Y') }}
-                                                        </small>
-                                                    @endif
-                                                    @if ($chapter->status->option !== 'Pending')
-                                                        <small>Verified : {{ $chapter->approvedAt }}</small>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @if ($chapter->file_chapter !== null)
+                                    <ul class="list-group my-2">
+                                        @if ($chapter->file_chapter)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -76,14 +50,13 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Author : {{ $chapter->author->username }}</small>
-                                                        @if ($chapter->status->option != 'Pending')
-                                                            <small>Uploaded : {{ $chapter->uploadedAt }}</small>
-                                                        @endif
+                                                        <small>Uploaded :
+                                                            {{ \Carbon\Carbon::parse($chapter->uploaded_at)->translatedFormat('l, d F Y') }}</small>
                                                     </div>
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->file_review !== null)
+                                        @if ($chapter->file_review)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -98,14 +71,13 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Reviewer : {{ $chapter->reviewer->username }}</small>
-                                                        @if ($chapter->status->option !== 'Pending')
-                                                            <small>Reviewed : {{ $chapter->reviewedAt }}</small>
-                                                        @endif
+                                                        <small>Reviewed :
+                                                            {{ \Carbon\Carbon::parse($chapter->updated_at)->translatedFormat('l, d F Y') }}</small>
                                                     </div>
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->status->option == 'Revisi')
+                                        @if ($chapter->notes)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -134,7 +106,7 @@
                                                 </form>
                                             </li>
                                         @endif
-                                        @if (!is_null($chapter->file_chapter) && $chapter->author_id !== null)
+                                        @if ($chapter->file_chapter)
                                             <li class="list-group-item">
                                                 <form action="{{ route('reviewer.upload.review', $chapter->id) }}"
                                                     method="POST" enctype="multipart/form-data">

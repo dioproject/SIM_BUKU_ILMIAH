@@ -71,9 +71,10 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $chapter->book->title }}</td>
-                                                    <td>{{ $chapter->fileChapter->user->username ?? '' }}</td>
+                                                    <td>{{ $chapter->author->username ?? '' }}</td>
                                                     <td>{{ $chapter->chapter }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
+                                                    </td>
                                                     <td>
                                                         @if ($chapter->status->option == 'Revisi')
                                                             <span
@@ -93,11 +94,13 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-success btn-action mr-1" title="Detail"
-                                                            href="{{ route('reviewer.show.chapter', $chapter->id) }}"
-                                                            data-toggle="tooltip">
-                                                            <i class="fas fa-list"></i>
-                                                        </a>
+                                                        @if ($chapter->status->option != 'Approve')
+                                                            <a class="btn btn-success btn-action mr-1" title="Approve"
+                                                                href="{{ route('reviewer.approve.chapter', $chapter->id) }}"
+                                                                data-toggle="tooltip">
+                                                                <i class="fas fa-check"></i>
+                                                            </a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -10,9 +10,7 @@ use App\Http\Controllers\admin\BookController;
 use App\Http\Controllers\admin\ChapterController;
 use App\Http\Controllers\author\AuthorBookController;
 use App\Http\Controllers\author\AuthorChapterController;
-use App\Http\Controllers\author\AuthorRoyaltyController;
 use App\Http\Controllers\author\AuthorHistoryController;
-use App\Http\Controllers\author\AuthorReviewController;
 use App\Http\Controllers\reviewer\ReviewerBookController;
 use App\Http\Controllers\reviewer\ReviewerChapterController;
 use App\Http\Controllers\reviewer\ReviewerHistoryController;
@@ -48,8 +46,6 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
     Route::get('/admin/chapters', [ChapterController::class, 'index'])->name('admin.index.chapter');
     Route::get('/admin/chapter/{id}', [ChapterController::class, 'show'])->name('admin.show.chapter');
-    Route::get('/admin/chapter/{id}/approve', [BookController::class, 'approve'])->name('admin.approve.chapter');
-    Route::get('/admin/chapter/{id}/reject', [BookController::class, 'reject'])->name('admin.reject.chapter');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
 });
 
@@ -63,8 +59,7 @@ Route::middleware(['auth', 'user-role:REVIEWER'])->group(function () {
     Route::put('/reviewer/{id}/review', [ReviewerBookController::class, 'upload'])->name('reviewer.upload.review');
     Route::put('/reviewer/{id}/notes', [ReviewerBookController::class, 'notes'])->name('reviewer.notes.review');
     Route::get('/reviewer/chapters', [ReviewerChapterController::class, 'index'])->name('reviewer.index.chapter');
-    Route::get('/reviewer/chapter/{id}', [ReviewerChapterController::class, 'show'])->name('reviewer.show.chapter');
-    Route::get('/reviewer/chapter/{id}/submit', [ReviewerChapterController::class, 'submit'])->name('reviewer.submit.chapter');
+    Route::get('/reviewer/chapter/{id}/approve', [ReviewerChapterController::class, 'approve'])->name('reviewer.approve.chapter');
     Route::get('/reviewer/history', [ReviewerHistoryController::class, 'index'])->name('reviewer.index.history');
 });
 

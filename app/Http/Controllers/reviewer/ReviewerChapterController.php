@@ -12,11 +12,16 @@ class ReviewerChapterController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         if ($search) {
-            $chapters = Chapter::where('name', 'like', '%' . $search . '%')->paginate(10);
+            $chapters = Chapter::where('chapter', 'like', '%' . $search . '%')
+                ->orWhereHas('book', function ($query) use ($search) {
+                    $query->where('title', 'like', '%' . $search . '%');
+                })
+                ->with(['book', 'status'])
+                ->paginate(10);
         } else {
-            $chapters = Chapter::with(['book', 'status', 'fileChapter'])->paginate(10);
+            $chapters = Chapter::with(['book', 'status'])->paginate(10);
         }
 
         return view('pages.reviewer.chapters.index', compact('chapters', 'search'));
@@ -28,13 +33,16 @@ class ReviewerChapterController extends Controller
         return view('pages.reviewer.chapters.show', compact('chapter'));
     }
 
-    public function submit($id)
+    public function approve($id)
     {
-        $chapter = Chapter::findOrFail($id);
+        $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
         $chapter->update([
-            'status_id' => Status::findOrFail(2)->id,
+            'status_id' => Status::findOrFail(3)->id,
+            'approved_at' => now(),
         ]);
 
-        return redirect()->route('reviewer.show.chapter', $chapter->book_id);
+        $book = $chapter->book_id;
+
+        return redirect()->route('reviewer.index.chapter', $book);
     }
 }
