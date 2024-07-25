@@ -9,7 +9,8 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login() {
+    public function login()
+    {
         return view('pages.auth.login');
     }
 
@@ -41,14 +42,47 @@ class AuthController extends Controller
 
             if ($user->user_role == 'ADMIN') {
                 return redirect()->route('admin.dashboard');
-            }else if ($user->user_role == 'REVIEWER') {
+            } else if ($user->user_role == 'REVIEWER') {
                 return redirect()->route('reviewer.dashboard');
-            }else{
+            } else {
                 return redirect()->route('author.dashboard');
             }
-
         }
         return redirect()->route('login');
+    }
+
+    public function register()
+    {
+        return view('pages.auth.register');
+    }
+
+    public function registerAction(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'username' => 'required|max:30',
+                'name' => 'required|max:100',
+                'email' => 'required|email|max:50|unique:users',
+                'password' => 'required|min:8',
+                'contact' => 'required|max:30',
+            ]);
+
+            $user = new User([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'password' => Hash::make($request->password),
+                'user_role' => 'AUTHOR'
+            ]);
+
+            $user->save();
+
+            Auth::login($user);
+
+            return redirect()->route('author.dashboard');
+        }
+        return redirect()->route('register');
     }
 
     public function logout()
@@ -57,4 +91,3 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 }
-

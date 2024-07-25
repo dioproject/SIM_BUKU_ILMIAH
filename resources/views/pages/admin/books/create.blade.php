@@ -20,9 +20,6 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h4>Submission Book</h4>
-                            </div>
                             <div class="card-body">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">

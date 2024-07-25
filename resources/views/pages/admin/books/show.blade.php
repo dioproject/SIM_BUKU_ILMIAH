@@ -3,7 +3,6 @@
 @section('title', 'Book Detail')
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
@@ -63,33 +62,7 @@
                                         @endif
                                     </div>
                                     <ul class="list-group py-2">
-                                        <li class="list-group-item">
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <i class="fas fa-file"></i>
-                                                    <strong>{{ $chapter->book->template }}</strong>
-                                                </div>
-                                                <div class="col-md-4 text-right">
-                                                    @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi')
-                                                        <a class="btn btn-secondary"
-                                                            href="{{ Storage::url('upload/books/') . $chapter->book->template }}"
-                                                            download="{{ $chapter->book->template }}"><i
-                                                                class="fas fa-download"></i></a></td>
-                                                    @endif
-                                                </div>
-                                                <div class="d-flex justify-content-between col-md-12 py-1">
-                                                    @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi')
-                                                        <small class="text-danger align-middle">Deadline :
-                                                            {{ \Carbon\Carbon::parse($chapter->deadline)->translatedFormat('l, d F Y') }}
-                                                        </small>
-                                                    @endif
-                                                    @if ($chapter->status->option !== 'Pending')
-                                                        <small>Verified : {{ $chapter->approvedAt }}</small>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi' && $chapter->file_chapter !== null)
+                                        @if ($chapter->file_chapter !== null)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -111,7 +84,7 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi' && $chapter->file_review !== null)
+                                        @if ($chapter->file_review !== null)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -122,7 +95,7 @@
                                                         <a class="btn btn-secondary"
                                                             href="{{ Storage::url('upload/books/') . $chapter->file_review }}"
                                                             download="{{ $chapter->file_review }}"><i
-                                                                class="fas fa-download"></i></a></td>
+                                                                class="fas fa-download"></i></a>
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Reviewer : {{ $chapter->reviewer->username }}</small>
@@ -156,7 +129,4 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 @endpush

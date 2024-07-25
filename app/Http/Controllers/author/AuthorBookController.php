@@ -53,8 +53,9 @@ class AuthorBookController extends Controller
     public function upload(Request $request, $id)
     {
         $request->validate([
-            'file_chapter' => 'required|file|mimes:doc,docx|max:2048',
+            'file_chapter' => 'required|file|mimes:doc,docx',
         ]);
+        dd($request->all());
 
         $chapter = Chapter::findOrFail($id);
         $oldFile = $chapter->file_chapter;
@@ -63,20 +64,30 @@ class AuthorBookController extends Controller
         if ($request->hasFile('file_chapter')) {
             $file = $request->file('file_chapter');
             $fileName = time() . '_chapter_' . $file->getClientOriginalName();
-            $file->storeAs('upload/books', $fileName, 'public');
+
+            $filePath = $file->storeAs('upload/books', $fileName, 'public');
+
+            if ($filePath) {
+                $chapter->update([
+                    'file_chapter' => $fileName,
+                    'author_id' => Auth::id(),
+                    'uploaded_at' => now(),
+                ]);
+
+                if ($oldFile) {
+                    Storage::disk('public')->delete('upload/books/' . $oldFile);
+                }
+
+                return redirect()->route('author.show.book', $chapter->book_id)
+                    ->with('success', 'Chapter uploaded successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Failed to upload chapter file. Please try again.');
+            }
         }
 
-        $chapter->update([
-            'file_chapter' => $fileName,
-            'uploadedAt' => now()
-        ]);
-
-        if ($oldFile) {
-            Storage::disk('public')->delete('upload/books/' . $oldFile);
-        }
-
-        return redirect()->route('author.show.book', $chapter->book_id);
+        return redirect()->back()->with('error', 'No file was uploaded.');
     }
+
 
     public function edit($id)
     {
@@ -123,5 +134,4 @@ class AuthorBookController extends Controller
         }
         return redirect()->route('author.create.book')->with('error', 'Book not found.');
     }
-
 }

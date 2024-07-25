@@ -61,7 +61,7 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi' && $chapter->file_chapter !== null)
+                                        @if ($chapter->file_chapter !== null)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -83,7 +83,7 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi' && $chapter->file_review !== null)
+                                        @if ($chapter->file_review !== null)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">

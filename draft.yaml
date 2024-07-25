@@ -7,24 +7,26 @@ models:
     contact: string:30 nullable
     user_role: enum:ADMIN,REVIEWER,AUTHOR nullable
 
+  File:
+    name: string:250 nullable
+    type: enum:Template,Chapter,Review
+    book_id: id foreign:Book nullable onUpdate onDelete
+    chapter_id: id foreign:Chapter nullable onUpdate onDelete
+    user_id: id foreign:User nullable onUpdate onDelete
+    status_id: id foreign:Status nullable onUpdate onDelete
+    deadline: date nullable
+    uploaded_at: date nullable
+    verified_at: date nullable
+
   Book:
     title: string:250 nullable
-    template: string:250 nullable
     total_chapter: string:7 nullable
 
   Chapter:
-    chapter: string:100 nullable
-    deadline: date nullable
+    chapter: string:200 nullable
     notes: string:200 nullable
-    file_chapter: string:250 nullable
-    file_review: string:250 nullable
     book_id: id foreign:Book nullable onUpdate onDelete
-    author_id: id foreign:User nullable onUpdate onDelete
-    reviewer_id: id foreign:User nullable onUpdate onDelete
     status_id: id foreign:Status nullable onUpdate onDelete
-    approvedAt: datetime nullable
-    uploadedAt: datetime nullable
-    reviewedAt: datetime nullable
 
   Status:
     option: string:20 nullable

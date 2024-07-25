@@ -3,60 +3,33 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Chapter;
+use App\Models\File;
 use App\Models\History;
-use App\Models\Status;
 
 class ChapterController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $chapters = Chapter::with(['book', 'author'])->paginate(10);
-
+        
         if ($search) {
             $chapters = Chapter::where('name', 'like', '%' . $search . '%')->paginate(10);
+        } else {
+            $chapters = Chapter::with(['book', 'status'])->paginate(10);
         }
 
         return view('pages.admin.chapters.index', compact('chapters', 'search'));
     }
 
-
-    public function create()
-    {
-        $books = Book::all();
-        $chapter = Chapter::all();
-
-        return view('pages.admin.chapters.create', compact('chapter', 'books'));
-    }
-
-    public function store(Request $request, $id)
-    {
-        $book = Book::findOrFail($id);
-
-        $validatedData = $request->validate([
-            'chapters' => 'required|array',
-            'chapters.*' => 'required|string|max:100',
-        ]);
-
-        foreach ($validatedData['chapters'] as $chapter) {
-            Chapter::create([
-                'chapter' => $chapter,
-                'book_id' => $book->id,
-                'status_id' => Status::findOrFail(1)->id,
-            ]);
-        }
-
-        return redirect()->route('admin.show.book', $book->id)->with('success', 'Chapters saved successfully!');
-    }
-
     public function show($id)
     {
-        $chapter = Chapter::with(['book', 'status'])->findOrFail($id);
-        return view('pages.admin.chapters.show', compact('chapter'));
+        $chapter = Chapter::findOrFail($id);
+
+        $files = File::where('chapter_id', $chapter->id)->get();
+        return view('pages.admin.chapters.show', compact('chapter', 'files'));
     }
 
     public function edit($id)

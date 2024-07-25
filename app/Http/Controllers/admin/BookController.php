@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Chapter;
+use App\Models\File;
 use App\Models\Status;
 use App\Models\History;
 use Illuminate\Support\Facades\Storage;
@@ -16,10 +17,13 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $books = Book::query();
+
         if ($search) {
-            $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
+            $books = Book::where('title', 'like', '%' . $search . '%')->paginate(5);
+        } else {
+            $books = Book::paginate(5);
         }
-        $books = Book::paginate(10);
 
         return view('pages.admin.books.index', compact('books', 'search'));
     }
@@ -33,7 +37,7 @@ class BookController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'total_chapter' => 'required|numeric',
+            'total_chapter' => 'required',
             'template' => 'required|file|mimes:doc,docx',
         ]);
 
@@ -51,10 +55,11 @@ class BookController extends Controller
 
         if ($book) {
             History::create([
-                'change_detail' => Auth::user()->first_name . ' added ' . $book->title . ' book.',
+                'change_detail' => Auth::user()->username . ' added ' . $book->title . ' book.',
             ]);
-            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' added ' . $book->title . ' book success.');
+            return redirect()->route('admin.index.book')->with('success', Auth::user()->username . ' added ' . $book->title . ' book successfully.');
         }
+
         return redirect()->route('admin.create.book');
     }
 
@@ -68,10 +73,14 @@ class BookController extends Controller
         ]);
 
         foreach ($validatedData['chapter'] as $chapter) {
-            Chapter::create([
+            $newChapter = Chapter::create([
                 'chapter' => $chapter,
                 'book_id' => $book->id,
                 'status_id' => Status::findOrFail(1)->id,
+            ]);
+
+            History::create([
+                'change_detail' => 'Added chapter "' . $newChapter->chapter . '" to book "' . $book->title . '" by ' . Auth::user()->username,
             ]);
         }
 
@@ -114,68 +123,46 @@ class BookController extends Controller
         return redirect()->route('admin.show.book', $book);
     }
 
-    public function edit($id)
-    {
-        $book = Book::findOrFail($id);
-        return view('pages.admin.books.edit', compact('book'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'template' => 'required|file|mimes:doc,docx',
-        ]);
-
-        $book = Book::findOrFail($id);
-        $oldFile = $book->template;
-        $fileName = $oldFile;
-
-        if ($request->hasFile('template')) {
-            $file = $request->file('template');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('upload/books', $fileName, 'public');
-        }
-
-        $book->update([
-            'template' => $fileName,
-            'updated_at' => now(),
-        ]);
-
-        if ($oldFile) {
-            Storage::disk('public')->delete('upload/books/' . $oldFile);
-        }
-
-        if ($book) {
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' updated book ' . $book->title,
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('admin.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $book->title . ' successfully.');
-        }
-        return redirect()->route('admin.create.book')->with('error', 'Book not found.');
-    }
-
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
-        $script = $book->script;
-        $template = $book->template;
+        $templateId = $book->template_id;
+        $chapters = Chapter::where('book_id', $book->id)->get();
+
+        if ($templateId) {
+            $templateFile = File::findOrFail($templateId);
+            if ($templateFile) {
+                Storage::disk('public')->delete('/upload/books/' . $templateFile->name);
+                $templateFile->delete();
+            }
+        }
+
+        foreach ($chapters as $chapter) {
+            if ($chapter->chapter_id) {
+                $chapterFile = File::findOrFail($chapter->chapter_id);
+                if ($chapterFile) {
+                    Storage::disk('public')->delete('/upload/books/' . $chapterFile->name);
+                    $chapterFile->delete();
+                }
+            }
+
+            if ($chapter->review_id) {
+                $reviewFile = File::find($chapter->review_id);
+                if ($reviewFile) {
+                    Storage::disk('public')->delete('/upload/books/' . $reviewFile->name);
+                    $reviewFile->delete();
+                }
+            }
+
+            $chapter->delete();
+        }
+
         $book->delete();
 
-        if ($book) {
-            Storage::disk('public')->delete('upload/books/' . $script);
-            Storage::disk('public')->delete('upload/books/' . $template);
-        }
+        History::create([
+            'change_detail' => Auth::user()->username . ' deleted book ' . $book->title,
+        ]);
 
-        if ($book) {
-            $book->delete();
-
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' deleted book ' . $book->title,
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('admin.index.book');
-        }
-        return redirect()->route('admin.index.book');
+        return redirect()->route('admin.index.book')->with('success', 'Book deleted successfully.');
     }
 }
