@@ -30,10 +30,41 @@ $("[data-checkboxes]").each(function() {
 
 $("#table-1").dataTable({
   "columnDefs": [
-    { "sortable": false, "targets": [2,3] }
-  ]
+    { "sortable": true, "targets": [0,1,2,3] }
+  ],
+  "bPaginate": false,
+  "bFilter": false,
+  "bInfo": true
 });
+
 $("#table-2").dataTable({
+  "columnDefs": [
+    { "sortable": true, "targets": [0,1,2,3] }
+  ],
+  "bPaginate": false,
+  "bFilter": false,
+  "bInfo": true
+});
+
+$("#table-3").dataTable({
+  "columnDefs": [
+    { "sortable": true, "targets": [0,1,2,3] }
+  ],
+  "bPaginate": false,
+  "bFilter": false,
+  "bInfo": true
+});
+
+$("#table-4").dataTable({
+  "columnDefs": [
+    { "sortable": true, "targets": [0,1,2,3] }
+  ],
+  "bPaginate": false,
+  "bFilter": false,
+  "bInfo": true
+});
+
+$("#table-5").dataTable({
   "columnDefs": [
     { "sortable": true, "targets": [0,1,2,3] }
   ],

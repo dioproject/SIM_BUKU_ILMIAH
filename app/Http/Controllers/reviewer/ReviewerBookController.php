@@ -38,7 +38,6 @@ class ReviewerBookController extends Controller
         return view('pages.reviewer.books.show', compact('book', 'chapters'));
     }
 
-
     public function upload(Request $request, $id)
     {
         $request->validate([
@@ -52,21 +51,30 @@ class ReviewerBookController extends Controller
         if ($request->hasFile('file_review')) {
             $file = $request->file('file_review');
             $fileName = time() . '_revisi_' . $file->getClientOriginalName();
-            $file->storeAs('upload/books', $fileName, 'public');
+
+            // Simpan file baru
+            $filePath = $file->storeAs('upload/books', $fileName, 'public');
+
+            if ($filePath) {
+                $chapter->update([
+                    'file_review' => $fileName,
+                    'reviewer_id' => Auth::id(),
+                    'reviewedAt' => now(),
+                    'status_id' => Status::findOrFail(5)->id,
+                ]);
+
+                if ($oldFile) {
+                    Storage::disk('public')->delete('upload/books/' . $oldFile);
+                }
+
+                return redirect()->route('reviewer.show.book', $chapter->book_id)
+                    ->with('success', 'Review uploaded successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Failed to upload review file. Please try again.');
+            }
         }
 
-        $chapter->update([
-            'file_review' => $fileName,
-            'reviewer_id' => Auth::id(),
-            'reviewedAt' => now(),
-            'status_id' => Status::findOrFail(5)->id,
-        ]);
-
-        if ($oldFile) {
-            Storage::disk('public')->delete('upload/books/' . $oldFile);
-        }
-
-        return redirect()->route('reviewer.show.book', $chapter->book_id);
+        return redirect()->back()->with('error', 'No file was uploaded.');
     }
 
     public function notes(Request $request, $id)

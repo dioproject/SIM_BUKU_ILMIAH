@@ -4,8 +4,7 @@
 
 @push('style')
     <!-- CSS Libraries -->
-    <link rel="stylesheet"
-        href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
 @endpush
 
 @section('main')
@@ -15,114 +14,49 @@
         </div>
 
         <div class="card-body">
-            <form 
-                id="form-validation"
-                action="{{ route('admin.userdata.create') }}"
-                method="POST"
-                enctype="multipart/form-data"
-            >
+            <form id="form-validation" action="{{ route('register.action') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label for="frist_name">First Name</label>
-                        <input id="frist_name"
-                            type="text"
-                            class="form-control"
-                            name="frist_name"
-                            autofocus>
-                    </div>
-                    <div class="form-group col-6">
-                        <label for="last_name">Last Name</label>
-                        <input id="last_name"
-                            type="text"
-                            class="form-control"
-                            name="last_name">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input id="name" type="text" class="form-control" name="name" tabindex="1" required
+                        autofocus>
+                    <div class="invalid-feedback">
+                        Please fill in your name
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" class="form-control" name="username" tabindex="2" required
+                        autofocus>
+                    <div class="invalid-feedback">
+                        Please fill in your username
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email"
-                        type="email"
-                        class="form-control"
-                        name="email">
+                    <input id="email" type="email" class="form-control" name="email" tabindex="3" required
+                        autofocus>
                     <div class="invalid-feedback">
+                        Please fill in your email
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label for="password"
-                            class="d-block">Password</label>
-                        <input id="password"
-                            type="password"
-                            class="form-control pwstrength"
-                            data-indicator="pwindicator"
-                            name="password">
-                        <div id="pwindicator"
-                            class="pwindicator">
-                            <div class="bar"></div>
-                            <div class="label"></div>
-                        </div>
-                    </div>
-                    <div class="form-group col-6">
-                        <label for="password2"
-                            class="d-block">Password Confirmation</label>
-                        <input id="password2"
-                            type="password"
-                            class="form-control"
-                            name="password-confirm">
-                    </div>
-                </div>
-
-                <div class="form-divider">
-                    Your Address
-                </div>
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label>Religion</label>
-                        <select class="form-control selectric">
-                            <option>Islam</option>
-                            <option>Hindu</option>
-                            <option>Budha</option>
-                            <option>Konghucu</option>
-                            <option>Kristen</option>
-                            <option>Katolik</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-6">
-                        <label>Photos</label>
-                        <input type="file"
-                            class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label>Place of Birth</label>
-                        <input type="text"
-                            class="form-control">
-                    </div>
-                    <div class="form-group col-6">
-                        <label>Date of Birth</label>
-                        <input type="date"
-                            class="form-control">
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox"
-                            name="agree"
-                            class="custom-control-input"
-                            id="agree">
-                        <label class="custom-control-label"
-                            for="agree">I agree with the terms and conditions</label>
+                    <label for="contact">Contact</label>
+                    <input id="contact" type="number" class="form-control" name="contact" tabindex="4" required
+                        autofocus>
+                    <div class="invalid-feedback">
+                        Please fill in your contact
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <button type="submit"
-                        class="btn btn-primary btn-lg btn-block">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" class="form-control" name="password" tabindex="5" required>
+                    <div class="invalid-feedback">
+                        please fill in your password
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
                         Register
                     </button>
                 </div>

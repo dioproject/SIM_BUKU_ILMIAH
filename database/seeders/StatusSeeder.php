@@ -25,6 +25,9 @@ class StatusSeeder extends Seeder
             [
                 'option' => 'Revisi',
             ],
+            [
+                'option' => 'Publish',
+            ],
         ];
         foreach ($StatusData as $key => $val) {
             Status::create($val);

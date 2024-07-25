@@ -19,21 +19,19 @@
                 <a class="nav-link" href="{{ url('admin/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
-            {{-- <li class="{{ Request::is('admin/books') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/books') }}"><i
-                    class="fas fa-solid fa-book"></i><span>Books</span></a>
-            </li> --}}
-            {{-- <li class="{{ Request::is('admin/reviews') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/reviews') }}"><i
-                    class="fas fa-solid fa-comment"></i><span>Reviews</span></a>
-            </li>
-            <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/catalogs') }}"><i
-                        class="fas fa-solid fa-book-open"></i><span>Catalogs</span></a>
-            </li>
-            <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/royalty') }}"><i
-                        class="fas fa-solid fa-box"></i><span>Royalty</span></a>
+            {{-- <li class="nav-item dropdown {{ Request::is('books') ? 'active' : '' }}">
+                <a href="{{ url('admin/books') }}"
+                    class="nav-link has-dropdown"><i class="fas fa-solid fa-book"></i><span>Data Book</span></a>
+                <ul class="dropdown-menu">
+                    <li class='{{ Request::is('admin/books') ? 'active' : '' }}'>
+                        <a class="nav-link"
+                            href="{{ url('admin/books') }}">Books</a>
+                    </li>
+                    <li class="{{ Request::is('admin/chapters') ? 'active' : '' }}">
+                        <a class="nav-link"
+                            href="{{ url('admin/chapters') }}">Chapters</a>
+                    </li>
+                </ul>
             </li> --}}
             <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/history') }}"><i

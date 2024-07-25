@@ -26,18 +26,18 @@ class ChapterFactory extends Factory
     public function definition()
     {
         return [
-            'chapter' => $this->faker->regexify('[A-Za-z0-9]{100}'),
-            'deadline' => $this->faker->date(),
+            'chapter' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'notes' => $this->faker->regexify('[A-Za-z0-9]{200}'),
             'file_chapter' => $this->faker->regexify('[A-Za-z0-9]{250}'),
             'file_review' => $this->faker->regexify('[A-Za-z0-9]{250}'),
-            'book_id' => Book::factory(),
             'author_id' => User::factory(),
             'reviewer_id' => User::factory(),
+            'book_id' => Book::factory(),
             'status_id' => Status::factory(),
-            'approvedAt' => $this->faker->dateTime(),
-            'uploadedAt' => $this->faker->dateTime(),
-            'reviewedAt' => $this->faker->dateTime(),
+            'deadline' => $this->faker->date(),
+            'uploaded_at' => $this->faker->date(),
+            'verified_at' => $this->faker->date(),
+            'approved_at' => $this->faker->date(),
         ];
     }
 }

@@ -15,13 +15,19 @@
                 <a class="nav-link" href="{{ url('author/books') }}"><i
                     class="fas fa-solid fa-book"></i><span>Books</span></a>
             </li>
-            {{-- <li class="{{ Request::is('author/reviews') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('author/reviews') }}"><i
-                    class="fas fa-solid fa-comment"></i><span>Reviews</span></a>
-            </li>
-            <li class="{{ Request::is('author/royalty') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('author/royalty') }}"><i
-                        class="fas fa-solid fa-box"></i><span>Royalty</span></a>
+            {{-- <li class="nav-item dropdown {{ Request::is('books') ? 'active' : '' }}">
+                <a href="{{ url('author/books') }}"
+                    class="nav-link has-dropdown"><i class="fas fa-solid fa-book"></i><span>Data Book</span></a>
+                <ul class="dropdown-menu">
+                    <li class='{{ Request::is('author/books') ? 'active' : '' }}'>
+                        <a class="nav-link"
+                            href="{{ url('author/books') }}">Books</a>
+                    </li>
+                    <li class="{{ Request::is('author/chapters') ? 'active' : '' }}">
+                        <a class="nav-link"
+                            href="{{ url('author/chapters') }}">Chapters</a>
+                    </li>
+                </ul>
             </li> --}}
             <li class="{{ Request::is('author/history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('author/history') }}"><i

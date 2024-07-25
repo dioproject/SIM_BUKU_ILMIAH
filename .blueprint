@@ -1,21 +1,24 @@
 created:
     - database/factories/UserFactory.php
+    - database/factories/FileFactory.php
     - database/factories/BookFactory.php
     - database/factories/ChapterFactory.php
     - database/factories/StatusFactory.php
     - database/factories/HistoryFactory.php
-    - database/migrations/2024_07_20_121229_create_users_table.php
-    - database/migrations/2024_07_20_121230_create_books_table.php
-    - database/migrations/2024_07_20_121231_create_chapters_table.php
-    - database/migrations/2024_07_20_121232_create_statuses_table.php
-    - database/migrations/2024_07_20_121233_create_histories_table.php
+    - database/migrations/2024_07_25_003510_create_users_table.php
+    - database/migrations/2024_07_25_003511_create_files_table.php
+    - database/migrations/2024_07_25_003512_create_books_table.php
+    - database/migrations/2024_07_25_003513_create_chapters_table.php
+    - database/migrations/2024_07_25_003514_create_statuses_table.php
+    - database/migrations/2024_07_25_003515_create_histories_table.php
     - app/Models/User.php
+    - app/Models/File.php
     - app/Models/Book.php
     - app/Models/Chapter.php
     - app/Models/Status.php
     - app/Models/History.php
 models:
-    Book: { title: 'string:250 nullable', template: 'string:250 nullable', total_chapter: 'string:7 nullable' }
+    Book: { title: 'string:250 nullable', total_chapter: 'string:7 nullable' }
     Catalog: { book_id: 'id foreign:Book nullable onUpdate onDelete', description: 'text nullable', path_foto: 'string:200 nullable' }
     Category: { name: 'string:100 nullable' }
     Citation: { citation: 'string:200 nullable', bibliography: 'text nullable' }
@@ -27,4 +30,5 @@ models:
     Religion: { option: 'string:10 nullable' }
     Gender: { option: 'string:6 nullable' }
     Status: { option: 'string:20 nullable' }
-    Chapter: { chapter: 'string:100 nullable', deadline: 'date nullable', notes: 'string:200 nullable', file_chapter: 'string:250 nullable', file_review: 'string:250 nullable', book_id: 'id foreign:Book nullable onUpdate onDelete', author_id: 'id foreign:User nullable onUpdate onDelete', reviewer_id: 'id foreign:User nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete', approvedAt: 'datetime nullable', uploadedAt: 'datetime nullable', reviewedAt: 'datetime nullable' }
+    Chapter: { chapter: 'string:200 nullable', notes: 'string:200 nullable', book_id: 'id foreign:Book nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete' }
+    File: { name: 'string:250 nullable', type: 'enum:Template,Chapter,Review', book_id: 'id foreign:Book nullable onUpdate onDelete', chapter_id: 'id foreign:Chapter nullable onUpdate onDelete', user_id: 'id foreign:User nullable onUpdate onDelete', status_id: 'id foreign:Status nullable onUpdate onDelete', deadline: 'date nullable', uploaded_at: 'date nullable', verified_at: 'date nullable' }

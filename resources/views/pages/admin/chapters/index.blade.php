@@ -1,18 +1,16 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Books')
+@section('title', 'Chapters')
 
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('library/prismjs/themes/prism.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Books</h1>
+                <h1>Chapters</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -40,12 +38,9 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Book
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
-                                    <form action="{{ route('admin.index.book') }}" method="GET">
+                                    <form action="{{ route('admin.index.chapter') }}" method="GET">
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search" name="search"
                                                 value="{{ request('search') }}">
@@ -59,36 +54,50 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table-striped table" id="table-2">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
-                                                <th>Date</th>
+                                                <th>Author</th>
+                                                <th>Chapter</th>
+                                                <th>Submited At</th>
+                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($books as $key => $book)
+                                            @foreach ($chapters as $key => $chapter)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title }}</td>
+                                                    <td>{{ $chapter->book->title }}</td>
+                                                    <td>{{ $chapter->fileChapter->user->username ?? '' }}</td>
+                                                    <td>{{ $chapter->chapter }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}</td>
                                                     <td>
-                                                        {{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('l, d F Y') }}
+                                                        @if ($chapter->status->option == 'Revisi')
+                                                            <span
+                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Approve')
+                                                            <span
+                                                                class="badge badge-success">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Reject')
+                                                            <span
+                                                                class="badge badge-danger">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Submit')
+                                                            <span
+                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Pending')
+                                                            <span
+                                                                class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-success btn-action mr-1" title="Detail"
-                                                            href="{{ route('admin.show.book', $book->id) }}"
+                                                            href="{{ route('admin.show.chapter', $chapter->id) }}"
                                                             data-toggle="tooltip">
                                                             <i class="fas fa-list"></i>
                                                         </a>
-                                                        <form action="{{ route('admin.destroy.book', $book->id) }}"
-                                                            method="POST" class="btn btn-danger p-0" type="button">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-danger btn-action delete-button"
-                                                                title="Delete"><i class="fas fa-trash"></i></button>
-                                                        </form>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -100,26 +109,26 @@
                             <div class="card-footer">
                                 <nav aria-label="...">
                                     <ul class="pagination justify-content-center">
-                                        @if ($books->onFirstPage())
+                                        @if ($chapters->onFirstPage())
                                             <li class="page-item disabled">
                                                 <span class="page-link">Previous</span>
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $books->previousPageUrl() }}"
+                                                <a class="page-link" href="{{ $chapters->previousPageUrl() }}"
                                                     tabindex="-1">Previous</a>
                                             </li>
                                         @endif
 
-                                        @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $books->currentPage() ? 'active' : '' }}">
+                                        @foreach ($chapters->getUrlRange(1, $chapters->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $chapters->currentPage() ? 'active' : '' }}">
                                                 <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                             </li>
                                         @endforeach
 
-                                        @if ($books->hasMorePages())
+                                        @if ($chapters->hasMorePages())
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $books->nextPageUrl() }}">Next</a>
+                                                <a class="page-link" href="{{ $chapters->nextPageUrl() }}">Next</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">
@@ -140,7 +149,4 @@
 @push('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
-    <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 @endpush
