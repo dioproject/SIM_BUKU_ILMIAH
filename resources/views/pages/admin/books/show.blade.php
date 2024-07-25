@@ -62,7 +62,7 @@
                                         @endif
                                     </div>
                                     <ul class="list-group py-2">
-                                        @if ($chapter->file_chapter !== null)
+                                        @if ($chapter->file_chapter)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -77,14 +77,13 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Author : {{ $chapter->author->username }}</small>
-                                                        @if ($chapter->status->option != 'Pending')
-                                                            <small>Uploaded : {{ $chapter->uploadedAt }}</small>
-                                                        @endif
+                                                        <small>Uploaded :
+                                                            {{ \Carbon\Carbon::parse($chapter->uploaded_at)->translatedFormat('l, d F Y') }}</small>
                                                     </div>
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->file_review !== null)
+                                        @if ($chapter->file_review)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -95,18 +94,17 @@
                                                         <a class="btn btn-secondary"
                                                             href="{{ Storage::url('upload/books/') . $chapter->file_review }}"
                                                             download="{{ $chapter->file_review }}"><i
-                                                                class="fas fa-download"></i></a>
+                                                                class="fas fa-download"></i></a></td>
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Reviewer : {{ $chapter->reviewer->username }}</small>
-                                                        @if ($chapter->status->option !== 'Pending')
-                                                            <small>Reviewed : {{ $chapter->reviewedAt }}</small>
-                                                        @endif
+                                                        <small>Reviewed :
+                                                            {{ \Carbon\Carbon::parse($chapter->updated_at)->translatedFormat('l, d F Y') }}</small>
                                                     </div>
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->status->option == 'Revisi')
+                                        @if ($chapter->notes)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-12">

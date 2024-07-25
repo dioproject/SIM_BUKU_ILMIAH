@@ -55,7 +55,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table-striped table" id="table-2">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
@@ -68,8 +68,8 @@
                                             @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title }}</td>
-                                                    <td>{{ $book->total_chapter }}</td>
+                                                    <td>{{ $book->title ?? '' }}</td>
+                                                    <td>{{ $book->total_chapter ?? '' }}</td>
                                                     <td>
                                                         <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
                                                             title="Detail" href="{{ route('reviewer.show.book', $book->id) }}"

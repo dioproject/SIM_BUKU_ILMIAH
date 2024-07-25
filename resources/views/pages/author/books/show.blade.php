@@ -35,7 +35,7 @@
                                         @endif
                                     </div>
                                     <ul class="list-group py-2">
-                                        @if (($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi') && $chapter->file_chapter !== null)
+                                        @if ($chapter->file_chapter)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-11">
@@ -50,36 +50,28 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Author : {{ $chapter->author->username }}</small>
-                                                        @if ($chapter->status->option !== 'Pending')
-                                                            <small>Uploaded : {{ $chapter->uploadedAt }}</small>
-                                                        @endif
+                                                        <small>Uploaded : {{ \Carbon\Carbon::parse($chapter->uploaded_at)->translatedFormat('l, d F Y') }}</small>
                                                     </div>
                                                 </div>
                                             </li>
                                         @endif
-                                        @if (($chapter->status->option == 'Approve' || $chapter->status->option == 'Revisi') && $chapter->file_review !== null)
+                                        @if ($chapter->file_review)
                                             <li class="list-group-item">
                                                 <div class="row">
-                                                    <div class="col-md-11">
+                                                    <div class="col-md-12">
                                                         <i class="fas fa-file"></i>
                                                         <strong>{{ $chapter->file_review }}</strong>
-                                                    </div>
-                                                    <div class="col-md-1 text-right">
-                                                        <a class="btn btn-secondary"
-                                                            href="{{ Storage::url('upload/books/') . $chapter->file_review }}"
-                                                            download="{{ $chapter->file_review }}"><i
-                                                                class="fas fa-download"></i></a></td>
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Reviewer : {{ $chapter->reviewer->username }}</small>
                                                         @if ($chapter->status->option != 'Pending')
-                                                            <small>Reviewed : {{ $chapter->reviewedAt }}</small>
+                                                            <small>Reviewed : {{ \Carbon\Carbon::parse($chapter->updated_at)->translatedFormat('l, d F Y') }}</small>
                                                         @endif
                                                     </div>
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->status->option == 'Revisi')
+                                        @if ($chapter->notes)
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -89,25 +81,23 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if ($chapter->file_chapter == null)
-                                            <li class="list-group-item">
-                                                <form action="{{ route('author.upload.chapter', $chapter->id) }}"
-                                                    method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="row">
-                                                        <div class="col-md-10">
-                                                            <input type="file" name="file_chapter"
-                                                                class="form-control-file" accept=".doc,.docx" required>
-                                                        </div>
-                                                        <div class="col-md-2 text-right">
-                                                            <button type="submit" class="btn btn-primary"><i
-                                                                    class="fas fa-upload"></i> Upload</button>
-                                                        </div>
+                                        <li class="list-group-item">
+                                            <form action="{{ route('author.upload.chapter', $chapter->id) }}"
+                                                method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <input type="file" name="file_chapter" class="form-control-file"
+                                                            accept=".doc,.docx" required>
                                                     </div>
-                                                </form>
-                                            </li>
-                                        @endif
+                                                    <div class="col-md-2 text-right">
+                                                        <button type="submit" class="btn btn-primary"><i
+                                                                class="fas fa-upload"></i> Upload</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </li>
                                     </ul>
                                 @endforeach
                             </div>

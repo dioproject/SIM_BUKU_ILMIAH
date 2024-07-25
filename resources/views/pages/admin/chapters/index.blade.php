@@ -63,7 +63,6 @@
                                                 <th>Chapter</th>
                                                 <th>Submited At</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -71,13 +70,14 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $chapter->book->title }}</td>
-                                                    <td>{{ $chapter->fileChapter->user->username ?? '' }}</td>
+                                                    <td>{{ $chapter->author->username ?? '' }}</td>
                                                     <td>{{ $chapter->chapter }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
+                                                    </td>
                                                     <td>
                                                         @if ($chapter->status->option == 'Revisi')
                                                             <span
-                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                                class="badge badge-primary">{{ $chapter->status->option }}</span>
                                                         @elseif($chapter->status->option == 'Approve')
                                                             <span
                                                                 class="badge badge-success">{{ $chapter->status->option }}</span>
@@ -91,13 +91,6 @@
                                                             <span
                                                                 class="badge badge-secondary">{{ $chapter->status->option }}</span>
                                                         @endif
-                                                    </td>
-                                                    <td>
-                                                        <a class="btn btn-success btn-action mr-1" title="Detail"
-                                                            href="{{ route('admin.show.chapter', $chapter->id) }}"
-                                                            data-toggle="tooltip">
-                                                            <i class="fas fa-list"></i>
-                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach

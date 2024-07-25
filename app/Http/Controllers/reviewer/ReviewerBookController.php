@@ -41,33 +41,32 @@ class ReviewerBookController extends Controller
     public function upload(Request $request, $id)
     {
         $request->validate([
-            'file_review' => 'required|file|mimes:doc,docx|max:2048',
+            'file_review' => 'required|file|mimes:doc,docx',
         ]);
 
-        $chapter = Chapter::findOrFail($id);
-        $oldFile = $chapter->file_review;
+        $review = Chapter::findOrFail($id);
+        $oldFile = $review->file_review;
         $fileName = $oldFile;
 
         if ($request->hasFile('file_review')) {
             $file = $request->file('file_review');
-            $fileName = time() . '_revisi_' . $file->getClientOriginalName();
+            $fileName = time() . '_chapter_' . $file->getClientOriginalName();
 
-            // Simpan file baru
             $filePath = $file->storeAs('upload/books', $fileName, 'public');
 
             if ($filePath) {
-                $chapter->update([
+                $review->update([
                     'file_review' => $fileName,
                     'reviewer_id' => Auth::id(),
-                    'reviewedAt' => now(),
                     'status_id' => Status::findOrFail(5)->id,
+                    'updated_at' => now(),
                 ]);
 
                 if ($oldFile) {
                     Storage::disk('public')->delete('upload/books/' . $oldFile);
                 }
 
-                return redirect()->route('reviewer.show.book', $chapter->book_id)
+                return redirect()->route('reviewer.show.book', $review->book_id)
                     ->with('success', 'Review uploaded successfully.');
             } else {
                 return redirect()->back()->with('error', 'Failed to upload review file. Please try again.');

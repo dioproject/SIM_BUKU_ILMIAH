@@ -55,7 +55,6 @@ class AuthorBookController extends Controller
         $request->validate([
             'file_chapter' => 'required|file|mimes:doc,docx',
         ]);
-        dd($request->all());
 
         $chapter = Chapter::findOrFail($id);
         $oldFile = $chapter->file_chapter;
