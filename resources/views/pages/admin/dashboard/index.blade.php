@@ -102,52 +102,19 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
-                                <li class="media">
-                                    <img class="rounded-circle mr-3" width="50"
-                                        src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar">
-                                    <div class="media-body">
-                                        <div class="text-primary float-right">Now</div>
-                                        <div class="media-title">Farhan A Mujib</div>
-                                        <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla.
-                                            Nulla vel metus scelerisque ante sollicitudin.</span>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <img class="rounded-circle mr-3" width="50"
-                                        src="{{ asset('img/avatar/avatar-2.png') }}" alt="avatar">
-                                    <div class="media-body">
-                                        <div class="float-right">12m</div>
-                                        <div class="media-title">Ujang Maman</div>
-                                        <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla.
-                                            Nulla vel metus scelerisque ante sollicitudin.</span>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <img class="rounded-circle mr-3" width="50"
-                                        src="{{ asset('img/avatar/avatar-3.png') }}" alt="avatar">
-                                    <div class="media-body">
-                                        <div class="float-right">17m</div>
-                                        <div class="media-title">Rizal Fakhri</div>
-                                        <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla.
-                                            Nulla vel metus scelerisque ante sollicitudin.</span>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <img class="rounded-circle mr-3" width="50"
-                                        src="{{ asset('img/avatar/avatar-4.png') }}" alt="avatar">
-                                    <div class="media-body">
-                                        <div class="float-right">21m</div>
-                                        <div class="media-title">Alfa Zulkarnain</div>
-                                        <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla.
-                                            Nulla vel metus scelerisque ante sollicitudin.</span>
-                                    </div>
-                                </li>
+                                @foreach ($recentActivities as $activity)
+                                    <li class="media">
+                                        <img class="rounded-circle mr-3" width="50" src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar">
+                                        <div class="media-body">
+                                            <div class="float-right text-primary">{{ $activity->created_at->diffForHumans() }}</div>
+                                            <div class="media-title">{{ $activity->author->name ?? 'Unknown Author' }}</div>
+                                            <span class="text-small text-muted">
+                                                Submitted chapter: {{ $activity->title }}
+                                            </span>
+                                        </div>
+                                    </li>
+                                @endforeach
                             </ul>
-                            <div class="pt-1 pb-1 text-center">
-                                <a href="#" class="btn btn-primary btn-lg btn-round">
-                                    View All
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,9 +124,39 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
     <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
 
-    <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/index-0.js') }}"></script>
+    <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var statistics = @json($statistics);
+
+        var labels = statistics.map(item => item.date);
+        var data = statistics.map(item => item.count);
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Chapters Approved per Day',
+                    data: data,
+                    borderWidth: 2,
+                    borderColor: '#6777ef',
+                    backgroundColor: 'transparent',
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#6777ef',
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 @endpush
