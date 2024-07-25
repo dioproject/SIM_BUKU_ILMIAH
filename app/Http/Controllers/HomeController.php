@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Chapter;
 
 class HomeController extends Controller
 {
@@ -13,14 +13,42 @@ class HomeController extends Controller
 
     public function adminPage()
     {
-        return view('pages.admin.dashboard.index');
+        $statistics = Chapter::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->get()
+            ->toArray();
+
+        $recentActivities = Chapter::with('author')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('pages.admin.dashboard.index', compact('statistics', 'recentActivities'));
     }
     public function reviewerPage()
     {
-        return view('pages.reviewer.dashboard.index');
+        $statistics = Chapter::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->get()
+            ->toArray();
+
+        $recentActivities = Chapter::with('author')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        return view('pages.reviewer.dashboard.index', compact('statistics', 'recentActivities'));
     }
     public function authorPage()
     {
-        return view('pages.author.dashboard.index');
+        $statistics = Chapter::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->get()
+            ->toArray();
+
+        $recentActivities = Chapter::with('author')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        return view('pages.author.dashboard.index', compact('statistics', 'recentActivities'));
     }
 }

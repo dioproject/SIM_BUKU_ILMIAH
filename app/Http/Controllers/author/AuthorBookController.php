@@ -77,6 +77,10 @@ class AuthorBookController extends Controller
                     Storage::disk('public')->delete('upload/books/' . $oldFile);
                 }
 
+                History::create([
+                    'change_detail' => 'Uploaded chapter "' . $chapter->chapter . '" for book "' . $chapter->book->title . '" by ' . Auth::user()->username,
+                ]);
+
                 return redirect()->route('author.show.book', $chapter->book_id)
                     ->with('success', 'Chapter uploaded successfully.');
             } else {
