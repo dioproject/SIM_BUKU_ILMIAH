@@ -9,6 +9,8 @@ use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\Status;
 use App\Models\History;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 class AuthorBookController extends Controller
@@ -81,6 +83,20 @@ class AuthorBookController extends Controller
                     'change_detail' => 'Uploaded chapter "' . $chapter->chapter . '" for book "' . $chapter->book->title . '" by ' . Auth::user()->username,
                 ]);
 
+                $users = User::whereIn('user_role', ['REVIEWER', 'ADMIN'])->get();
+
+                foreach ($users as $user) {
+                    Notification::create([
+                        'user_id' => $user->id,
+                        'type' => 'Chapter Uploaded',
+                        'data' => [
+                            'chapter' => $chapter->chapter,
+                            'uploaded_by' => Auth::user()->username,
+                        ],
+                        'is_read' => false,
+                    ]);
+                }
+
                 return redirect()->route('author.show.book', $chapter->book_id)
                     ->with('success', 'Chapter uploaded successfully.');
             } else {
@@ -89,52 +105,5 @@ class AuthorBookController extends Controller
         }
 
         return redirect()->back()->with('error', 'No file was uploaded.');
-    }
-
-
-    public function edit($id)
-    {
-        $book = Book::findOrFail($id);
-        return view('pages.author.books.edit', compact('book', 'category'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'category' => 'required',
-            'title' => 'required|max:250',
-            'script' => 'required|file|mimes:doc,docx',
-        ]);
-
-        $book = Book::findOrFail($id);
-        $oldFile = $book->script;
-
-        $fileName = $oldFile;
-
-        if ($request->hasFile('script')) {
-            $file = $request->file('script');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('upload/books', $fileName, 'public');
-        }
-
-        $book->update([
-            'title' => $request->title,
-            'script' => $fileName,
-            'category_id' => $request->category,
-            'updated_at' => now(),
-        ]);
-
-        if ($oldFile) {
-            Storage::disk('public')->delete('upload/books/' . $oldFile);
-        }
-
-        if ($book) {
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' updated book ' . $book->title,
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('author.index.book')->with('success', Auth::user()->first_name . ' updated book ' . $book->title . ' successfully.');
-        }
-        return redirect()->route('author.create.book')->with('error', 'Book not found.');
     }
 }
