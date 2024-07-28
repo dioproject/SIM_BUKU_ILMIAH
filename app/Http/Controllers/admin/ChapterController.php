@@ -14,7 +14,7 @@ class ChapterController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         if ($search) {
             $chapters = Chapter::where('chapter', 'like', '%' . $search . '%')
                 ->orWhereHas('book', function ($query) use ($search) {
@@ -35,35 +35,6 @@ class ChapterController extends Controller
 
         $files = File::where('chapter_id', $chapter->id)->get();
         return view('pages.admin.chapters.show', compact('chapter', 'files'));
-    }
-
-    public function edit($id)
-    {
-        $category = Chapter::findOrFail($id);
-
-        return view('pages.admin.chapters.edit', compact('category'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required',
-        ]);
-
-        $category = Chapter::findOrFail($id);
-        $category->update([
-            'name' => $request->name,
-            'updated_at',
-        ]);
-
-        if ($category) {
-            History::create([
-                'change_detail' => Auth::user()->first_name . ' updated category ' . $category->name . ' successfully.',
-                'user_id' => Auth::id(),
-            ]);
-            return redirect()->route('admin.index.category')->with('success', Auth::user()->first_name . ' updated category ' . $category->name . ' successfully.');
-        }
-        return redirect()->route('admin.create.category')->with('error', 'Chapter not found.');
     }
 
     public function destroy($id)

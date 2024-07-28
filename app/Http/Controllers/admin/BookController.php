@@ -11,6 +11,8 @@ use App\Models\File;
 use App\Models\Status;
 use App\Models\History;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class BookController extends Controller
 {
@@ -87,40 +89,12 @@ class BookController extends Controller
         return redirect()->route('admin.show.book', $book->id)->with('success', 'Chapters saved successfully!');
     }
 
-
     public function show($id)
     {
         $book = Book::findOrFail($id);
         $chapters = Chapter::where('book_id', $book->id)->get();
 
         return view('pages.admin.books.show', compact('book', 'chapters'));
-    }
-
-    public function approve($id)
-    {
-        $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
-        $chapter->update([
-            'status_id' => Status::findOrFail(3)->id,
-            'approvedAt' => now(),
-            'deadline' => now()->addWeeks(2),
-        ]);
-
-        $book = $chapter->book_id;
-
-        return redirect()->route('admin.show.book', $book);
-    }
-
-    public function reject($id)
-    {
-        $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
-        $chapter->update([
-            'status_id' => Status::findOrFail(4)->id,
-            'author_id' => null,
-        ]);
-
-        $book = $chapter->book_id;
-
-        return redirect()->route('admin.show.book', $book);
     }
 
     public function destroy($id)
@@ -164,5 +138,91 @@ class BookController extends Controller
         ]);
 
         return redirect()->route('admin.index.book')->with('success', 'Book deleted successfully.');
+    }
+
+    public function mergeChapters($id)
+    {
+        $book = Book::findOrFail($id);
+
+        // Ambil semua chapter dengan status 'approved' dari buku
+        $chapters = Chapter::where('book_id', $book->id)
+            ->where('status_id', 3) // Sesuaikan dengan field dan value yang tepat
+            ->orderBy('created_at')
+            ->get();
+
+        // Buat objek PhpWord baru untuk dokumen yang digabung
+        $phpWord = new PhpWord();
+
+        foreach ($chapters as $chapter) {
+            // Asumsikan bahwa field 'file_chapter' menyimpan path dokumen chapter
+            $chapterPath = storage_path('app/public/upload/books/' . $chapter->file_chapter);
+
+            if (file_exists($chapterPath)) {
+                $this->addContentFromDocx($phpWord, $chapterPath);
+            }
+        }
+
+        // Simpan dokumen yang digabungkan ke file sementara
+        $mergedFilePath = storage_path('app/public/merged_book_' . $book->title . '.docx');
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($mergedFilePath);
+
+        // Unduh file gabungan
+        return response()->download($mergedFilePath, 'Merged_Book_' . $book->title . '.docx');
+    }
+
+    private function addContentFromDocx($phpWord, $filePath)
+    {
+        $source = IOFactory::load($filePath);
+
+        foreach ($source->getSections() as $section) {
+            $newSection = $phpWord->addSection();
+            foreach ($section->getElements() as $element) {
+                $this->copyElement($newSection, $element);
+            }
+        }
+    }
+
+    private function copyElement($newSection, $element)
+    {
+        $type = get_class($element);
+
+        switch ($type) {
+            case 'PhpOffice\PhpWord\Element\TextRun':
+                $textRun = $newSection->addTextRun($element->getParagraphStyle());
+                foreach ($element->getElements() as $childElement) {
+                    if (method_exists($childElement, 'getText')) {
+                        $textRun->addText($childElement->getText(), $childElement->getFontStyle(), $childElement->getParagraphStyle());
+                    }
+                }
+                break;
+            case 'PhpOffice\PhpWord\Element\Text':
+                $newSection->addText($element->getText(), $element->getFontStyle(), $element->getParagraphStyle());
+                break;
+            case 'PhpOffice\PhpWord\Element\Title':
+                $newSection->addTitle($element->getText(), $element->getDepth());
+                break;
+            case 'PhpOffice\PhpWord\Element\Image':
+                $newSection->addImage($element->getSource(), $element->getStyle());
+                break;
+            case 'PhpOffice\PhpWord\Element\Link':
+                $newSection->addLink($element->getSource(), $element->getText(), $element->getFontStyle(), $element->getParagraphStyle());
+                break;
+            case 'PhpOffice\PhpWord\Element\Table':
+                $newTable = $newSection->addTable($element->getStyle());
+                foreach ($element->getRows() as $row) {
+                    $tableRow = $newTable->addRow();
+                    foreach ($row->getCells() as $cell) {
+                        $tableCell = $tableRow->addCell();
+                        foreach ($cell->getElements() as $cellElement) {
+                            $this->copyElement($tableCell, $cellElement);
+                        }
+                    }
+                }
+                break;
+            default:
+                // Handle other element types as needed
+                break;
+        }
     }
 }

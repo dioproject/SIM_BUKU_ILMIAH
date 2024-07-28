@@ -63,7 +63,6 @@
                                                 <th>Chapter</th>
                                                 <th>Submited At</th>
                                                 <th>Status</th>
-                                            </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($chapters as $key => $chapter)
