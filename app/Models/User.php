@@ -42,4 +42,9 @@ class User extends Model implements Authenticatable
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function hasRole($role)
+    {
+        return $this->user_role === $role;
+    }
 }

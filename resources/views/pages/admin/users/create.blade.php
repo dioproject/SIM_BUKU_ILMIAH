@@ -78,8 +78,8 @@
                                                 name="user_role" value="{{ old('user_role') }}">
                                                 <option value="ADMIN" {{ old('user_role') == 'ADMIN' ? 'selected' : '' }}>
                                                     ADMIN</option>
-                                                <option value="EDITOR" {{ old('user_role') == 'EDITOR' ? 'selected' : '' }}>
-                                                    EDITOR</option>
+                                                <option value="REVIEWER" {{ old('user_role') == 'REVIEWER' ? 'selected' : '' }}>
+                                                    REVIEWER</option>
                                                 <option value="AUTHOR"
                                                     {{ old('user_role') == 'AUTHOR' ? 'selected' : '' }}>AUTHOR
                                                 </option>

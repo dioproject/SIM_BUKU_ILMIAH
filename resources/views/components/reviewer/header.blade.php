@@ -15,10 +15,11 @@
                     @foreach ($notifications as $notification)
                         <div class="dropdown-item">
                             <div class="dropdown-item-icon bg-info text-white">
-                                <i class="far fa-user"></i>
+                                <i class="fas fa-info-circle"></i>
                             </div>
                             <div class="dropdown-item-desc">
-                                {{ $notification->change_detail }}
+                                {{ $notification->data['chapter'] }} uploaded by
+                                {{ $notification->data['uploaded_by'] }}
                                 <div class="time">{{ $notification->created_at->diffForHumans() }}</div>
                             </div>
                         </div>
