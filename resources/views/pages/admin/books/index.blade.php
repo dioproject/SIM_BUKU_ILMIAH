@@ -76,7 +76,13 @@
                                                         <a class="btn btn-success btn-action mr-1" data-toggle="tooltip"
                                                             title="Detail"
                                                             href="{{ route('admin.show.book', $book->id) }}"><i
-                                                                class="fas fa-list"></i></a>
+                                                                class="fas fa-list"></i>
+                                                        </a>
+                                                        <a class="btn btn-secondary btn-action mr-1"
+                                                            title="Download" href="{{ route('admin.merge.book', $book->id) }}"
+                                                            data-toggle="tooltip">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
                                                         <form action="{{ route('admin.destroy.book', $book->id) }}"
                                                             method="POST" class="btn btn-danger p-0" type="button">
                                                             @csrf

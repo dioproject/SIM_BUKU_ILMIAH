@@ -43,6 +43,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::post('/admin/create/book', [BookController::class, 'store'])->name('admin.store.book');
     Route::post('/admin/chapter/{id}', [BookController::class, 'storeChapter'])->name('admin.store.chapter');
     Route::get('/admin/book/{id}', [BookController::class, 'show'])->name('admin.show.book');
+    Route::get('/merge/chapter/{id}', [BookController::class, 'mergeChapters'])->name('admin.merge.book');
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
     Route::get('/admin/chapters', [ChapterController::class, 'index'])->name('admin.index.chapter');
     Route::get('/admin/chapter/{id}', [ChapterController::class, 'show'])->name('admin.show.chapter');
