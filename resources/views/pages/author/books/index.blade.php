@@ -60,6 +60,7 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Book Title</th>
+                                                <th>Template</th>
                                                 <th>Total Chapter</th>
                                                 <th>Action</th>
                                             </tr>
@@ -69,6 +70,9 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $book->title ?? '' }}</td>
+                                                    <td>
+                                                        <a href="{{ Storage::url('upload/books/' . $book->template) }}" download="{{ $book->template }}">{{ $book->template }}</a>
+                                                    </td>
                                                     <td>{{ $book->total_chapter ?? '' }}</td>
                                                     <td>
                                                         <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
