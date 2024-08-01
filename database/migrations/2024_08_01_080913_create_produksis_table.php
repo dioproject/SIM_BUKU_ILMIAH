@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('produksis', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->nullable();
-            $table->text('data'); 
-            $table->boolean('is_read')->default(false);
-            $table->foreignId('user_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
+            $table->string('eksemplar', 20)->nullable();
+            $table->date('tahun_terbit')->nullable();
+            $table->string('biaya_produksi', 20)->nullable();
+            $table->string('keuntungan', 20)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('produksis');
     }
 };

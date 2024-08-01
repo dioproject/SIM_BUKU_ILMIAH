@@ -53,7 +53,7 @@
                                         <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Email</label>
                                         <div class="col-sm-12 col-md-10">
                                             <input type="email" tabindex="3" class="form-control" id="email"
-                                                name="email" value="{{ $user->email }} {{ old('email') }}">
+                                                name="email" value="{{ $user->email }} {{ old('email') }}" disabled aria-hidden="true">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">

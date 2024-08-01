@@ -34,39 +34,59 @@
                                 <form action="{{ route('admin.store.catalog') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Title</label>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Title :</label>
+                                        <div class="col-sm-12 col-md-10">
                                             <select class="form-control select2" tabindex="1" id="book_id"
                                                 name="book_id" value="{{ old('book_id') }}">
                                                 @foreach ($books as $book)
                                                     <option value="{{ $book->id }}"
                                                         @if (old('book_id') == $book->id) selected @endif>
-                                                        {{ $book->manuscript->title }}</option>
+                                                        {{ $book->title }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Photos</label>
-                                            <div class="form-control custom-file">
-                                                <input type="file" tabindex="2" name="path_foto"
-                                                    class="custom-file-input" id="path_foto" value="{{ old('path_foto') }}" accept="image/*">
-                                                <label class="custom-file-label">Choose File</label>
-                                            </div>
-                                            <div class="form-text text-muted">The image must have a maximum size of 1MB
-                                            </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Cover :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="file" tabindex="2" name="cover"
+                                                    class="form-control" id="cover" value="{{ old('cover') }}" accept=".jpg,.jpeg,.png">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label>Description</label>
-                                            <textarea type="text" tabindex="3" id="description" name="description" class="form-control"
-                                                value="{{ old('description') }}" data-height="150"></textarea>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Size :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="text" tabindex="3" class="form-control" id="size"
+                                                name="size" value="{{ old('size') }}">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Thickness :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="number" tabindex="4" class="form-control" id="thickness"
+                                                name="thickness" value="{{ old('thickness') }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Stock :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="number" tabindex="5" class="form-control" id="stock"
+                                                name="stock" value="{{ old('stock') }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Price :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="number" tabindex="5" class="form-control" id="price"
+                                                name="price" value="{{ old('price') }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
+                                        <div class="col-sm-12 col-md-9">
+                                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+                                                Submit</button>
                                         </div>
                                     </div>
                                 </form>

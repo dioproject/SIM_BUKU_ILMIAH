@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class Bab extends Model
 {
     use HasFactory;
 
@@ -15,15 +15,18 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'type',
-        'book_id',
-        'chapter_id',
-        'user_id',
+        'nama',
+        'catatan',
+        'file_bab',
+        'file_revieu',
+        'author_id',
+        'reviewer_id',
+        'buku_id',
         'status_id',
         'deadline',
         'uploaded_at',
         'verified_at',
+        'approved_at',
     ];
 
     /**
@@ -33,26 +36,27 @@ class File extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'book_id' => 'integer',
-        'chapter_id' => 'integer',
-        'user_id' => 'integer',
+        'buku_id' => 'integer',
+        'author_id' => 'integer',
+        'reviewer_id' => 'integer',
         'status_id' => 'integer',
-        'deadline' => 'date',
-        'uploaded_at' => 'date',
-        'verified_at' => 'date',
+        'deadline' => 'datetime',
+        'uploaded_at' => 'datetime',
+        'verified_at' => 'datetime',
+        'approved_at' => 'datetime',
     ];
 
-    public function book()
+    public function buku()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Buku::class);
     }
 
-    public function chapter()
+    public function author()
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function user()
+    public function reviewer()
     {
         return $this->belongsTo(User::class);
     }

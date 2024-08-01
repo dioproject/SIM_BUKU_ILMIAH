@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email', 100)->unique()->nullable();
             $table->string('password', 250)->nullable();
             $table->string('contact', 30)->nullable();
-            $table->enum('user_role', ["ADMIN","REVIEWER","AUTHOR"])->nullable();
+            $table->enum('user_role', ["SUPER ADMIN","ADMIN","REVIEWER","AUTHOR"])->nullable();
             $table->timestamps();
         });
     }

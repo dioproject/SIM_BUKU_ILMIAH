@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Chapter;
+use App\Models\Bab;
 
 class HomeController extends Controller
 {
@@ -13,12 +13,12 @@ class HomeController extends Controller
 
     public function adminPage()
     {
-        $statistics = Chapter::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+        $statistics = Bab::selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get()
             ->toArray();
 
-        $recentActivities = Chapter::with('author')
+        $recentActivities = Bab::with('author')
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
@@ -27,12 +27,12 @@ class HomeController extends Controller
     }
     public function reviewerPage()
     {
-        $statistics = Chapter::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+        $statistics = Bab::selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get()
             ->toArray();
 
-        $recentActivities = Chapter::with('author')
+        $recentActivities = Bab::with('author')
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
@@ -40,12 +40,12 @@ class HomeController extends Controller
     }
     public function authorPage()
     {
-        $statistics = Chapter::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+        $statistics = Bab::selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get()
             ->toArray();
 
-        $recentActivities = Chapter::with('author')
+        $recentActivities = Bab::with('author')
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();

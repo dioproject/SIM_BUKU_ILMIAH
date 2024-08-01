@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model
+class Notifikasi extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'type',
         'data',
-        'is_read',
     ];
 
     /**
@@ -25,7 +23,6 @@ class Notification extends Model
         'id' => 'integer',
         'user_id' => 'integer',
         'data' => 'array',
-        'is_read' => 'boolean',
     ];
 
     public function user()
@@ -33,8 +30,8 @@ class Notification extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function chapter()
+    public function bab()
     {
-        return $this->belongsTo(Chapter::class);
+        return $this->belongsTo(Bab::class);
     }
 }

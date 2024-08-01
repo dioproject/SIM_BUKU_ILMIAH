@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Models\Notification;
+use App\Models\Notifikasi;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('components.admin.header', function ($view) {
-            $notifications = Notification::with(['user', 'chapter.status'])
+            $notifications = Notifikasi::with(['user', 'bab.status'])
                 ->whereHas('user', function ($query) {
                     $query->where('user_role', 'ADMIN');
                 })
@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('notifications', $notifications);
         });
         View::composer('components.reviewer.header', function ($view) {
-            $notifications = Notification::with(['user', 'chapter.status'])
+            $notifications = Notifikasi::with(['user', 'bab.status'])
                 ->whereHas('user', function ($query) {
                     $query->where('user_role', 'REVIEWER');
                 })
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('components.author.header', function ($view) {
-            $notifications = Notification::with(['user', 'chapter.status'])
+            $notifications = Notifikasi::with(['user', 'bab.status'])
                 ->where('user_id', FacadesAuth::id())
                 ->orderBy('created_at', 'desc')
                 ->get();
