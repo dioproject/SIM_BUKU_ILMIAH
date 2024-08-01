@@ -79,9 +79,9 @@
                                                 name="user_role" value="{{ $user->user_role }} {{ old('user_role') }}">
                                                 <option value="ADMIN" {{ $user->user_role == 'ADMIN' ? 'selected' : '' }}>
                                                     ADMIN</option>
-                                                <option value="EDITOR"
-                                                    {{ $user->user_role == 'EDITOR' ? 'selected' : '' }}>
-                                                    EDITOR</option>
+                                                <option value="REVIEWER"
+                                                    {{ $user->user_role == 'REVIEWER' ? 'selected' : '' }}>
+                                                    REVIEWER</option>
                                                 <option value="AUTHOR"
                                                     {{ $user->user_role == 'AUTHOR' ? 'selected' : '' }}>
                                                     AUTHOR</option>
