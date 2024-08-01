@@ -14,19 +14,19 @@ class StatusSeeder extends Seeder
                 'option' => 'Pending',
             ],
             [
-                'option' => 'Submit',
+                'option' => 'Available',
             ],
             [
                 'option' => 'Approve',
             ],
             [
-                'option' => 'Reject',
+                'option' => 'Claimed',
             ],
             [
                 'option' => 'Revisi',
             ],
             [
-                'option' => 'Publish',
+                'option' => 'Selected',
             ],
         ];
         foreach ($StatusData as $key => $val) {

@@ -59,8 +59,8 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Book Title</th>
-                                                <th>Total Chapter</th>
+                                                <th>Judul Buku</th>
+                                                <th>Total Bab</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -68,8 +68,8 @@
                                             @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title ?? '' }}</td>
-                                                    <td>{{ $book->total_chapter ?? '' }}</td>
+                                                    <td>{{ $book->judul ?? '' }}</td>
+                                                    <td>{{ $book->total_bab ?? '' }}</td>
                                                     <td>
                                                         <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
                                                             title="Detail" href="{{ route('reviewer.show.book', $book->id) }}"

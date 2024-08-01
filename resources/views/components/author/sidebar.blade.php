@@ -17,15 +17,15 @@
             </li> --}}
             <li class="nav-item dropdown {{ Request::is('books') ? 'active' : '' }}">
                 <a href="{{ url('author/books') }}"
-                    class="nav-link has-dropdown"><i class="fas fa-solid fa-book"></i><span>Data Book</span></a>
+                    class="nav-link has-dropdown"><i class="fas fa-solid fa-book"></i><span>Management Publish</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is('author/books') ? 'active' : '' }}'>
                         <a class="nav-link"
-                            href="{{ url('author/books') }}">Books</a>
+                            href="{{ url('author/books') }}">Data Naskah</a>
                     </li>
                     <li class="{{ Request::is('author/chapters') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('author/chapters') }}">Chapters</a>
+                            href="{{ url('author/chapters') }}">Proses Pengajuan</a>
                     </li>
                 </ul>
             </li>

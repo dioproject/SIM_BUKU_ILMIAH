@@ -1,17 +1,16 @@
 @extends('layouts.app-author')
 
-@section('title', 'Books')
+@section('title', 'Data Naskah')
 
 @push('style')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
 @endpush
 
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Books</h1>
+                <h1>Data Naskah</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -69,13 +68,13 @@
                                             @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title ?? '' }}</td>
+                                                    <td>{{ $book->judul ?? '' }}</td>
                                                     <td>
                                                         <a href="{{ Storage::url('upload/books/' . $book->template) }}" download="{{ $book->template }}">{{ $book->template }}</a>
                                                     </td>
-                                                    <td>{{ $book->total_chapter ?? '' }}</td>
+                                                    <td>{{ $book->total_bab ?? '' }}</td>
                                                     <td>
-                                                        <a class="btn btn-success btn-action mr-1 {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
+                                                        <a class="btn btn-success btn-action {{ $book->filledChaptersCount == 0 ? 'disabled' : '' }}"
                                                             title="Detail" href="{{ route('author.show.book', $book->id) }}"
                                                             data-toggle="tooltip">
                                                             <i class="fas fa-list"></i>
@@ -130,7 +129,4 @@
 @push('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
-    <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 @endpush

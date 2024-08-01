@@ -4,10 +4,10 @@ namespace App\Http\Controllers\reviewer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Book;
-use App\Models\Chapter;
-use App\Models\History;
-use App\Models\Notification;
+use App\Models\Buku;
+use App\Models\Bab;
+use App\Models\Histori;
+use App\Models\Notifikasi;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -18,12 +18,12 @@ class ReviewerBookController extends Controller
     {
         $search = $request->input('search');
         if ($search) {
-            $books = Book::where('title', 'like',  '%' . $search . '%')->paginate(10);
+            $books = Buku::where('judul', 'like',  '%' . $search . '%')->paginate(10);
         }
-        $books = Book::paginate(10);
-        $chapters = Chapter::all();
+        $books = Buku::paginate(10);
+        $chapters = Bab::all();
         $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
-            $filledChaptersCount = $chapters->where('book_id', $book->id)->whereNotNull('chapter')->count();
+            $filledChaptersCount = $chapters->where('buku_id', $book->id)->whereNotNull('nama')->count();
             $book->filledChaptersCount = $filledChaptersCount;
             return $book;
         });
@@ -33,79 +33,77 @@ class ReviewerBookController extends Controller
 
     public function show($id)
     {
-        $book = Book::findOrFail($id);
-        $chapters = Chapter::where('book_id', $book->id)->get();
+        $buku = Buku::findOrFail($id);
+        $babs = Bab::with(['author', 'buku', 'status'])->where('buku_id', $buku->id)->get();
 
-        return view('pages.reviewer.books.show', compact('book', 'chapters'));
+        return view('pages.reviewer.books.show', compact('buku', 'babs'));
     }
 
     public function upload(Request $request, $id)
     {
         $request->validate([
-            'file_review' => 'required|file|mimes:doc,docx',
+            'file_revieu' => 'required|file|mimes:doc,docx',
         ]);
 
-        $review = Chapter::findOrFail($id);
-        $oldFile = $review->file_review;
+        $review = Bab::findOrFail($id);
+        $oldFile = $review->file_revieu;
         $fileName = $oldFile;
 
-        if ($request->hasFile('file_review')) {
-            $file = $request->file('file_review');
-            $fileName = time() . '_review_' . $file->getClientOriginalName();
+        if ($request->hasFile('file_revieu')) {
+            $file = $request->file('file_revieu');
+            $fileName = time() . '_revieu_' . $file->getClientOriginalName();
 
             $filePath = $file->storeAs('upload/books', $fileName, 'public');
 
             if ($filePath) {
                 $review->update([
-                    'file_review' => $fileName,
+                    'file_revieu' => $fileName,
                     'reviewer_id' => Auth::id(),
                     'status_id' => Status::findOrFail(5)->id,
                     'updated_at' => now(),
-                    'deadline' => now()->addWeeks(2),
+                    'deadline' => now()->addWeeks(6),
                 ]);
 
                 if ($oldFile) {
                     Storage::disk('public')->delete('upload/books/' . $oldFile);
                 }
 
-                History::create([
-                    'change_detail' => 'Reviewed chapter "' . $review->chapter . '" for book "' . $review->book->title . '" by ' . Auth::user()->username,
+                Histori::create([
+                    'detail' => 'Reviewed chapter "' . $review->nama . '" for book "' . $review->buku->judul . '" by ' . Auth::user()->username,
                 ]);
 
-                Notification::create([
+                Notifikasi::create([
                     'user_id' => $review->author_id,
-                    'type' => 'Chapter Reviewed',
                     'data' => [
                         'chapter' => $review->chapter,
                         'status' => $review->status->option,
                     ],
-                    'is_read' => false,
                 ]);
 
-                return redirect()->route('reviewer.show.book', $review->book_id)
-                    ->with('success', 'Review uploaded successfully.');
+                return redirect()->back()
+                    ->with('success', 'Berhasil mengunggah reviu.');
             } else {
-                return redirect()->back()->with('error', 'Failed to upload review file. Please try again.');
+                return redirect()->back()->with('error', 'Gagal mengunggah file reviu. Silahkan coba lagi.');
             }
         }
 
-        return redirect()->back()->with('error', 'No file was uploaded.');
+        return redirect()->back()->with('error', 'Tidak file yang diunggah.');
     }
 
     public function notes(Request $request, $id)
     {
         $request->validate([
-            'notes' => 'required|max:200',
+            'catatan' => 'required|max:200',
         ]);
 
-        $chapter = Chapter::findOrFail($id);
+        $chapter = Bab::findOrFail($id);
 
-        if ($chapter->reviewer_id === Auth::id()) {
+        if ($chapter->reviewer_id == Auth::id()) {
             $chapter->update([
-                'notes' => $request->notes,
+                'catatan' => $request->catatan,
             ]);
         }
 
-        return redirect()->route('reviewer.show.book', $chapter->book_id);
+        return redirect()->back();
     }
 }

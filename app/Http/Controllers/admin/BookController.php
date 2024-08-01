@@ -9,6 +9,7 @@ use App\Models\Buku;
 use App\Models\Bab;
 use App\Models\Status;
 use App\Models\Histori;
+use App\Models\Jenis;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 
@@ -30,14 +31,16 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('pages.admin.books.create');
+        $jenis = Jenis::all();
+        return view('pages.admin.books.create', compact('jenis'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required',
-            'total_chapter' => 'required',
+            'jenis_id' => 'required|exists:jenis,id',
+            'judul' => 'required|string|max:250',
+            'total_bab' => 'required|integer|min:1',
             'template' => 'required|file|mimes:doc,docx',
         ]);
 
@@ -50,14 +53,15 @@ class BookController extends Controller
         $book = Buku::create([
             'judul' => $request->judul,
             'template' => $fileName,
-            'total_chapter' => $request->total_chapter,
+            'total_bab' => $request->total_bab,
+            'jenis_id' => $request->jenis_id,
         ]);
 
         if ($book) {
             Histori::create([
-                'change_detail' => Auth::user()->username . ' added ' . $book->judul . ' book.',
+                'detail' => Auth::user()->username . ' tambah buku ' . $book->judul,
             ]);
-            return redirect()->route('admin.index.book')->with('success', Auth::user()->username . ' added ' . $book->judul . ' book successfully.');
+            return redirect()->route('admin.index.book')->with('success', Auth::user()->username . ' tambah buku ' . $book->judul . ' sukses.');
         }
 
         return redirect()->route('admin.create.book');
@@ -68,31 +72,31 @@ class BookController extends Controller
         $book = Buku::findOrFail($id);
 
         $validatedData = $request->validate([
-            'chapter' => 'required|array',
-            'chapter.*' => 'required|string|max:100',
+            'bab' => 'required|array',
+            'bab.*' => 'required|string|max:100',
         ]);
 
-        foreach ($validatedData['chapter'] as $chapter) {
+        foreach ($validatedData['bab'] as $bab) {
             $newChapter = Bab::create([
-                'chapter' => $chapter,
-                'book_id' => $book->id,
-                'status_id' => Status::findOrFail(1)->id,
+                'nama' => $bab,
+                'buku_id' => $book->id,
+                'status_id' => Status::findOrFail(2)->id,
             ]);
 
             Histori::create([
-                'change_detail' => 'Added chapter "' . $newChapter->chapter . '" to book "' . $book->judul . '" by ' . Auth::user()->username,
+                'detail' => 'Tambah bab "' . $newChapter->chapter . '" dari buku "' . $book->judul . '" oleh ' . Auth::user()->username,
             ]);
         }
 
-        return redirect()->route('admin.show.book', $book->id)->with('success', 'Chapters saved successfully!');
+        return redirect()->route('admin.show.book', $book->id)->with('success', 'Berhasil menyimpan bab.');
     }
 
     public function show($id)
     {
-        $book = Buku::findOrFail($id);
-        $chapters = Bab::where('book_id', $book->id)->get();
+        $buku = Buku::findOrFail($id);
+        $babs = Bab::with(['author', 'buku', 'status'])->where('buku_id', $buku->id)->get();
 
-        return view('pages.admin.books.show', compact('book', 'chapters'));
+        return view('pages.admin.books.show', compact('buku', 'babs'));
     }
 
     public function mergeChapters($id)
