@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\History;
+use App\Models\Histori;
 
 class UserController extends Controller
 {
@@ -48,8 +48,8 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            History::create([
-                'change_detail' => Auth::user()->username . ' added user ' . $user->username,
+            Histori::create([
+                'detail' => Auth::user()->username . ' added user ' . $user->username,
             ]);
             return redirect()->route('admin.index.user')->with('success', Auth::user()->username . ' added user ' . $user->username . ' successfully.');
         }
@@ -70,7 +70,7 @@ class UserController extends Controller
             'name' => 'required|max:100',
             'password' => 'required|min:8',
             'contact' => 'required|max:30',
-            'user_role' => 'required|in:ADMIN,EDITOR,AUTHOR',
+            'user_role' => 'required|in:ADMIN,REVIEWER,AUTHOR',
         ]);
 
         $user = User::findOrFail($id);
@@ -84,8 +84,8 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            History::create([
-                'change_detail' => Auth::user()->username . ' updated user ' . $user->username,
+            Histori::create([
+                'detail' => Auth::user()->username . ' updated user ' . $user->username,
             ]);
             return redirect()->route('admin.index.user')->with('success', Auth::user()->username . ' updated user ' . $user->username . ' successfully.');
         }
@@ -98,8 +98,8 @@ class UserController extends Controller
         $user->delete();
 
         if ($user) {
-            History::create([
-                'change_detail' => Auth::user()->username . ' deleted user ' . $user->username,
+            Histori::create([
+                'detail' => Auth::user()->username . ' deleted user ' . $user->username,
             ]);
             return redirect()->route('admin.index.user');
         }
