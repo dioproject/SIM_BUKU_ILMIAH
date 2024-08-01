@@ -15,14 +15,14 @@ class AuthorChapterController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $chapters = Bab::where('chapter', 'like', '%' . $search . '%')
-                ->orWhereHas('book', function ($query) use ($search) {
-                    $query->where('title', 'like', '%' . $search . '%');
+            $chapters = Bab::where('nama', 'like', '%' . $search . '%')
+                ->orWhereHas('buku', function ($query) use ($search) {
+                    $query->where('judul', 'like', '%' . $search . '%');
                 })
-                ->with(['book', 'status'])
+                ->with(['buku', 'status'])
                 ->paginate(10);
         } else {
-            $chapters = Bab::with(['book', 'status'])->paginate(10);
+            $chapters = Bab::with(['buku', 'status'])->paginate(10);
         }
 
         return view('pages.author.chapters.index', compact('chapters', 'search'));

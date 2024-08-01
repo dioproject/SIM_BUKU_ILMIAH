@@ -58,10 +58,10 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Book Title</th>
+                                                <th>Judul Buku</th>
                                                 <th>Author</th>
-                                                <th>Chapter</th>
-                                                <th>Submited At</th>
+                                                <th>Bab</th>
+                                                <th>Tanggal unggah</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -75,17 +75,17 @@
                                                     <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->file_chapter)
-                                                            @if ($chapter->status->option == 'Revisi')
+                                                        @if ($chapter->file_bab)
+                                                            @if ($chapter->status->option == 'Available')
                                                                 <span
                                                                     class="badge badge-primary">{{ $chapter->status->option }}</span>
                                                             @elseif($chapter->status->option == 'Approve')
                                                                 <span
                                                                     class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Reject')
+                                                            @elseif($chapter->status->option == 'Selected')
                                                                 <span
                                                                     class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Submit')
+                                                            @elseif($chapter->status->option == 'Claimed')
                                                                 <span
                                                                     class="badge badge-warning">{{ $chapter->status->option }}</span>
                                                             @elseif($chapter->status->option == 'Pending')

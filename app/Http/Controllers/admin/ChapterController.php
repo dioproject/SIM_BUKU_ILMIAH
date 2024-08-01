@@ -15,17 +15,17 @@ class ChapterController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $babs = Bab::where('nama', 'like', '%' . $search . '%')
+            $chapters = Bab::where('nama', 'like', '%' . $search . '%')
                 ->orWhereHas('buku', function ($query) use ($search) {
                     $query->where('judul', 'like', '%' . $search . '%');
                 })
                 ->with(['buku', 'status'])
                 ->paginate(10);
         } else {
-            $babs = Bab::with(['buku', 'status'])->paginate(10);
+            $chapters = Bab::with(['buku', 'status'])->paginate(10);
         }
 
-        return view('pages.admin.chapters.index', compact('babs', 'search'));
+        return view('pages.admin.chapters.index', compact('chapters', 'search'));
     }
 
     public function show($id)
