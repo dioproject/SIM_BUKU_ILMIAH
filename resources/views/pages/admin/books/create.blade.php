@@ -34,10 +34,10 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Title :</label>
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Judul :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="text" tabindex="1" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
+                                            <input type="text" tabindex="1" class="form-control" id="judul"
+                                                name="judul" value="{{ old('judul') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
@@ -49,11 +49,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Total Chapter
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Total Bab
                                             :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="text" tabindex="3" class="form-control" id="total_chapter"
-                                                name="total_chapter" value="{{ old('total_chapter') }}" accept=".doc,.docx">
+                                            <input type="text" tabindex="3" class="form-control" id="total_bab"
+                                                name="total_bab" value="{{ old('total_bab') }}" accept=".doc,.docx">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">

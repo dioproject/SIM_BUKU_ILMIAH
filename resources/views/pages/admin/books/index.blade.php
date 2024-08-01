@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Books')
+@section('title', 'Data Naskah')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -10,7 +10,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Books</h1>
+                <h1>Data Naskah</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -39,7 +39,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Book
+                                        class="far fa-edit"></i> Tambar Buku
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
@@ -61,8 +61,9 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Book Title</th>
-                                                <th>Total Chapter</th>
+                                                <th>Judul Buku</th>
+                                                <th>Tahun</th>
+                                                <th>Total Bab</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -70,8 +71,9 @@
                                             @foreach ($books as $key => $book)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $book->title ?? '' }}</td>
-                                                    <td>{{ $book->total_chapter ?? '' }}</td>
+                                                    <td>{{ $book->judul }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('Y') }}</td>
+                                                    <td>{{ $book->total_bab }}</td>
                                                     <td>
                                                         <a class="btn btn-success btn-action mr-1" data-toggle="tooltip"
                                                             title="Detail"

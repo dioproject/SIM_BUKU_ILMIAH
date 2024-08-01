@@ -51,7 +51,7 @@ class ReviewerBookController extends Controller
 
         if ($request->hasFile('file_review')) {
             $file = $request->file('file_review');
-            $fileName = time() . '_revisi_' . $file->getClientOriginalName();
+            $fileName = time() . '_review_' . $file->getClientOriginalName();
 
             $filePath = $file->storeAs('upload/books', $fileName, 'public');
 

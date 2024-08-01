@@ -76,25 +76,27 @@
                                                     <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->status->option == 'Revisi')
-                                                            <span
-                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Approve')
-                                                            <span
-                                                                class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Reject')
-                                                            <span
-                                                                class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Submit')
-                                                            <span
-                                                                class="badge badge-warning">{{ $chapter->status->option }}</span>
-                                                        @elseif($chapter->status->option == 'Pending')
-                                                            <span
-                                                                class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                                        @if ($chapter->file_chapter)
+                                                            @if ($chapter->status->option == 'Revisi')
+                                                                <span
+                                                                    class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Approve')
+                                                                <span
+                                                                    class="badge badge-success">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Reject')
+                                                                <span
+                                                                    class="badge badge-danger">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Submit')
+                                                                <span
+                                                                    class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Pending')
+                                                                <span
+                                                                    class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                                            @endif
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->status->option != 'Approve')
+                                                        @if ($chapter->status->option !== 'Approve')
                                                             <a class="btn btn-success btn-action mr-1" title="Approve"
                                                                 href="{{ route('reviewer.approve.chapter', $chapter->id) }}"
                                                                 data-toggle="tooltip">

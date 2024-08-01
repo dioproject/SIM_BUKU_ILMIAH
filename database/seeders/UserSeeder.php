@@ -12,19 +12,19 @@ class UserSeeder extends Seeder
     {
         $usersData = [
             [
-                'username' => 'admin',
+                'username' => 'Dio',
                 'email'  => 'admin@admin.com',
                 'user_role' => 'ADMIN',
                 'password' => Hash::make('admin123'),
             ],
             [
-                'username' => 'reviewer',
+                'username' => 'Galang',
                 'email' => 'reviewer@reviewer.com',
                 'user_role' => 'REVIEWER',
                 'password' => Hash::make('reviewer123'),
             ],
             [
-                'username' => 'author',
+                'username' => 'Firmansyah',
                 'email' => 'author@author.com',
                 'user_role' => 'AUTHOR',
                 'password' => Hash::make('author123'),

@@ -22,16 +22,9 @@
                                 @foreach ($chapters as $key => $chapter)
                                     <div class="d-flex justify-content-between">
                                         <strong>{{ $key + 1 }}. {{ $chapter->chapter }}</strong>
-                                        @if ($chapter->status->option == 'Revisi')
-                                            <span class="badge badge-primary">{{ $chapter->status->option }}</span>
-                                        @elseif($chapter->status->option == 'Approve')
-                                            <span class="badge badge-success">{{ $chapter->status->option }}</span>
-                                        @elseif($chapter->status->option == 'Reject')
-                                            <span class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                        @elseif($chapter->status->option == 'Submit')
-                                            <span class="badge badge-warning">{{ $chapter->status->option }}</span>
-                                        @elseif($chapter->status->option == 'Pending')
-                                            <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                        @if ($chapter->file_chapter)
+                                            <small
+                                                class="text-danger">{{ \Carbon\Carbon::parse($chapter->deadline)->translatedFormat('l, d F Y') }}</small>
                                         @endif
                                     </div>
                                     <ul class="list-group py-2">
@@ -50,7 +43,8 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Author : {{ $chapter->author->username }}</small>
-                                                        <small>Uploaded : {{ \Carbon\Carbon::parse($chapter->uploaded_at)->translatedFormat('l, d F Y') }}</small>
+                                                        <small>Uploaded :
+                                                            {{ \Carbon\Carbon::parse($chapter->uploaded_at)->translatedFormat('l, d F Y') }}</small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -65,7 +59,8 @@
                                                     <div class="d-flex justify-content-between col-md-12 py-1">
                                                         <small>Reviewer : {{ $chapter->reviewer->username }}</small>
                                                         @if ($chapter->status->option != 'Pending')
-                                                            <small>Reviewed : {{ \Carbon\Carbon::parse($chapter->updated_at)->translatedFormat('l, d F Y') }}</small>
+                                                            <small>Reviewed :
+                                                                {{ \Carbon\Carbon::parse($chapter->updated_at)->translatedFormat('l, d F Y') }}</small>
                                                         @endif
                                                     </div>
                                                 </div>

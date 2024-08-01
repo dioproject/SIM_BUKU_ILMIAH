@@ -13,26 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
-
-        Schema::create('chapters', function (Blueprint $table) {
+        Schema::create('babs', function (Blueprint $table) {
             $table->id();
-            $table->string('chapter', 200)->nullable();
-            $table->string('notes', 200)->nullable();
-            $table->string('file_chapter', 250)->nullable();
-            $table->string('file_review', 250)->nullable();
+            $table->string('nama', 200)->nullable();
+            $table->string('catatan', 200)->nullable();
+            $table->string('file_bab', 250)->nullable();
+            $table->string('file_revieu', 250)->nullable();
             $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('book_id')->nullable()->constrained('Books')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('buku_id')->nullable()->constrained('Bukus')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('set null')->onDelete('set null');
-            $table->date('deadline')->nullable();
-            $table->date('uploaded_at')->nullable();
-            $table->date('verified_at')->nullable();
-            $table->date('approved_at')->nullable();
+            $table->datetime('deadline')->nullable();
+            $table->datetime('uploaded_at')->nullable();
+            $table->datetime('verified_at')->nullable();
+            $table->datetime('approved_at')->nullable();
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -42,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapters');
+        Schema::dropIfExists('babs');
     }
 };

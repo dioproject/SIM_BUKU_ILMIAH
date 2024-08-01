@@ -7,7 +7,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\HistoryController;
 use App\Http\Controllers\admin\BookController;
+use App\Http\Controllers\admin\CatalogController;
 use App\Http\Controllers\admin\ChapterController;
+use App\Http\Controllers\admin\RoyaltyController;
 use App\Http\Controllers\author\AuthorBookController;
 use App\Http\Controllers\author\AuthorChapterController;
 use App\Http\Controllers\author\AuthorHistoryController;
@@ -47,6 +49,10 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
     Route::get('/admin/chapters', [ChapterController::class, 'index'])->name('admin.index.chapter');
     Route::get('/admin/chapter/{id}', [ChapterController::class, 'show'])->name('admin.show.chapter');
+    Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
+    Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
+    Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
+    Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
 });
 

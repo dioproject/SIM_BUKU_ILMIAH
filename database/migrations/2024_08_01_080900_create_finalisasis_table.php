@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
-
-        Schema::create('histories', function (Blueprint $table) {
+        Schema::create('finalisasis', function (Blueprint $table) {
             $table->id();
-            $table->text('change_detail')->nullable();
+            $table->foreignId('buku_id')->nullable()->constrained('Bukus')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('merge', 250)->nullable();
+            $table->string('isbn', 250)->nullable();
+            $table->string('cover', 250)->nullable();
+            $table->string('final_file', 250)->nullable();
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('histories');
+        Schema::dropIfExists('finalisasis');
     }
 };

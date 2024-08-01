@@ -5,12 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Book;
-use App\Models\Chapter;
-use App\Models\File;
+use App\Models\Buku;
+use App\Models\Bab;
 use App\Models\Status;
-use App\Models\History;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Histori;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 
@@ -19,12 +17,12 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $books = Book::query();
+        $books = Buku::query();
 
         if ($search) {
-            $books = Book::where('title', 'like', '%' . $search . '%')->paginate(5);
+            $books = Buku::where('judul', 'like', '%' . $search . '%')->paginate(10);
         } else {
-            $books = Book::paginate(5);
+            $books = Buku::paginate(10);
         }
 
         return view('pages.admin.books.index', compact('books', 'search'));
@@ -38,7 +36,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
+            'judul' => 'required',
             'total_chapter' => 'required',
             'template' => 'required|file|mimes:doc,docx',
         ]);
@@ -49,17 +47,17 @@ class BookController extends Controller
             $file->storeAs('upload/books', $fileName, 'public');
         }
 
-        $book = Book::create([
-            'title' => $request->title,
+        $book = Buku::create([
+            'judul' => $request->judul,
             'template' => $fileName,
             'total_chapter' => $request->total_chapter,
         ]);
 
         if ($book) {
-            History::create([
-                'change_detail' => Auth::user()->username . ' added ' . $book->title . ' book.',
+            Histori::create([
+                'change_detail' => Auth::user()->username . ' added ' . $book->judul . ' book.',
             ]);
-            return redirect()->route('admin.index.book')->with('success', Auth::user()->username . ' added ' . $book->title . ' book successfully.');
+            return redirect()->route('admin.index.book')->with('success', Auth::user()->username . ' added ' . $book->judul . ' book successfully.');
         }
 
         return redirect()->route('admin.create.book');
@@ -67,7 +65,7 @@ class BookController extends Controller
 
     public function storeChapter(Request $request, $id)
     {
-        $book = Book::findOrFail($id);
+        $book = Buku::findOrFail($id);
 
         $validatedData = $request->validate([
             'chapter' => 'required|array',
@@ -75,14 +73,14 @@ class BookController extends Controller
         ]);
 
         foreach ($validatedData['chapter'] as $chapter) {
-            $newChapter = Chapter::create([
+            $newChapter = Bab::create([
                 'chapter' => $chapter,
                 'book_id' => $book->id,
                 'status_id' => Status::findOrFail(1)->id,
             ]);
 
-            History::create([
-                'change_detail' => 'Added chapter "' . $newChapter->chapter . '" to book "' . $book->title . '" by ' . Auth::user()->username,
+            Histori::create([
+                'change_detail' => 'Added chapter "' . $newChapter->chapter . '" to book "' . $book->judul . '" by ' . Auth::user()->username,
             ]);
         }
 
@@ -91,61 +89,18 @@ class BookController extends Controller
 
     public function show($id)
     {
-        $book = Book::findOrFail($id);
-        $chapters = Chapter::where('book_id', $book->id)->get();
+        $book = Buku::findOrFail($id);
+        $chapters = Bab::where('book_id', $book->id)->get();
 
         return view('pages.admin.books.show', compact('book', 'chapters'));
     }
 
-    public function destroy($id)
-    {
-        $book = Book::findOrFail($id);
-        $templateId = $book->template_id;
-        $chapters = Chapter::where('book_id', $book->id)->get();
-
-        if ($templateId) {
-            $templateFile = File::findOrFail($templateId);
-            if ($templateFile) {
-                Storage::disk('public')->delete('/upload/books/' . $templateFile->name);
-                $templateFile->delete();
-            }
-        }
-
-        foreach ($chapters as $chapter) {
-            if ($chapter->chapter_id) {
-                $chapterFile = File::findOrFail($chapter->chapter_id);
-                if ($chapterFile) {
-                    Storage::disk('public')->delete('/upload/books/' . $chapterFile->name);
-                    $chapterFile->delete();
-                }
-            }
-
-            if ($chapter->review_id) {
-                $reviewFile = File::find($chapter->review_id);
-                if ($reviewFile) {
-                    Storage::disk('public')->delete('/upload/books/' . $reviewFile->name);
-                    $reviewFile->delete();
-                }
-            }
-
-            $chapter->delete();
-        }
-
-        $book->delete();
-
-        History::create([
-            'change_detail' => Auth::user()->username . ' deleted book ' . $book->title,
-        ]);
-
-        return redirect()->route('admin.index.book')->with('success', 'Book deleted successfully.');
-    }
-
     public function mergeChapters($id)
     {
-        $book = Book::findOrFail($id);
+        $book = Buku::findOrFail($id);
 
         // Ambil semua chapter dengan status 'approved' dari buku
-        $chapters = Chapter::where('book_id', $book->id)
+        $chapters = Bab::where('book_id', $book->id)
             ->where('status_id', 3) // Sesuaikan dengan field dan value yang tepat
             ->orderBy('created_at')
             ->get();
@@ -163,12 +118,12 @@ class BookController extends Controller
         }
 
         // Simpan dokumen yang digabungkan ke file sementara
-        $mergedFilePath = storage_path('app/public/merged_book_' . $book->title . '.docx');
+        $mergedFilePath = storage_path('app/public/merged_book_' . $book->judul . '.docx');
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save($mergedFilePath);
 
         // Unduh file gabungan
-        return response()->download($mergedFilePath, 'Merged_Book_' . $book->title . '.docx');
+        return response()->download($mergedFilePath, 'Merged_Book_' . $book->judul . '.docx');
     }
 
     private function addContentFromDocx($phpWord, $filePath)
