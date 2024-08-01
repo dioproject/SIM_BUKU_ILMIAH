@@ -89,7 +89,7 @@ class AuthorBookController extends Controller
                     Notifikasi::create([
                         'user_id' => $user->id,
                         'data' => [
-                            'chapter' => $chapter->chapter,
+                            'chapter' => $chapter->nama,
                             'uploaded_by' => Auth::user()->username,
                         ],
                     ]);

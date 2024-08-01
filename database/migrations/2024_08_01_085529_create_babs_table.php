@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('catatan', 200)->nullable();
             $table->string('file_bab', 250)->nullable();
             $table->string('file_revieu', 250)->nullable();
+            $table->string('claim', 250)->nullable();
             $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
             $table->foreignId('buku_id')->nullable()->constrained('Bukus')->onUpdate('cascade')->onDelete('cascade');

@@ -31,16 +31,24 @@
                         <a class="nav-link"
                             href="{{ url('admin/chapters') }}">Proses Pengajuan</a>
                     </li>
+                    <li class="{{ Request::is('admin/finalisasi') ? 'active' : '' }}">
+                        <a class="nav-link"
+                            href="{{ url('admin/finalisasi') }}">Finalisasi</a>
+                    </li>
+                    <li class="{{ Request::is('admin/produksi') ? 'active' : '' }}">
+                        <a class="nav-link"
+                            href="{{ url('admin/produksi') }}">Produksi</a>
+                    </li>
                 </ul>
             </li>
-            <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
+            {{-- <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/catalogs') }}"><i
                     class="fas fa-solid fa-book-open"></i><span>Katalog</span></a>
             </li>
             <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/royalty') }}"><i
                     class="fas fa-solid fa-crown"></i><span>Royalty</span></a>
-            </li>
+            </li> --}}
             <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/history') }}"><i
                         class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>

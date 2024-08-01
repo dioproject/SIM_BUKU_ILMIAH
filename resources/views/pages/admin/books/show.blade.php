@@ -64,7 +64,24 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $bab->nama }}</td>
                                                         <td>{{ $bab->author->username ?? '' }}</td>
-                                                        <td>{{ $bab->status->option }}</td>
+                                                        <td>
+                                                            @if ($bab->status->option == 'Available')
+                                                                <span
+                                                                    class="badge badge-primary">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Approve')
+                                                                <span
+                                                                    class="badge badge-success">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Selected')
+                                                                <span
+                                                                    class="badge badge-danger">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Claimed')
+                                                                <span
+                                                                    class="badge badge-warning">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Pending')
+                                                                <span
+                                                                    class="badge badge-secondary">{{ $bab->status->option }}</span>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <a class="btn btn-success btn-action" data-toggle="tooltip"
                                                                 title="Detail"

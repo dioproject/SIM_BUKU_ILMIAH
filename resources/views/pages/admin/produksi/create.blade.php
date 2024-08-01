@@ -1,15 +1,16 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Tambah Buku')
+@section('title', 'Tambah Produksi')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
 @endpush
 
-@section('main')<div class="main-content">
+@section('main')
+    <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Buku</h1>
+                <h1>Tambah Produksi</h1>
             </div>
 
             <div class="section-body">
@@ -26,44 +27,48 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form id="create-book-form" action="{{ route('admin.store.book') }}" method="POST"
+                                <form id="create-book-form" action="{{ route('admin.store.produksi') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Jenis Buku
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Judul Buku
                                             :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <select class="form-control select2" tabindex="1" id="jenis_id"
-                                                name="jenis_id" value="{{ old('jenis_id') }}">
-                                                @foreach ($jenis as $jenis)
-                                                    <option value="{{ $jenis->id }}"
-                                                        @if (old('jenis_id') == $jenis->id) selected @endif>
-                                                        {{ $jenis->nama }}</option>
+                                            <select class="form-control select2" tabindex="1" id="final_id"
+                                                name="final_id" value="{{ old('final_id') }}">
+                                                @foreach ($finalisasis as $finali)
+                                                    @if ($finali->buku)
+                                                        <option value="{{ $finali->id }}"
+                                                            @if (old('final_id') == $finali->id) selected @endif>
+                                                            {{ $finali->buku->judul }}
+                                                        </option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Judul Buku :</label>
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Eksemplar
+                                            :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="text" tabindex="2" class="form-control" id="judul"
-                                                name="judul" value="{{ old('judul') }}">
+                                            <input type="text" tabindex="2" class="form-control" id="eksemplar"
+                                                name="eksemplar" value="{{ old('eksemplar') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Template
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Biaya Produksi
                                             :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="file" tabindex="3" class="form-control" id="template"
-                                                name="template" value="{{ old('template') }}" accept=".doc,.docx">
+                                            <input type="number" tabindex="3" class="form-control" id="biaya_produksi"
+                                                name="biaya_produksi" value="{{ old('biaya_produksi') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Total Bab
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Keuntungan
                                             :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="number" tabindex="4" class="form-control" id="total_bab"
-                                                name="total_bab" value="{{ old('total_bab') }}" accept=".doc,.docx">
+                                            <input type="number" tabindex="4" class="form-control" id="keuntungan"
+                                                name="keuntungan" value="{{ old('keuntungan') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
