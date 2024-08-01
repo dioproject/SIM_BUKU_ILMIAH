@@ -72,7 +72,7 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $book->judul }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($book->created_at)->translatedFormat('F Y') }}</td>
                                                     <td>{{ $book->total_bab }}</td>
                                                     <td>
                                                         <a class="btn btn-success btn-action mr-1" data-toggle="tooltip"

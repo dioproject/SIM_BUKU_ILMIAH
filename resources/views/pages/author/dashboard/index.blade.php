@@ -10,9 +10,9 @@
 
 @section('main')
     @php
-        use App\Models\Book;
+        use App\Models\Buku;
 
-        $books = Book::all()->count();
+        $books = Buku::all()->count();
     @endphp
     <div class="main-content">
         <section class="section">
@@ -40,7 +40,7 @@
                 <div class="col-lg-8 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Statistics</h4>
+                            <h4>Statistik</h4>
                         </div>
                         <div class="card-body">
                             <canvas id="myChart" height="182"></canvas>
@@ -50,7 +50,7 @@
                 <div class="col-lg-4 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Recent Activities</h4>
+                            <h4>Aktivitas Terakhir</h4>
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">

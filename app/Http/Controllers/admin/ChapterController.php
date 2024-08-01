@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bab;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Chapter;
-use App\Models\File;
-use App\Models\History;
+use App\Models\Histori;
 
 class ChapterController extends Controller
 {
@@ -16,34 +15,32 @@ class ChapterController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $chapters = Chapter::where('chapter', 'like', '%' . $search . '%')
-                ->orWhereHas('book', function ($query) use ($search) {
-                    $query->where('title', 'like', '%' . $search . '%');
+            $babs = Bab::where('nama', 'like', '%' . $search . '%')
+                ->orWhereHas('buku', function ($query) use ($search) {
+                    $query->where('judul', 'like', '%' . $search . '%');
                 })
-                ->with(['book', 'status'])
+                ->with(['buku', 'status'])
                 ->paginate(10);
         } else {
-            $chapters = Chapter::with(['book', 'status'])->paginate(10);
+            $babs = Bab::with(['buku', 'status'])->paginate(10);
         }
 
-        return view('pages.admin.chapters.index', compact('chapters', 'search'));
+        return view('pages.admin.chapters.index', compact('babs', 'search'));
     }
 
     public function show($id)
     {
-        $chapter = Chapter::findOrFail($id);
-
-        $files = File::where('chapter_id', $chapter->id)->get();
-        return view('pages.admin.chapters.show', compact('chapter', 'files'));
+        $bab = Bab::findOrFail($id);
+        return view('pages.admin.chapters.show', compact('bab'));
     }
 
     public function destroy($id)
     {
-        $category = Chapter::findOrFail($id);
+        $category = Bab::findOrFail($id);
         $category->delete();
 
         if ($category) {
-            History::create([
+            Histori::create([
                 'change_detail' => Auth::user()->first_name . ' deleted category ' . $category->name . ' successfully.',
                 'user_id' => Auth::id(),
             ]);

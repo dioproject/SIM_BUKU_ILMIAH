@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\reviewer;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chapter;
+use App\Models\Bab;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -14,14 +14,14 @@ class ReviewerChapterController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $chapters = Chapter::where('chapter', 'like', '%' . $search . '%')
+            $chapters = Bab::where('nama', 'like', '%' . $search . '%')
                 ->orWhereHas('book', function ($query) use ($search) {
-                    $query->where('title', 'like', '%' . $search . '%');
+                    $query->where('judul', 'like', '%' . $search . '%');
                 })
-                ->with(['book', 'status'])
+                ->with(['buku', 'status'])
                 ->paginate(10);
         } else {
-            $chapters = Chapter::with(['book', 'status'])->paginate(10);
+            $chapters = Bab::with(['buku', 'status'])->paginate(10);
         }
 
         return view('pages.reviewer.chapters.index', compact('chapters', 'search'));
@@ -29,13 +29,13 @@ class ReviewerChapterController extends Controller
 
     public function show($id)
     {
-        $chapter = Chapter::with(['book', 'status'])->findOrFail($id);
-        return view('pages.reviewer.chapters.show', compact('chapter'));
+        $bab = Bab::findOrFail($id);
+        return view('pages.reviewer.chapters.show', compact('bab'));
     }
 
     public function approve($id)
     {
-        $chapter = Chapter::with(['author', 'status', 'book'])->findOrFail($id);
+        $chapter = Bab::with(['author', 'status', 'book'])->findOrFail($id);
         $chapter->update([
             'status_id' => Status::findOrFail(3)->id,
             'approved_at' => now(),
