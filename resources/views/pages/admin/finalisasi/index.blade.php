@@ -37,10 +37,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                {{-- <a href="{{ route('admin.create.finalisasi') }}" class="btn btn-icon icon-left btn-primary"><i
+                            {{-- <div class="card-header">
+                                <a href="{{ route('admin.create.finalisasi') }}" class="btn btn-icon icon-left btn-primary"><i
                                         class="far fa-edit"></i> Tambah Buku
-                                </a> --}}
+                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form action="{{ route('admin.index.finalisasi') }}" method="GET">
@@ -54,7 +54,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
