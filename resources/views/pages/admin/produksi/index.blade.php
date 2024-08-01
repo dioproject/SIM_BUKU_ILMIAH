@@ -41,7 +41,7 @@
                                 <a href="{{ route('admin.create.produksi') }}" class="btn btn-icon icon-left btn-primary"><i
                                         class="far fa-edit"></i> Tambah Produksi
                                 </a>
-                                <h4></h4>
+                                {{-- <h4></h4>
                                 <div class="card-header-action">
                                     <form action="{{ route('admin.index.produksi') }}" method="GET">
                                         <div class="input-group">
@@ -53,7 +53,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
