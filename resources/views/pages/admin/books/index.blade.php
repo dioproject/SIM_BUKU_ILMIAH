@@ -39,7 +39,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <a href="{{ route('admin.create.book') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Tambar Buku
+                                        class="far fa-edit"></i> Tambah Buku
                                 </a>
                                 <h4></h4>
                                 <div class="card-header-action">
@@ -80,11 +80,12 @@
                                                             href="{{ route('admin.show.book', $book->id) }}"><i
                                                                 class="fas fa-list"></i>
                                                         </a>
-                                                        <a class="btn btn-secondary btn-action mr-1"
-                                                            title="Download" href="{{ route('admin.merge.book', $book->id) }}"
-                                                            data-toggle="tooltip">
-                                                            <i class="fas fa-download"></i>
-                                                        </a>
+                                                        <form action="{{ route('admin.merge.bab', $book->id) }}" method="POST" class="btn btn-primary p-0 mr-1" type="button">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-primary btn-action">
+                                                                <i class="fas fa-file"></i>
+                                                            </button>
+                                                        </form>
                                                         <form action="{{ route('admin.destroy.book', $book->id) }}"
                                                             method="POST" class="btn btn-danger p-0" type="button">
                                                             @csrf

@@ -15,7 +15,7 @@ class ReviewerChapterController extends Controller
 
         if ($search) {
             $chapters = Bab::where('nama', 'like', '%' . $search . '%')
-                ->orWhereHas('book', function ($query) use ($search) {
+                ->orWhereHas('buku', function ($query) use ($search) {
                     $query->where('judul', 'like', '%' . $search . '%');
                 })
                 ->with(['buku', 'status'])
@@ -35,14 +35,11 @@ class ReviewerChapterController extends Controller
 
     public function approve($id)
     {
-        $chapter = Bab::with(['author', 'status', 'book'])->findOrFail($id);
+        $chapter = Bab::with(['author', 'status', 'buku'])->findOrFail($id);
         $chapter->update([
             'status_id' => Status::findOrFail(3)->id,
             'approved_at' => now(),
         ]);
-
-        $book = $chapter->book_id;
-
-        return redirect()->route('reviewer.index.chapter', $book);
+        return redirect()->back();
     }
 }

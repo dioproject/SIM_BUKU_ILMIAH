@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Bab;
+use App\Models\Finalisasi;
 use App\Models\Status;
 use App\Models\Histori;
 use App\Models\Jenis;
@@ -99,12 +100,12 @@ class BookController extends Controller
         return view('pages.admin.books.show', compact('buku', 'babs'));
     }
 
-    public function mergeChapters($id)
+    public function mergeBab($id)
     {
         $book = Buku::findOrFail($id);
 
         // Ambil semua chapter dengan status 'approved' dari buku
-        $chapters = Bab::where('book_id', $book->id)
+        $chapters = Bab::where('buku_id', $book->id)
             ->where('status_id', 3) // Sesuaikan dengan field dan value yang tepat
             ->orderBy('created_at')
             ->get();
@@ -113,21 +114,35 @@ class BookController extends Controller
         $phpWord = new PhpWord();
 
         foreach ($chapters as $chapter) {
-            // Asumsikan bahwa field 'file_chapter' menyimpan path dokumen chapter
-            $chapterPath = storage_path('app/public/upload/books/' . $chapter->file_chapter);
+            // Asumsikan bahwa field 'file_bab' menyimpan path dokumen chapter
+            $chapterPath = storage_path('app/public/upload/books/' . $chapter->file_bab);
 
             if (file_exists($chapterPath)) {
                 $this->addContentFromDocx($phpWord, $chapterPath);
             }
         }
 
+        // Tentukan direktori dan nama file
+        $directory = storage_path('app/public/upload/merge');
+        $mergedFileName = 'merged_book_' . $book->judul . '_' . time() . '.docx';
+        $mergedFilePath = $directory . '/' . $mergedFileName;
+
+        // Pastikan direktori ada
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
         // Simpan dokumen yang digabungkan ke file sementara
-        $mergedFilePath = storage_path('app/public/merged_book_' . $book->judul . '.docx');
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save($mergedFilePath);
 
-        // Unduh file gabungan
-        return response()->download($mergedFilePath, 'Merged_Book_' . $book->judul . '.docx');
+        // Gunakan updateOrCreate untuk menyimpan nama file ke kolom 'merge' pada tabel 'finalisasi'
+        Finalisasi::updateOrCreate(
+            ['buku_id' => $book->id], // Kondisi untuk mencari entri yang ada
+            ['merge' => $mergedFileName] // Data yang akan diperbarui atau dibuat
+        );
+
+        return redirect()->back()->with('success', 'Dokumen berhasil digabung dan disimpan.');
     }
 
     private function addContentFromDocx($phpWord, $filePath)
@@ -183,5 +198,34 @@ class BookController extends Controller
                 // Handle other element types as needed
                 break;
         }
+    }
+
+    public function destroy($id)
+    {
+        $book = Buku::findOrFail($id);
+
+        $templatePath = storage_path('app/public/upload/books/' . $book->template);
+        if (file_exists($templatePath)) {
+            unlink($templatePath);
+        }
+
+        $chapters = Bab::where('buku_id', $book->id)->get();
+        foreach ($chapters as $chapter) {
+            $chapterPath = storage_path('app/public/upload/books/' . $chapter->file_bab);
+            if (file_exists($chapterPath)) {
+                unlink($chapterPath);
+            }
+            $reviuPath = storage_path('app/public/upload/books/' . $chapter->file_revieu);
+            if (file_exists($reviuPath)) {
+                unlink($reviuPath);
+            }
+            $chapter->delete();
+        }
+
+        Histori::where('detail', 'like', '%buku ' . $book->judul . '%')->delete();
+
+        $book->delete();
+
+        return redirect()->route('admin.index.book')->with('success', 'Buku dan bab-bab yang berelasi berhasil dihapus.');
     }
 }

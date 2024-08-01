@@ -59,7 +59,6 @@ class ReviewerBookController extends Controller
                 $review->update([
                     'file_revieu' => $fileName,
                     'reviewer_id' => Auth::id(),
-                    'status_id' => Status::findOrFail(5)->id,
                     'updated_at' => now(),
                     'deadline' => now()->addWeeks(6),
                 ]);
@@ -75,7 +74,7 @@ class ReviewerBookController extends Controller
                 Notifikasi::create([
                     'user_id' => $review->author_id,
                     'data' => [
-                        'chapter' => $review->chapter,
+                        'chapter' => $review->nama,
                         'status' => $review->status->option,
                     ],
                 ]);

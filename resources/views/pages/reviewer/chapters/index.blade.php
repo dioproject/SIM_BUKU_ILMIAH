@@ -58,10 +58,10 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Book Title</th>
+                                                <th>Judul Buku</th>
                                                 <th>Author</th>
-                                                <th>Chapter</th>
-                                                <th>Submited At</th>
+                                                <th>Bab</th>
+                                                <th>Tanggal unggah</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -70,23 +70,23 @@
                                             @foreach ($chapters as $key => $chapter)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $chapter->book->title }}</td>
+                                                    <td>{{ $chapter->buku->judul }}</td>
                                                     <td>{{ $chapter->author->username ?? '' }}</td>
-                                                    <td>{{ $chapter->chapter }}</td>
+                                                    <td>{{ $chapter->nama }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->file_chapter)
-                                                            @if ($chapter->status->option == 'Revisi')
+                                                        @if ($chapter->file_bab)
+                                                            @if ($chapter->status->option == 'Available')
                                                                 <span
                                                                     class="badge badge-primary">{{ $chapter->status->option }}</span>
                                                             @elseif($chapter->status->option == 'Approve')
                                                                 <span
                                                                     class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Reject')
+                                                            @elseif($chapter->status->option == 'Selected')
                                                                 <span
                                                                     class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Submit')
+                                                            @elseif($chapter->status->option == 'Claimed')
                                                                 <span
                                                                     class="badge badge-warning">{{ $chapter->status->option }}</span>
                                                             @elseif($chapter->status->option == 'Pending')
@@ -96,7 +96,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->status->option !== 'Approve')
+                                                        @if ($chapter->status->option !== 'Approve' && $chapter->author_id !== null)
                                                             <a class="btn btn-success btn-action mr-1" title="Approve"
                                                                 href="{{ route('reviewer.approve.chapter', $chapter->id) }}"
                                                                 data-toggle="tooltip">

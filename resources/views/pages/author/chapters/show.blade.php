@@ -76,7 +76,7 @@
                                             </div>
                                         </li>
                                     @endif
-                                    @if ($bab->status_id === 4)
+                                    @if ($bab->status_id === 4 && $bab->author_id == auth()->id())
                                         <li class="list-group-item">
                                             <form action="{{ route('author.upload.chapter', $bab->id) }}" method="POST"
                                                 enctype="multipart/form-data">
