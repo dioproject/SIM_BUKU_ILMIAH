@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Finalisasi Buku')
+@section('title', 'Produksi Buku')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -10,7 +10,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Finalisasi Buku</h1>
+                <h1>Produksi Buku</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -76,8 +76,8 @@
                                                     <td>{{ $produksi->final->buku->judul ?? ''}}</td>
                                                     <td>{{ $produksi->eksemplar }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($produksi->created_at)->translatedFormat('F Y') }}</td>
-                                                    <td>{{ $produksi->biaya_produksi }}</td>
-                                                    <td>{{ $produksi->keuntungan }}</td>
+                                                    <td>Rp. {{ $produksi->biaya_produksi }}</td>
+                                                    <td>Rp. {{ $produksi->keuntungan }}</td>
                                                     {{-- <td>
                                                         <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                             title="Edit"

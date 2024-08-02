@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Buku extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -30,4 +30,14 @@ class Buku extends Model
         'id' => 'integer',
         'jenis_id' => 'integer',
     ];
+
+    public function bab()
+    {
+        return $this->hasMany(Bab::class, 'buku_id');
+    }
+
+    public function jenis()
+    {
+        return $this->belongsTo(Jenis::class, 'jenis_id');
+    }
 }

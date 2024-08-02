@@ -11,6 +11,8 @@ use App\Models\Finalisasi;
 use App\Models\Status;
 use App\Models\Histori;
 use App\Models\Jenis;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 
@@ -204,25 +206,39 @@ class BookController extends Controller
     {
         $book = Buku::findOrFail($id);
 
-        $templatePath = storage_path('app/public/upload/books/' . $book->template);
-        if (file_exists($templatePath)) {
-            unlink($templatePath);
+        // Menghapus file template
+        $templatePath = 'public/upload/books/' . $book->template;
+        if (Storage::exists($templatePath)) {
+            if (!Storage::delete($templatePath)) {
+                Log::error("Gagal menghapus file template: $templatePath");
+            }
+        } else {
+            Log::info("File template tidak ditemukan: $templatePath");
         }
 
+        // Menghapus bab dan file terkait
         $chapters = Bab::where('buku_id', $book->id)->get();
         foreach ($chapters as $chapter) {
-            $chapterPath = storage_path('app/public/upload/books/' . $chapter->file_bab);
-            if (file_exists($chapterPath)) {
-                unlink($chapterPath);
+            $chapterPath = 'public/upload/books/' . $chapter->file_bab;
+            if (Storage::exists($chapterPath)) {
+                if (!Storage::delete($chapterPath)) {
+                    Log::error("Gagal menghapus file bab: $chapterPath");
+                }
+            } else {
+                Log::info("File bab tidak ditemukan: $chapterPath");
             }
-            $reviuPath = storage_path('app/public/upload/books/' . $chapter->file_revieu);
-            if (file_exists($reviuPath)) {
-                unlink($reviuPath);
+
+            $reviuPath = 'public/upload/books/' . $chapter->file_revieu;
+            if (Storage::exists($reviuPath)) {
+                if (!Storage::delete($reviuPath)) {
+                    Log::error("Gagal menghapus file reviu: $reviuPath");
+                }
+            } else {
+                Log::info("File reviu tidak ditemukan: $reviuPath");
             }
+
             $chapter->delete();
         }
-
-        Histori::where('detail', 'like', '%buku ' . $book->judul . '%')->delete();
 
         $book->delete();
 

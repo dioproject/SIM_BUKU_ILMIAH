@@ -1,4 +1,4 @@
-@extends('layouts.app-editor')
+@extends('layouts.app-reviewer')
 @section('title', 'History')
 
 @section('main')
@@ -22,8 +22,8 @@
                                 <tbody>
                                     @foreach ($history as $key => $his)
                                         <tr>
-                                            <td>{{ $history->firstItem() + $key }}</td>
-                                            <td>{{ $his->change_detail }}</td>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $his->detail }}</td>
                                             <td>{{ $his->created_at }}</td>
                                         </tr>
                                     @endforeach
