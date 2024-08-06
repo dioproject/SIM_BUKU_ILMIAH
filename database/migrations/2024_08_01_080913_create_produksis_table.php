@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('final_id')->nullable()->constrained('Finalisasis')->onUpdate('cascade')->onDelete('cascade');
             $table->string('eksemplar', 20)->nullable();
             $table->string('biaya_produksi', 20)->nullable();
-            $table->string('keuntungan', 20)->nullable();
+            $table->string('harga_jual', 20)->nullable();
             $table->timestamps();
         });
     }
