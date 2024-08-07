@@ -39,18 +39,15 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Book Title</th>
-                                                <th>Thickness</th>
-                                                <th>Stock</th>
+                                                <th>Judul Buku</th>
+                                                <th>Penulis</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($catalogs as $key => $catalog)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $catalog->book->title ?? '' }}</td>
-                                                    <td>{{ $catalog->thickness ?? '' }} pages</td>
-                                                    <td>{{ $catalog->stock ?? '' }}</td>
+                                                    <td>{{ $catalog->book->title }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
