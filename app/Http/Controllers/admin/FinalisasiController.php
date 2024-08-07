@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Finalisasi;
+use App\Models\Katalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -59,6 +60,12 @@ class FinalisasiController extends Controller
         }
 
         $finalisasi->update($data);
+
+        if ($finalisasi) {
+            Katalog::create([
+                'final_id' => $finalisasi->id,
+            ]);
+        }
 
         return redirect()->route('admin.index.finalisasi')->with('success', 'Finalisasi berhasil diperbarui.');
     }

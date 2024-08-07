@@ -37,10 +37,10 @@
                     </li>
                 </ul>
             </li>
-            {{-- <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
+            <li class="{{ Request::is('admin/catalogs') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/catalogs') }}"><i
                     class="fas fa-solid fa-book-open"></i><span>Katalog</span></a>
-            </li> --}}
+            </li>
             <li class="{{ Request::is('admin/royalty') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/royalty') }}"><i
                     class="fas fa-solid fa-crown"></i><span>Royalty</span></a>

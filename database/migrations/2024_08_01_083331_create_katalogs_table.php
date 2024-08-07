@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('katalogs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('finalisasi_id')->nullable()->constrained('Finalisasis')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('final_id')->nullable()->constrained('Finalisasis')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
     }
