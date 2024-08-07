@@ -10,7 +10,7 @@ class Histori extends Model
     use HasFactory;
     
     protected $fillable = [
-        'change_detail',
+        'detail',
     ];
 
     /**

@@ -64,11 +64,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Keuntungan
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Harga Jual
                                             :</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="number" tabindex="4" class="form-control" id="keuntungan"
-                                                name="keuntungan" value="{{ old('keuntungan') }}">
+                                            <input type="number" tabindex="4" class="form-control" id="harga_jual"
+                                                name="harga_jual" value="{{ old('harga_jual') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">

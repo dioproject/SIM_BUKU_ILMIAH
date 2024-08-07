@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 @endpush
 
-@section('main')<div class="main-content">
+@section('main')
+    <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1>Produksi Buku</h1>
@@ -65,7 +66,7 @@
                                                 <th>Eksemplar</th>
                                                 <th>Penerbitan</th>
                                                 <th>Biaya Produksi</th>
-                                                <th>Keuntungan</th>
+                                                <th>Harga Jual</th>
                                                 {{-- <th>Action</th> --}}
                                             </tr>
                                         </thead>
@@ -73,11 +74,12 @@
                                             @foreach ($produksis as $key => $produksi)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $produksi->final->buku->judul ?? ''}}</td>
+                                                    <td>{{ $produksi->final->buku->judul ?? '' }}</td>
                                                     <td>{{ $produksi->eksemplar }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($produksi->created_at)->translatedFormat('F Y') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($produksi->created_at)->translatedFormat('F Y') }}
+                                                    </td>
                                                     <td>Rp. {{ $produksi->biaya_produksi }}</td>
-                                                    <td>Rp. {{ $produksi->keuntungan }}</td>
+                                                    <td>Rp. {{ $produksi->harga_jual }}</td>
                                                     {{-- <td>
                                                         <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                             title="Edit"

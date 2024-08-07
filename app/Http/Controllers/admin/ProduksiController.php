@@ -47,7 +47,7 @@ class ProduksiController extends Controller
             'final_id' => 'required|exists:finalisasis,id',
             'eksemplar' => 'required|integer',
             'biaya_produksi' => 'required|numeric',
-            'keuntungan' => 'required|numeric',
+            'harga_jual' => 'required|numeric',
         ]);
 
         // Buat entri baru di tabel produksi
@@ -55,7 +55,7 @@ class ProduksiController extends Controller
             'final_id' => $request->final_id,
             'eksemplar' => $request->eksemplar,
             'biaya_produksi' => $request->biaya_produksi,
-            'keuntungan' => $request->keuntungan,
+            'harga_jual' => $request->harga_jual,
         ]);
 
         // Redirect kembali ke halaman daftar produksi dengan pesan sukses
