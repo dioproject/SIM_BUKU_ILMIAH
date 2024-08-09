@@ -58,8 +58,8 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/create/produksi', [ProduksiController::class, 'create'])->name('admin.create.produksi');
     Route::post('/admin/create/produksi', [ProduksiController::class, 'store'])->name('admin.store.produksi');
     Route::get('/admin/edit/produksi', [ProduksiController::class, 'edit'])->name('admin.edit.produksi');
-    Route::get('/admin/kataloh', [CatalogController::class, 'index'])->name('admin.index.catalog');
-    Route::get('/admin/royalti', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
+    Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
+    Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
     Route::get('/admin/create/royalti', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
     Route::post('/admin/create/royalti', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
