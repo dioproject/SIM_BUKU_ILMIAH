@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2024 at 03:21 PM
+-- Generation Time: Aug 09, 2024 at 08:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -110,8 +110,8 @@ CREATE TABLE `jenis` (
 --
 
 INSERT INTO `jenis` (`id`, `nama`, `created_at`, `updated_at`) VALUES
-(1, 'Fiksi', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(2, 'Non Fiksi', '2024-08-04 06:21:26', '2024-08-04 06:21:26');
+(1, 'Fiksi', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(2, 'Non Fiksi', '2024-08-07 07:01:05', '2024-08-07 07:01:05');
 
 -- --------------------------------------------------------
 
@@ -121,7 +121,7 @@ INSERT INTO `jenis` (`id`, `nama`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `katalogs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `finalisasi_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `final_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -143,18 +143,18 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(13, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(14, '2024_07_25_003510_create_users_table', 1),
-(15, '2024_07_25_003514_create_statuses_table', 1),
-(16, '2024_08_01_080453_create_jenis_table', 1),
-(17, '2024_08_01_080624_create_bukus_table', 1),
-(18, '2024_08_01_080900_create_finalisasis_table', 1),
-(19, '2024_08_01_080913_create_produksis_table', 1),
-(20, '2024_08_01_082054_create_notifikasis_table', 1),
-(21, '2024_08_01_082319_create_historis_table', 1),
-(22, '2024_08_01_083331_create_katalogs_table', 1),
-(23, '2024_08_01_083344_create_royaltis_table', 1),
-(24, '2024_08_01_085529_create_babs_table', 1);
+(25, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(26, '2024_07_25_003510_create_users_table', 1),
+(27, '2024_07_25_003514_create_statuses_table', 1),
+(28, '2024_08_01_080453_create_jenis_table', 1),
+(29, '2024_08_01_080624_create_bukus_table', 1),
+(30, '2024_08_01_080900_create_finalisasis_table', 1),
+(31, '2024_08_01_080913_create_produksis_table', 1),
+(32, '2024_08_01_082054_create_notifikasis_table', 1),
+(33, '2024_08_01_082319_create_historis_table', 1),
+(34, '2024_08_01_083331_create_katalogs_table', 1),
+(35, '2024_08_01_083344_create_royaltis_table', 1),
+(36, '2024_08_01_085529_create_babs_table', 1);
 
 -- --------------------------------------------------------
 
@@ -199,7 +199,7 @@ CREATE TABLE `produksis` (
   `final_id` bigint(20) UNSIGNED DEFAULT NULL,
   `eksemplar` varchar(20) DEFAULT NULL,
   `biaya_produksi` varchar(20) DEFAULT NULL,
-  `keuntungan` varchar(20) DEFAULT NULL,
+  `harga_jual` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -212,8 +212,10 @@ CREATE TABLE `produksis` (
 
 CREATE TABLE `royaltis` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `buku_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `royalti_per_bab` varchar(20) DEFAULT NULL,
+  `produksi_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `persentase` varchar(20) DEFAULT NULL,
+  `total_royalti` varchar(20) DEFAULT NULL,
+  `royalti_bab` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -236,12 +238,12 @@ CREATE TABLE `statuses` (
 --
 
 INSERT INTO `statuses` (`id`, `option`, `created_at`, `updated_at`) VALUES
-(1, 'Pending', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(2, 'Available', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(3, 'Approve', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(4, 'Claimed', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(5, 'Revisi', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(6, 'Selected', '2024-08-04 06:21:26', '2024-08-04 06:21:26');
+(1, 'Pending', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(2, 'Available', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(3, 'Approve', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(4, 'Claimed', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(5, 'Revisi', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(6, 'Selected', '2024-08-07 07:01:05', '2024-08-07 07:01:05');
 
 -- --------------------------------------------------------
 
@@ -266,9 +268,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `password`, `contact`, `user_role`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'Dio', 'admin@admin.com', '$2y$10$VWzEidc/BmRuD4TXQ7cesul24lupJDWHAnp0U97mrIMikYtnwdCYK', NULL, 'ADMIN', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(2, NULL, 'Galang', 'reviewer@reviewer.com', '$2y$10$2yBZaJC3xEzOSxy34eA7oehlldg0j8tkErEAf0S82FM.qzC3bOmxa', NULL, 'REVIEWER', '2024-08-04 06:21:26', '2024-08-04 06:21:26'),
-(3, NULL, 'Firmansyah', 'author@author.com', '$2y$10$M0zzF20MJE6PzjhVBP5pQOtpIgzzOy/lAMj3vWak2lEhYN2LaX/Ve', NULL, 'AUTHOR', '2024-08-04 06:21:26', '2024-08-04 06:21:26');
+(1, NULL, 'Dio', 'admin@admin.com', '$2y$10$8ckHRyW1vlYrQP3e1/xll.VrV5/VC7acPO.lN/EB0Tg8G0soRnAt2', NULL, 'ADMIN', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(2, NULL, 'Galang', 'reviewer@reviewer.com', '$2y$10$zrZ0ThtCY5hvONa9Zqmx9e8oteIdS8IfAxz01J4BKkxyX2QDjGYGq', NULL, 'REVIEWER', '2024-08-07 07:01:05', '2024-08-07 07:01:05'),
+(3, NULL, 'Firmansyah', 'author@author.com', '$2y$10$gfwXN.hQkKhGXKhRLTMAo.sCdwhFZY1p4QI8dKYk4GHOgU1ZT9WFq', NULL, 'AUTHOR', '2024-08-07 07:01:05', '2024-08-07 07:01:05');
 
 --
 -- Indexes for dumped tables
@@ -315,7 +317,7 @@ ALTER TABLE `jenis`
 --
 ALTER TABLE `katalogs`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `katalogs_finalisasi_id_foreign` (`finalisasi_id`);
+  ADD KEY `katalogs_final_id_foreign` (`final_id`);
 
 --
 -- Indexes for table `migrations`
@@ -350,7 +352,7 @@ ALTER TABLE `produksis`
 --
 ALTER TABLE `royaltis`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `royaltis_buku_id_foreign` (`buku_id`);
+  ADD KEY `royaltis_produksi_id_foreign` (`produksi_id`);
 
 --
 -- Indexes for table `statuses`
@@ -379,19 +381,19 @@ ALTER TABLE `babs`
 -- AUTO_INCREMENT for table `bukus`
 --
 ALTER TABLE `bukus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `finalisasis`
 --
 ALTER TABLE `finalisasis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `historis`
 --
 ALTER TABLE `historis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jenis`
@@ -403,13 +405,13 @@ ALTER TABLE `jenis`
 -- AUTO_INCREMENT for table `katalogs`
 --
 ALTER TABLE `katalogs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `notifikasis`
@@ -476,7 +478,7 @@ ALTER TABLE `finalisasis`
 -- Constraints for table `katalogs`
 --
 ALTER TABLE `katalogs`
-  ADD CONSTRAINT `katalogs_finalisasi_id_foreign` FOREIGN KEY (`finalisasi_id`) REFERENCES `finalisasis` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `katalogs_final_id_foreign` FOREIGN KEY (`final_id`) REFERENCES `finalisasis` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `notifikasis`
@@ -494,7 +496,7 @@ ALTER TABLE `produksis`
 -- Constraints for table `royaltis`
 --
 ALTER TABLE `royaltis`
-  ADD CONSTRAINT `royaltis_buku_id_foreign` FOREIGN KEY (`buku_id`) REFERENCES `bukus` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `royaltis_produksi_id_foreign` FOREIGN KEY (`produksi_id`) REFERENCES `produksis` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
