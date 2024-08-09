@@ -9,9 +9,13 @@ class RoyaltyController extends Controller
 {
     public function index()
     {
-        // Ambil semua data royalty dari database
         $royalties = Royalti::paginate(10);
 
         return view('pages.admin.royalty.index', compact('royalties'));
+    }
+
+    public function create()
+    {
+        return view('pages.admin.royalty.create');
     }
 }
