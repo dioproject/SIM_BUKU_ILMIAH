@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Catalogs')
+@section('title', 'Katalog')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,16 +9,13 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Catalogs</h1>
+                <h1>Katalog</h1>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{{ route('admin.create.catalog') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Create Catalog
-                                </a>
                                 <h4></h4>
                                 <div class="card-header-action">
                                     <form method="GET" action="{{ route('admin.index.catalog') }}">
@@ -47,7 +44,8 @@
                                             @foreach ($catalogs as $key => $catalog)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $catalog->book->title }}</td>
+                                                    <td>{{ $catalog->final->buku->judul }}</td>
+                                                    <td>{{ $catalog->final->buku->bab->first()->author->username ?? '' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

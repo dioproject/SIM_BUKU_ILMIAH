@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Create Royalty')
+@section('title', 'Tambah Royalti')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -10,11 +10,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create Royalty</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active">Royalty</div>
-                    <div class="breadcrumb-item">Create</div>
-                </div>
+                <h1>Tambah Royalti</h1>
             </div>
 
             <div class="section-body">
