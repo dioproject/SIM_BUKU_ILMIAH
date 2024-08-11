@@ -27,66 +27,39 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <form id="create-user-form" action="{{ route('admin.store.royalty') }}" method="POST"
+                                <form id="form-validation" action="{{ route('admin.store.royalty') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Author</label>
-                                            <select class="form-control select2" tabindex="1" id="author_id"
-                                                name="author_id" value="{{ old('author_id') }}">
-                                                @foreach ($manuscripts as $manuscript)
-                                                    <option value="{{ $manuscript->author_id }}"
-                                                        @if (old('author_id') == $manuscript->author_id) selected @endif>
-                                                        {{ $manuscript->author->first_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Book</label>
-                                            <select class="form-control select2" tabindex="2" id="book_id"
-                                                name="book_id" value="{{ old('book_id') }}">
-                                                @foreach ($books as $book)
-                                                    <option value="{{ $book->id }}"
-                                                        @if (old('book_id') == $book->id) selected @endif>
-                                                        {{ $book->manuscript->title }}</option>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Judul Buku
+                                            :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <select class="form-control select2" tabindex="1" id="produksi_id"
+                                                name="produksi_id" value="{{ old('produksi_id') }}">
+                                                @foreach ($produksi as $prod)
+                                                    @if ($prod->final->buku)
+                                                        <option value="{{ $prod->id }}"
+                                                            @if (old('produksi_id') == $prod->id) selected @endif>
+                                                            {{ $prod->final->buku->judul }}
+                                                        </option>
+                                                    @endif
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label>Royalty</label>
-                                            <input type="text" tabindex="3" class="form-control" id="amount"
-                                                name="amount" value="{{ old('amount') }}">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Book</label>
-                                            <select class="form-control select2" tabindex="4" id="status_id"
-                                                name="status_id" value="{{ old('status_id') }}">
-                                                @foreach ($status as $stat)
-                                                    <option value="{{ $stat->id }}"
-                                                        @if (old('status-id') == $stat->id) selected @endif>
-                                                        {{ $stat->option }}</option>
-                                                @endforeach
-                                            </select>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Persentase (%)
+                                            :</label>
+                                        <div class="col-sm-12 col-md-10">
+                                            <input type="number" tabindex="2" class="form-control" id="persentase"
+                                                name="persentase" value="{{ old('persentase') }}">
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label class="form-control-label">Proof of Payment</label>
-                                            <div class="form-control custom-file">
-                                                <input type="file" tabindex="5" name="path_foto" class="custom-file-input"
-                                                    id="path_foto" value="{{ old('path_foto') }}" accept="image/*">
-                                                <label class="custom-file-label">Choose File</label>
-                                            </div>
-                                            <div class="form-text text-muted">The image must have a maximum size of 1MB
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <button type="submit" class="btn btn-primary">Create</button>
+                                    <div class="form-group row mb-4">
+                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
+                                        <div class="col-sm-12 col-md-9">
+                                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+                                                Tambah</button>
                                         </div>
                                     </div>
                                 </form>

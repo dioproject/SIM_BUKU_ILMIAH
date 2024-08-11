@@ -38,7 +38,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('admin.create.royalti') }}" class="btn btn-icon icon-left btn-primary"><i
+                            <a href="{{ route('admin.create.royalty') }}" class="btn btn-icon icon-left btn-primary"><i
                                     class="far fa-edit"></i> Tambah Royalti
                             </a>
                         </div>
@@ -61,9 +61,9 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $royalti->buku->judul }}</td>
                                                 <td>
-                                                    {{ \Carbon\Carbon::parse($royalti->penerbitan->created_at)->translatedFormat('F Y') }}
+                                                    {{ \Carbon\Carbon::parse($royalti->created_at)->translatedFormat('F Y') }}
                                                 </td>
-                                                <td>Rp. {{ $royalti->persentase }}</td>
+                                                <td>{{ $royalti->persentase }} %</td>
                                                 <td>Rp. {{ $royalti->total_royalti }}</td>
                                                 {{-- <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"

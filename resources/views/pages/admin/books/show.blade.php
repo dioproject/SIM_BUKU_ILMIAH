@@ -20,7 +20,7 @@
                         <div class="card">
                             <div class="card-body">
                                 @if ($currentBabCount < $totalBab)
-                                    <form action="{{ route('admin.store.chapter', $buku->id) }}" method="POST"
+                                    <form Aksi="{{ route('admin.store.chapter', $buku->id) }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
 
@@ -55,7 +55,7 @@
                                                     <th>Bab</th>
                                                     <th>Author</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -83,7 +83,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <a class="btn btn-success btn-action" data-toggle="tooltip"
+                                                            <a class="btn btn-success btn-Aksi" data-toggle="tooltip"
                                                                 title="Detail"
                                                                 href="{{ route('admin.show.chapter', $bab->id) }}"><i
                                                                     class="fas fa-list"></i>

@@ -10,10 +10,6 @@
         <section class="section">
             <div class="section-header">
                 <h1>Edit User</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item">Users</div>
-                    <div class="breadcrumb-item">Edit User</div>
-                </div>
             </div>
 
             <div class="section-body">

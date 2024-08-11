@@ -107,9 +107,9 @@
                                         <img class="rounded-circle mr-3" width="50" src="{{ asset('img/avatar/avatar-1.png') }}" alt="avatar">
                                         <div class="media-body">
                                             <div class="float-right text-primary">{{ $activity->created_at->diffForHumans() }}</div>
-                                            <div class="media-title">{{ $activity->author->name ?? 'Unknown Author' }}</div>
+                                            <div class="media-title">{{ $activity->author->username ?? '' }}</div>
                                             <span class="text-small text-muted">
-                                                Submitted chapter: {{ $activity->title }}
+                                                Bab yang dikirimkan : {{ $activity->nama }}
                                             </span>
                                         </div>
                                     </li>
