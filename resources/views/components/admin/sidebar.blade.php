@@ -49,6 +49,10 @@
                 <a class="nav-link" href="{{ url('admin/history') }}"><i
                         class="fas fa-solid fa-clock-rotate-left"></i><span>History</span></a>
             </li>
+            <li class="{{ Request::is('https://docs.google.com/forms/d/e/1FAIpQLSdIplVv4Ft5St178h4cJF09seXgjDk-sJfXXvIVGYUy-PzGfw/viewform') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('https://docs.google.com/forms/d/e/1FAIpQLSdIplVv4Ft5St178h4cJF09seXgjDk-sJfXXvIVGYUy-PzGfw/viewform') }}"><i
+                        class="fas fa-solid fa-comments"></i><span>Feedback</span></a>
+            </li>
         </ul>
     </aside>
 </div>

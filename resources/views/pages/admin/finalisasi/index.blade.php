@@ -64,7 +64,7 @@
                                                 <th>Judul Buku</th>
                                                 <th>ISBN</th>
                                                 <th>Tanggal Finalisasi</th>
-                                                <th>Action</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>

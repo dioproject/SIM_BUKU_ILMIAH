@@ -14,7 +14,7 @@ class Produksi extends Model
         'eksemplar',
         'tahun_terbit',
         'biaya_produksi',
-        'keuntungan',
+        'harga_jual',
     ];
 
     protected $casts = [

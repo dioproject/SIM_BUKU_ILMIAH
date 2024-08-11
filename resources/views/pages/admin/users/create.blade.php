@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Create User')
+@section('title', 'Tambah Pengguna')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -9,11 +9,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create User</h1>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active">Users</div>
-                    <div class="breadcrumb-item active">Create</div>
-                </div>
+                <h1>Tambah Pengguna</h1>
             </div>
 
             <div class="section-body">

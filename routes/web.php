@@ -60,8 +60,8 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/edit/produksi', [ProduksiController::class, 'edit'])->name('admin.edit.produksi');
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
     Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
-    Route::get('/admin/create/royalti', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
-    Route::post('/admin/create/royalti', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
+    Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
+    Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
 });
 

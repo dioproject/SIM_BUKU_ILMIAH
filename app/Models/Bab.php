@@ -48,21 +48,21 @@ class Bab extends Model
 
     public function buku()
     {
-        return $this->belongsTo(Buku::class);
+        return $this->belongsTo(Buku::class, 'buku_id');
     }
 
     public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function reviewer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'reviewer_id');
     }
 
     public function status()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }

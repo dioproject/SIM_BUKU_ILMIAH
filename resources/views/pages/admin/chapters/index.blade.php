@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Chapters')
+@section('title', 'Bab')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -10,7 +10,7 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Chapters</h1>
+                <h1>Bab</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))

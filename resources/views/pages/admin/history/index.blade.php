@@ -1,11 +1,11 @@
 @extends('layouts.app-admin')
-@section('title', 'History')
+@section('title', 'Histori')
 
 @section('main')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>History</h1>
+                <h1>Histori</h1>
             </div>
             <div class="section-body">
                 <div class="card">
@@ -15,8 +15,8 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>History</th>
-                                        <th>Date</th>
+                                        <th>Histori</th>
+                                        <th>Tanggal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -24,7 +24,7 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $his->detail }}</td>
-                                            <td>{{ $his->created_at }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($his->created_at)->translatedFormat('l, d F Y') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -18,7 +18,7 @@ class HomeController extends Controller
             ->get()
             ->toArray();
 
-        $recentActivities = Bab::with('author')
+        $recentActivities = Bab::with(['author'])
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
