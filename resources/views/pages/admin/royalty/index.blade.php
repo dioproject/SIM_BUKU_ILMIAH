@@ -59,7 +59,7 @@
                                         @foreach ($royalties as $key => $royalti)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $royalti->buku->judul }}</td>
+                                                <td>{{ $royalti->buku->judul ?? '' }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($royalti->created_at)->translatedFormat('F Y') }}
                                                 </td>
