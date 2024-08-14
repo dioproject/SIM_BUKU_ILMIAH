@@ -20,17 +20,15 @@
                         <div class="card">
                             <div class="card-body">
                                 @if ($currentBabCount < $totalBab)
-                                    <form Aksi="{{ route('admin.store.chapter', $buku->id) }}" method="POST"
+                                    <form action="{{ route('admin.store.chapter', $buku->id) }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
-
                                         @for ($i = $currentBabCount + 1; $i <= $totalBab; $i++)
                                             <div class="form-group row mb-4">
                                                 <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Bab
-                                                    {{ $i }}
-                                                    :</label>
+                                                    {{ $i }} :</label>
                                                 <div class="col-sm-12 col-md-10">
-                                                    <input type="text" tabindex="1" class="form-control" id="bab"
+                                                    <input type="text" tabindex="{{ $i }}" class="form-control" id="bab"
                                                         name="bab[]" value="{{ old('bab.' . ($i - 1)) }}">
                                                 </div>
                                             </div>
@@ -44,6 +42,7 @@
                                             </div>
                                         </div>
                                     </form>
+
                                 @endif
 
                                 @if ($currentBabCount == $totalBab)
