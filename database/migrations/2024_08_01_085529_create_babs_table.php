@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('file_bab', 250)->nullable();
             $table->string('file_revieu', 250)->nullable();
             $table->string('claim', 250)->nullable();
-            $table->foreignId('author_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('reviewer_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
-            $table->foreignId('buku_id')->nullable()->constrained('Bukus')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('status_id')->nullable()->constrained('Statuses')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('author_id')->nullable()->constrained('users')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('reviewer_id')->nullable()->constrained('users')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('buku_id')->nullable()->constrained('bukus')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('status_id')->nullable()->constrained('statuses')->onUpdate('set null')->onDelete('set null');
             $table->datetime('deadline')->nullable();
             $table->datetime('uploaded_at')->nullable();
             $table->datetime('verified_at')->nullable();

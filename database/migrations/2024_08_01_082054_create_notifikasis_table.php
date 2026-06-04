@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('notifikasis', function (Blueprint $table) {
             $table->id();
             $table->text('data');
-            $table->foreignId('user_id')->nullable()->constrained('Users')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
     }

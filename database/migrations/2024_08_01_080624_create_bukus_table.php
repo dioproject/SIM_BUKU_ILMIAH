@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('judul', 250)->nullable();
             $table->string('template', 250)->nullable();
             $table->string('total_bab', 7)->nullable();
-            $table->foreignId('jenis_id')->nullable()->constrained('Jenis')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('jenis_id')->nullable()->constrained('jenis')->onUpdate('set null')->onDelete('set null');
             $table->timestamps();
         });
     }

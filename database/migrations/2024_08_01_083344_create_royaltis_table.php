@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('royaltis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('produksi_id')->nullable()->constrained('Produksis')->onUpdate('set null')->onDelete('set null');
+            $table->foreignId('produksi_id')->nullable()->constrained('produksis')->onUpdate('set null')->onDelete('set null');
             $table->string('persentase', 20)->nullable();
             $table->string('total_royalti', 20)->nullable();
             $table->string('royalti_bab', 20)->nullable();

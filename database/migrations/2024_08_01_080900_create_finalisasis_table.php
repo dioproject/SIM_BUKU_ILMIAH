@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('finalisasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('buku_id')->nullable()->constrained('Bukus')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('buku_id')->nullable()->constrained('bukus')->onUpdate('cascade')->onDelete('cascade');
             $table->string('merge', 250)->nullable();
             $table->string('isbn', 250)->nullable();
             $table->string('cover', 250)->nullable();
