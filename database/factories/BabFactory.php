@@ -8,7 +8,7 @@ use App\Models\Buku;
 use App\Models\Status;
 use App\Models\User;
 
-class ChapterFactory extends Factory
+class BabFactory extends Factory
 {
     protected $model = Bab::class;
 

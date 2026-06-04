@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Buku;
 
-class BookFactory extends Factory
+class BukuFactory extends Factory
 {
     protected $model = Buku::class;
 
