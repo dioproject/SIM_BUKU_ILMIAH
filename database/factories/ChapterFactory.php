@@ -3,41 +3,24 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use App\Models\Book;
-use App\Models\Chapter;
+use App\Models\Bab;
+use App\Models\Buku;
 use App\Models\Status;
 use App\Models\User;
 
 class ChapterFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Chapter::class;
+    protected $model = Bab::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            'chapter' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'notes' => $this->faker->regexify('[A-Za-z0-9]{200}'),
-            'file_chapter' => $this->faker->regexify('[A-Za-z0-9]{250}'),
-            'file_review' => $this->faker->regexify('[A-Za-z0-9]{250}'),
+            'nama' => $this->faker->sentence(3),
+            'catatan' => $this->faker->text(50),
             'author_id' => User::factory(),
             'reviewer_id' => User::factory(),
-            'book_id' => Book::factory(),
+            'buku_id' => Buku::factory(),
             'status_id' => Status::factory(),
-            'deadline' => $this->faker->date(),
-            'uploaded_at' => $this->faker->date(),
-            'verified_at' => $this->faker->date(),
-            'approved_at' => $this->faker->date(),
         ];
     }
 }
