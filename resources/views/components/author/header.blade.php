@@ -39,9 +39,12 @@
                 <div class="d-sm-none d-lg-inline-block">AUTHOR, {{ auth()->user()->username }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="dropdown-item has-icon text-danger" style="border:none;background:none;width:100%;text-align:left;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </li>
     </ul>

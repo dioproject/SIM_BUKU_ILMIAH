@@ -25,11 +25,11 @@ Route::redirect('/', '/login');
 Route::controller(AuthController::class)->group(function () {
     //Login
     Route::get('/login', 'login')->name('login');
-    Route::post('/login', 'loginAction')->name('login.action');
+    Route::post('/login', 'loginAction')->name('login.action')->middleware('throttle:5,1');
     Route::get('/register', 'register')->name('register');
-    Route::post('/register', 'registerAction')->name('register.action');
+    Route::post('/register', 'registerAction')->name('register.action')->middleware('throttle:2,60');
     //Logout
-    Route::get('/logout', 'logout')->name('logout');
+    Route::post('/logout', 'logout')->name('logout');
 });
 
 // ADMIN ROUTE

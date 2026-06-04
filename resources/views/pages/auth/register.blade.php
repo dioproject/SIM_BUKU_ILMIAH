@@ -56,6 +56,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="password_confirmation">Confirm Password</label>
+                    <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" tabindex="6" required>
+                    <div class="invalid-feedback">
+                        please confirm your password
+                    </div>
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block">
                         Register
                     </button>
