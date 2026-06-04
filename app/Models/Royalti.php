@@ -23,6 +23,6 @@ class Royalti extends Model
 
     public function penerbitan()
     {
-        return $this->belongsTo(Produksi::class);
+        return $this->belongsTo(Produksi::class, 'produksi_id');
     }
 }
