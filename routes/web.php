@@ -20,13 +20,21 @@ use App\Http\Controllers\reviewer\ReviewerChapterController;
 use App\Http\Controllers\reviewer\ReviewerHistoryController;
 use App\Http\Controllers\reviewer\ReviewerUserController;
 
-Route::redirect('/', '/login');
+Route::get('/', function () {
+    if (auth()->check()) {
+        $role = auth()->user()->user_role;
+        if ($role === 'ADMIN') return redirect()->route('admin.dashboard');
+        if ($role === 'REVIEWER') return redirect()->route('reviewer.dashboard');
+        return redirect()->route('author.dashboard');
+    }
+    return redirect()->route('login');
+});
 
 Route::controller(AuthController::class)->group(function () {
     //Login
-    Route::get('/login', 'login')->name('login');
+    Route::get('/login', 'login')->name('login')->middleware('guest');
     Route::post('/login', 'loginAction')->name('login.action')->middleware('throttle:5,1');
-    Route::get('/register', 'register')->name('register');
+    Route::get('/register', 'register')->name('register')->middleware('guest');
     Route::post('/register', 'registerAction')->name('register.action')->middleware('throttle:2,60');
     //Logout
     Route::post('/logout', 'logout')->name('logout');
