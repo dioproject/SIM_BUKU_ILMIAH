@@ -78,9 +78,9 @@
                                         <div class="media-body">
                                             <div class="float-right text-primary">
                                                 {{ $activity->created_at->diffForHumans() }}</div>
-                                            <div class="media-title">{{ $activity->author->name ?? 'Unknown Author' }}</div>
+                                            <div class="media-title">{{ $activity->author->username ?? '' }}</div>
                                             <span class="text-small text-muted">
-                                                Submitted chapter: {{ $activity->title }}
+                                                Submitted chapter: {{ $activity->nama }}
                                             </span>
                                         </div>
                                     </li>
@@ -109,7 +109,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Total Chapters Approved per Day',
+                    label: 'Total Chapters Created per Day',
                     data: data,
                     borderWidth: 2,
                     borderColor: '#6777ef',

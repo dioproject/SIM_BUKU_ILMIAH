@@ -62,7 +62,7 @@ class FinalisasiController extends Controller
         $finalisasi->update($data);
 
         if ($finalisasi) {
-            Katalog::create([
+            Katalog::firstOrCreate([
                 'final_id' => $finalisasi->id,
             ]);
         }

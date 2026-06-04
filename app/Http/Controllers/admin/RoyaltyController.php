@@ -12,7 +12,7 @@ class RoyaltyController extends Controller
 {
     public function index()
     {
-        $royalties = Royalti::paginate(10);
+        $royalties = Royalti::with('penerbitan.final.buku')->paginate(10);
 
         return view('pages.admin.royalty.index', compact('royalties'));
     }

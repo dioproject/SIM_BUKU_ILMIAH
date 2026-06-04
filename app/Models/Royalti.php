@@ -21,11 +21,6 @@ class Royalti extends Model
         'produksi_id' => 'integer',
     ];
 
-    public function buku()
-    {
-        return $this->belongsTo(Buku::class, 'produksi_id');
-    }
-
     public function penerbitan()
     {
         return $this->belongsTo(Produksi::class);

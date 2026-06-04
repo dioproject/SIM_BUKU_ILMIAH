@@ -138,7 +138,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Total Chapters Approved per Day',
+                    label: 'Total Chapters Created per Day',
                     data: data,
                     borderWidth: 2,
                     borderColor: '#6777ef',

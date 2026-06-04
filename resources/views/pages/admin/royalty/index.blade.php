@@ -59,12 +59,12 @@
                                         @foreach ($royalties as $key => $royalti)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $royalti->buku->judul ?? '' }}</td>
+                                                <td>{{ $royalti->penerbitan->final->buku->judul ?? '' }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($royalti->created_at)->translatedFormat('F Y') }}
                                                 </td>
                                                 <td>{{ $royalti->persentase }} %</td>
-                                                <td>Rp. {{ $royalti->total_royalti }}</td>
+                                                <td>Rp. {{ number_format($royalti->total_royalti, 0, ',', '.') }}</td>
                                                 {{-- <td>
                                                     <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
                                                         title="Edit"

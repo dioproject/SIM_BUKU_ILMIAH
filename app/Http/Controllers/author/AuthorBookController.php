@@ -19,9 +19,10 @@ class AuthorBookController extends Controller
     {
         $search = $request->input('search');
         if ($search) {
-            $books = Buku::where('title', 'like',  '%' . $search . '%')->paginate(10);
+            $books = Buku::where('judul', 'like',  '%' . $search . '%')->paginate(10);
+        } else {
+            $books = Buku::paginate(10);
         }
-        $books = Buku::paginate(10);
         $chapters = Bab::all();
         $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
             $filledChaptersCount = $chapters->where('buku_id', $book->id)->whereNotNull('nama')->count();
