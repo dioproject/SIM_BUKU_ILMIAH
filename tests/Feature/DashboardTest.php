@@ -43,14 +43,12 @@ class DashboardTest extends TestCase
             'user_role' => 'AUTHOR',
             'username' => 'penulis123',
         ]);
-        Status::create(['option' => 'approved']);
         $buku = Buku::factory()->create();
 
-        $bab = Bab::create([
+        $bab = Bab::factory()->create([
             'nama' => 'Bab Pengantar',
             'author_id' => $author->id,
             'buku_id' => $buku->id,
-            'status_id' => 1,
         ]);
 
         $admin = User::factory()->create(['user_role' => 'ADMIN']);
