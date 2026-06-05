@@ -66,7 +66,7 @@
             $totalBab = (int) $buku->total_bab;
             $currentBabCount = $babs->count();
             $assignedCount = $babs->where('author_id', '!=', null)->count();
-            $approvedCount = $babs->where('status_id', 3)->count();
+            $approvedCount = $babs->where('status_id', \App\Models\Status::DISETUJUI)->count();
         @endphp
         
         <div class="section-body">
@@ -136,8 +136,8 @@
                                         <tr>
                                             <th width="50">No</th>
                                             <th>Nama Bab</th>
-                                            <th>Author</th>
-                                            <th>Reviewer</th>
+                                            <th>Penulis</th>
+                                            <th>Pereview</th>
                                             <th width="150">Status</th>
                                             <th width="120">Aksi</th>
                                         </tr>
@@ -252,28 +252,28 @@
                     
                     <div class="form-group">
                         <label for="assignAuthor">
-                            <i class="fas fa-user"></i> Author <span class="text-danger">*</span>
+                            <i class="fas fa-user"></i> Penulis <span class="text-danger">*</span>
                         </label>
                         <select name="author_id" id="assignAuthor" class="form-control select2" required style="width: 100%;">
-                            <option value="">-- Pilih Author --</option>
+                            <option value="">-- Pilih Penulis --</option>
                             @foreach ($authors as $author)
                                 <option value="{{ $author->id }}">{{ $author->username }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Author yang akan menulis bab ini</small>
+                        <small class="form-text text-muted">Penulis yang akan menulis bab ini</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="assignReviewer">
-                            <i class="fas fa-user-check"></i> Reviewer
+                            <i class="fas fa-user-check"></i> Pereview
                         </label>
                         <select name="reviewer_id" id="assignReviewer" class="form-control select2" style="width: 100%;">
-                            <option value="">-- Pilih Reviewer (Opsional) --</option>
+                            <option value="">-- Pilih Pereview (Opsional) --</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}">{{ $reviewer->username }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Reviewer yang akan menilai bab ini</small>
+                        <small class="form-text text-muted">Pereview yang akan menilai bab ini</small>
                     </div>
                 </div>
                 <div class="modal-footer">

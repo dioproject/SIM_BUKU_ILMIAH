@@ -2,30 +2,30 @@
 
 @php
     $badgeClass = match($status->id) {
-        1 => 'badge-secondary',
-        2 => 'badge-primary',
-        3 => 'badge-success',
-        4 => 'badge-info',
-        5 => 'badge-danger',
-        6 => 'badge-primary',
-        7 => 'badge-warning',
-        8 => 'badge-warning',
-        9 => 'badge-dark',
-        10 => 'badge-success',
+        \App\Models\Status::DRAFT => 'badge-secondary',
+        \App\Models\Status::TERSEDIA => 'badge-primary',
+        \App\Models\Status::DISETUJUI => 'badge-success',
+        \App\Models\Status::DITUGASKAN => 'badge-info',
+        \App\Models\Status::REVISI => 'badge-danger',
+        \App\Models\Status::DALAM_REVIEW => 'badge-primary',
+        \App\Models\Status::DIKIRIM_AUTHOR => 'badge-warning',
+        \App\Models\Status::DIREVISI => 'badge-warning',
+        \App\Models\Status::FINALISASI => 'badge-dark',
+        \App\Models\Status::TERBIT => 'badge-success',
         default => 'badge-secondary'
     };
 
     $icon = match($status->id) {
-        1 => 'file',
-        2 => 'check-circle',
-        3 => 'check-double',
-        4 => 'user-check',
-        5 => 'exclamation-triangle',
-        6 => 'search',
-        7 => 'upload',
-        8 => 'redo',
-        9 => 'book',
-        10 => 'globe',
+        \App\Models\Status::DRAFT => 'file',
+        \App\Models\Status::TERSEDIA => 'check-circle',
+        \App\Models\Status::DISETUJUI => 'check-double',
+        \App\Models\Status::DITUGASKAN => 'user-check',
+        \App\Models\Status::REVISI => 'exclamation-triangle',
+        \App\Models\Status::DALAM_REVIEW => 'search',
+        \App\Models\Status::DIKIRIM_AUTHOR => 'upload',
+        \App\Models\Status::DIREVISI => 'redo',
+        \App\Models\Status::FINALISASI => 'book',
+        \App\Models\Status::TERBIT => 'globe',
         default => 'circle'
     };
 @endphp

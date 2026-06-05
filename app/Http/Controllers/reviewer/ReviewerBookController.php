@@ -72,10 +72,13 @@ class ReviewerBookController extends Controller
 
             $filePath = $file->storeAs('upload/books', $fileName, 'public');
 
-            if ($filePath) {
+                if ($filePath) {
+                $newStatus = ($review->status_id == Status::DIKIRIM_AUTHOR) ? Status::DALAM_REVIEW : $review->status_id;
+
                 $review->update([
                     'file_revieu' => $fileName,
                     'reviewer_id' => Auth::id(),
+                    'status_id' => $newStatus,
                     'updated_at' => now(),
                     'deadline' => now()->addWeeks(6),
                 ]);

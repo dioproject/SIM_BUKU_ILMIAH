@@ -59,12 +59,12 @@
                         @if ($bab->author)
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <p class="mb-1"><strong>Author:</strong></p>
+                                    <p class="mb-1"><strong>Penulis:</strong></p>
                                     <p><i class="fas fa-user"></i> {{ $bab->author->username }}</p>
                                 </div>
                                 @if ($bab->reviewer)
                                     <div class="col-md-6">
-                                        <p class="mb-1"><strong>Reviewer:</strong></p>
+                                        <p class="mb-1"><strong>Pereview:</strong></p>
                                         <p><i class="fas fa-user-check"></i> {{ $bab->reviewer->username }}</p>
                                     </div>
                                 @endif
@@ -114,7 +114,7 @@
                     
                     <!-- Catatan Reviewer -->
                     @if ($bab->catatan)
-                        <x-admin.card title="Catatan Reviewer" icon="sticky-note" class="file-card file-notes">
+                        <x-admin.card title="Catatan Pereview" icon="sticky-note" class="file-card file-notes">
                             <p class="mb-0">{{ $bab->catatan }}</p>
                         </x-admin.card>
                     @endif
@@ -122,7 +122,7 @@
                 
                 <div class="col-lg-4">
                     <!-- Upload Form -->
-                    @if ($bab->status_id === 4 && $bab->author_id == auth()->id())
+                    @if (($bab->status_id === \App\Models\Status::DITUGASKAN || $bab->status_id === \App\Models\Status::REVISI) && $bab->author_id == auth()->id())
                         <x-admin.card title="Unggah Naskah" icon="upload">
                             <form action="{{ route('author.upload.chapter', $bab->id) }}" method="POST"
                                 enctype="multipart/form-data">
@@ -154,22 +154,32 @@
                     <!-- Info Status -->
                     <x-admin.card title="Informasi Status" icon="info-circle">
                         <div class="text-center">
-                            @if ($bab->status_id == 4)
+                            @if ($bab->status_id == \App\Models\Status::DITUGASKAN)
                                 <div class="alert alert-info mb-0">
                                     <i class="fas fa-info-circle"></i>
                                     Bab ini sedang menunggu Anda untuk mengunggah naskah.
                                 </div>
-                            @elseif ($bab->status_id == 5)
+                            @elseif ($bab->status_id == \App\Models\Status::REVISI)
                                 <div class="alert alert-warning mb-0">
                                     <i class="fas fa-exclamation-triangle"></i>
                                     Bab ini perlu direvisi. Silakan periksa catatan reviewer.
                                 </div>
-                            @elseif ($bab->status_id == 6)
+                            @elseif ($bab->status_id == \App\Models\Status::DIKIRIM_AUTHOR)
+                                <div class="alert alert-info mb-0">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    Naskah sudah dikirim dan menunggu review.
+                                </div>
+                            @elseif ($bab->status_id == \App\Models\Status::DALAM_REVIEW)
                                 <div class="alert alert-primary mb-0">
                                     <i class="fas fa-search"></i>
                                     Naskah sedang dalam proses review oleh reviewer.
                                 </div>
-                            @elseif ($bab->status_id == 3)
+                            @elseif ($bab->status_id == \App\Models\Status::DIREVISI)
+                                <div class="alert alert-secondary mb-0">
+                                    <i class="fas fa-redo"></i>
+                                    Revisi sudah dikirim dan menunggu review.
+                                </div>
+                            @elseif ($bab->status_id == \App\Models\Status::DISETUJUI)
                                 <div class="alert alert-success mb-0">
                                     <i class="fas fa-check-circle"></i>
                                     Bab ini sudah disetujui.

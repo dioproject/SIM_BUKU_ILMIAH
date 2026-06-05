@@ -21,7 +21,7 @@
                         <div class="card-header">
                             <h4></h4>
                             <div class="card-header-action">
-                                <form action="{{ route('editor.index.user') }}" method="GET">
+                                <form action="{{ route('reviewer.index.user') }}" method="GET">
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="search" placeholder="Cari..."
                                             value="{{ request()->query('search') }}">

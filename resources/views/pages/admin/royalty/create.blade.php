@@ -38,10 +38,10 @@
                                 </select>
                             </x-admin.form-field>
                             
-                            <x-admin.form-field label="Author" name="user_id" :required="true">
+                            <x-admin.form-field label="Penulis" name="user_id" :required="true">
                                 <select class="form-control select2" tabindex="2" id="user_id"
                                     name="user_id" value="{{ old('user_id') }}" style="width: 100%;">
-                                    <option value="">-- Pilih Author --</option>
+                                    <option value="">-- Pilih Penulis --</option>
                                     @foreach ($authors as $author)
                                         <option value="{{ $author->id }}"
                                             @if (old('user_id') == $author->id) selected @endif>

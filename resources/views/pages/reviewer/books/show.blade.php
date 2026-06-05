@@ -23,7 +23,7 @@
                                     <tr>
                                         <th width="50">No</th>
                                         <th>Nama Bab</th>
-                                        <th>Author</th>
+                                        <th>Penulis</th>
                                         <th width="150">Status</th>
                                         <th width="80">Aksi</th>
                                     </tr>

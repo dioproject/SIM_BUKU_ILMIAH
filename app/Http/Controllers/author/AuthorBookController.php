@@ -74,10 +74,12 @@ class AuthorBookController extends Controller
             $filePath = $file->storeAs('upload/books', $fileName, 'public');
 
             if ($filePath) {
+                $newStatus = ($chapter->status_id == Status::REVISI) ? Status::DIREVISI : Status::DIKIRIM_AUTHOR;
+
                 $chapter->update([
                     'file_bab' => $fileName,
                     'author_id' => Auth::id(),
-                    'status_id' => Status::DIKIRIM_AUTHOR,
+                    'status_id' => $newStatus,
                     'uploaded_at' => now(),
                 ]);
 
@@ -88,7 +90,7 @@ class AuthorBookController extends Controller
                 Histori::create([
                     'user_id' => Auth::id(),
                     'bab_id' => $chapter->id,
-                    'status_id' => Status::DIKIRIM_AUTHOR,
+                    'status_id' => $newStatus,
                     'action' => 'upload',
                     'detail' => 'Mengunggah bab "' . $chapter->nama . '" dari buku "' . $chapter->buku->judul . '" oleh ' . Auth::user()->username,
                 ]);

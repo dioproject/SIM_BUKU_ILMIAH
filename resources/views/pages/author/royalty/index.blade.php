@@ -42,7 +42,7 @@
                         </div>
                         <div class="card-body">
                             @if(isset($royalty) && $royalty->count() > 0)
-                                <x-admin.table :headers="['No', 'Judul Buku', 'Author', 'Royalti', 'Status']">
+                                <x-admin.table :headers="['No', 'Judul Buku', 'Penulis', 'Royalti', 'Status']">
                                     @foreach ($royalty as $key => $royal)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>

@@ -37,11 +37,12 @@
 
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                <a class="dropdown-item has-icon text-danger" href="#"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
-                    <button type="submit" class="dropdown-item has-icon text-danger" style="border:none;background:none;width:100%;text-align:left;">
-                        <i class="fas fa-sign-out-alt"></i> Keluar
-                    </button>
                 </form>
             </div>
         </li>

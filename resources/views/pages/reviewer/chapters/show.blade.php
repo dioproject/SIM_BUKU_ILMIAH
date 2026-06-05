@@ -133,7 +133,7 @@
 
                 <div class="col-lg-4">
                     <!-- Upload File Review -->
-                    @if ($bab->file_bab)
+                    @if ($bab->file_bab && ($bab->status_id == \App\Models\Status::DIKIRIM_AUTHOR || $bab->status_id == \App\Models\Status::DALAM_REVIEW || $bab->status_id == \App\Models\Status::DIREVISI))
                         <x-admin.card title="Unggah File Review" icon="upload">
                             <form action="{{ route('reviewer.upload.review', $bab->id) }}" method="POST"
                                 enctype="multipart/form-data">
@@ -163,14 +163,15 @@
                     @endif
 
                     <!-- Catatan Review -->
-                    @if (!is_null($bab->file_revieu) && $bab->reviewer_id !== null)
+                    @if ($bab->reviewer_id !== null)
                         <x-admin.card title="Catatan Review" icon="sticky-note">
                             <form action="{{ route('reviewer.notes.review', $bab->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <textarea name="catatan" class="form-control" rows="4" placeholder="Masukkan catatan review..." required>{{ $bab->catatan }}</textarea>
+                                    <textarea name="catatan" class="form-control" rows="4"
+                                        placeholder="Masukkan catatan review...">{{ $bab->catatan }}</textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block">
                                     <i class="fas fa-save"></i> Simpan Catatan
@@ -180,7 +181,7 @@
                     @endif
 
                     <!-- Keputusan Review -->
-                    @if ($bab->file_bab)
+                    @if ($bab->file_bab && ($bab->status_id == \App\Models\Status::DALAM_REVIEW || $bab->status_id == \App\Models\Status::DIREVISI))
                         <x-admin.card title="Keputusan Review" icon="check-circle">
                             <div class="d-grid gap-2">
                                 <form action="{{ route('reviewer.approve.chapter', $bab->id) }}" method="POST" class="mb-2">
@@ -204,30 +205,35 @@
                     <!-- Info Status -->
                     <x-admin.card title="Informasi Status" icon="info-circle">
                         <div class="text-center">
-                            @if ($bab->status_id == 4)
+                            @if ($bab->status_id == \App\Models\Status::DITUGASKAN)
                                 <div class="alert alert-info mb-0">
                                     <i class="fas fa-info-circle"></i>
                                     Bab ini belum dikirim oleh penulis.
                                 </div>
-                            @elseif ($bab->status_id == 5)
+                            @elseif ($bab->status_id == \App\Models\Status::DIKIRIM_AUTHOR)
+                                <div class="alert alert-primary mb-0">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    Naskah sudah dikirim oleh penulis dan siap direview.
+                                </div>
+                            @elseif ($bab->status_id == \App\Models\Status::DALAM_REVIEW)
+                                <div class="alert alert-info mb-0">
+                                    <i class="fas fa-search"></i>
+                                    Naskah sedang dalam proses review.
+                                </div>
+                            @elseif ($bab->status_id == \App\Models\Status::REVISI)
                                 <div class="alert alert-warning mb-0">
                                     <i class="fas fa-exclamation-triangle"></i>
                                     Bab ini memerlukan review lebih lanjut.
                                 </div>
-                            @elseif ($bab->status_id == 6)
-                                <div class="alert alert-primary mb-0">
-                                    <i class="fas fa-search"></i>
-                                    Naskah siap untuk direview.
+                            @elseif ($bab->status_id == \App\Models\Status::DIREVISI)
+                                <div class="alert alert-secondary mb-0">
+                                    <i class="fas fa-redo"></i>
+                                    Penulis sudah mengirim revisi.
                                 </div>
-                            @elseif ($bab->status_id == 3)
+                            @elseif ($bab->status_id == \App\Models\Status::DISETUJUI)
                                 <div class="alert alert-success mb-0">
                                     <i class="fas fa-check-circle"></i>
                                     Bab ini sudah disetujui.
-                                </div>
-                            @elseif ($bab->status_id == 7)
-                                <div class="alert alert-secondary mb-0">
-                                    <i class="fas fa-redo"></i>
-                                    Author sedang melakukan revisi.
                                 </div>
                             @else
                                 <div class="alert alert-secondary mb-0">

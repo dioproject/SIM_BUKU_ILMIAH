@@ -31,7 +31,7 @@
                                             @foreach ($books as $book)
                                                 <option value="{{ $book->id }}"
                                                     @if (old('book_id') == $book->id) selected @endif>
-                                                    {{ $book->title }}</option>
+                                                    {{ $book->judul }}</option>
                                             @endforeach
                                         </select>
                                     </x-admin.form-field>

@@ -36,7 +36,7 @@
                         </div>
                         <div class="card-body">
                             @if($chapters->count() > 0)
-                                <x-admin.table :headers="['No', 'Judul Buku', 'Author', 'Bab', 'Tanggal Dibuat', 'Status', 'Aksi']">
+                                <x-admin.table :headers="['No', 'Judul Buku', 'Penulis', 'Bab', 'Tanggal Dibuat', 'Status', 'Aksi']">
                                     @foreach ($chapters as $key => $chapter)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
