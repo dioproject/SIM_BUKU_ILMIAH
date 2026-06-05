@@ -1,5 +1,5 @@
 @props(['paginator'])
-@php $elements = $paginator->elements(); @endphp
+@php $elements = $paginator->toArray()['elements'] ?? []; @endphp
 
 @if ($paginator->hasPages())
     <div class="card-footer">
