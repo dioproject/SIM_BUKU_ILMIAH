@@ -87,7 +87,7 @@ class BookController extends Controller
             ]);
 
             Histori::create([
-                'detail' => 'Tambah bab "' . $newChapter->chapter . '" dari buku "' . $book->judul . '" oleh ' . Auth::user()->username,
+                'detail' => 'Tambah bab "' . $newChapter->nama . '" dari buku "' . $book->judul . '" oleh ' . Auth::user()->username,
             ]);
         }
 

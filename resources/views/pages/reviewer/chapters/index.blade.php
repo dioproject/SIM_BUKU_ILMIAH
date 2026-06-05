@@ -96,12 +96,16 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->status->option !== 'Approve' && $chapter->author_id !== null)
-                                                            <a class="btn btn-success btn-action mr-1" title="Approve"
-                                                                href="{{ route('reviewer.approve.chapter', $chapter->id) }}"
-                                                                data-toggle="tooltip">
-                                                                <i class="fas fa-check"></i>
-                                                            </a>
+                                                        @if ($chapter->status->option !== 'Approve' && $chapter->author_id !== null && $chapter->file_bab && $chapter->file_revieu)
+                                                            <form action="{{ route('reviewer.approve.chapter', $chapter->id) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="btn btn-success btn-action mr-1"
+                                                                    title="Approve" data-toggle="tooltip">
+                                                                    <i class="fas fa-check"></i>
+                                                                </button>
+                                                            </form>
                                                         @endif
                                                     </td>
                                                 </tr>

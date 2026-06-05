@@ -60,6 +60,11 @@ class AuthorBookController extends Controller
         ]);
 
         $chapter = Bab::findOrFail($id);
+
+        if ($chapter->author_id !== Auth::id() || $chapter->status_id !== 4) {
+            return redirect()->back()->with('error', 'Anda hanya bisa mengunggah bab yang sudah Anda klaim.');
+        }
+
         $oldFile = $chapter->file_bab;
         $fileName = $oldFile;
 

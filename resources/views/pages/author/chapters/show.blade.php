@@ -48,12 +48,12 @@
                                             </div>
                                         </li>
                                     @endif
-                                    @if ($bab->file_reviu)
+                                    @if ($bab->file_revieu)
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <i class="fas fa-file"></i>
-                                                    <strong>{{ $bab->file_reviu }}</strong>
+                                                    <strong>{{ $bab->file_revieu }}</strong>
                                                 </div>
                                                 <div class="d-flex justify-content-between col-md-12 py-1">
                                                     <small>Reviewer: {{ $bab->reviewer->username }}</small>

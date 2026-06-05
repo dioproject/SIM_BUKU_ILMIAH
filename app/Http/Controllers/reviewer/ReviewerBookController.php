@@ -47,6 +47,11 @@ class ReviewerBookController extends Controller
         ]);
 
         $review = Bab::findOrFail($id);
+
+        if (!$review->author_id || !$review->file_bab || $review->status_id === 3) {
+            return redirect()->back()->with('error', 'Bab ini belum siap untuk direviu.');
+        }
+
         $oldFile = $review->file_revieu;
         $fileName = $oldFile;
 

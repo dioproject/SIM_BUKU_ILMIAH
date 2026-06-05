@@ -84,7 +84,7 @@ Route::middleware(['auth', 'user-role:REVIEWER'])->group(function () {
     Route::put('/reviewer/{id}/notes', [ReviewerBookController::class, 'notes'])->name('reviewer.notes.review');
     Route::get('/reviewer/chapters', [ReviewerChapterController::class, 'index'])->name('reviewer.index.chapter');
     Route::get('/reviewer/chapter/{id}', [ReviewerChapterController::class, 'show'])->name('reviewer.show.chapter');
-    Route::get('/reviewer/chapter/{id}/approve', [ReviewerChapterController::class, 'approve'])->name('reviewer.approve.chapter');
+    Route::put('/reviewer/chapter/{id}/approve', [ReviewerChapterController::class, 'approve'])->name('reviewer.approve.chapter');
     Route::get('/reviewer/history', [ReviewerHistoryController::class, 'index'])->name('reviewer.index.history');
 });
 

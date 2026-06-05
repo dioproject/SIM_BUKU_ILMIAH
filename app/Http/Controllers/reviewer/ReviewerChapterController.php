@@ -36,10 +36,15 @@ class ReviewerChapterController extends Controller
     public function approve($id)
     {
         $chapter = Bab::with(['author', 'status', 'buku'])->findOrFail($id);
+
+        if (!$chapter->author_id || !$chapter->file_bab || !$chapter->file_revieu || $chapter->status_id === 3) {
+            return redirect()->back()->with('error', 'Bab ini belum siap untuk disetujui.');
+        }
+
         $chapter->update([
             'status_id' => Status::findOrFail(3)->id,
             'approved_at' => now(),
         ]);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Bab berhasil disetujui.');
     }
 }
