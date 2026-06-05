@@ -9,7 +9,7 @@
         <ul class="sidebar-menu">
             <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/dashboard') }}"><i
-                        class="fas fa-regular fa-house"></i><span>Dashboard</span></a>
+                        class="fas fa-regular fa-house"></i><span>Dasbor</span></a>
             </li>
             <li class="{{ Request::is('admin/users') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/users') }}"><i
@@ -17,7 +17,7 @@
             </li>
             <li class="nav-item dropdown {{ Request::is('books') ? 'active' : '' }}">
                 <a href="{{ url('admin/books') }}"
-                    class="nav-link has-dropdown"><i class="fas fa-solid fa-book"></i><span>Management Publish</span></a>
+                    class="nav-link has-dropdown"><i class="fas fa-solid fa-book"></i><span>Manajemen Penerbitan</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is('admin/books') ? 'active' : '' }}'>
                         <a class="nav-link"
@@ -25,7 +25,7 @@
                     </li>
                     <li class="{{ Request::is('admin/chapters') ? 'active' : '' }}">
                         <a class="nav-link"
-                            href="{{ url('admin/chapters') }}">Proses Pengajuan</a>
+                            href="{{ url('admin/chapters') }}">Daftar Bab</a>
                     </li>
                     <li class="{{ Request::is('admin/finalisasi') ? 'active' : '' }}">
                         <a class="nav-link"

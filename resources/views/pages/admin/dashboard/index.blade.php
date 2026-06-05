@@ -1,9 +1,8 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Dashboard')
+@section('title', 'Dasbor')
 
 @push('style')
-    <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
 @endpush
 
@@ -20,7 +19,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Dashboard</h1>
+                <h1><i class="fas fa-tachometer-alt"></i> Dasbor</h1>
             </div>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
@@ -30,7 +29,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Author</h4>
+                                <h4>Total Penulis</h4>
                             </div>
                             <div class="card-body">
                                 {{ $author }}
@@ -138,7 +137,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Total Chapters Created per Day',
+                    label: 'Total Bab Dibuat per Hari',
                     data: data,
                     borderWidth: 2,
                     borderColor: '#6777ef',

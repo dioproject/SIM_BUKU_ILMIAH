@@ -9,19 +9,20 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Katalog</h1>
+                <h1><i class="fas fa-book"></i> Katalog</h1>
             </div>
             <div class="section-body">
+                <x-flash-message />
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
+                        <x-admin.card>
                             <div class="card-header">
-                                <h4></h4>
+                                <h4><i class="fas fa-list"></i> Daftar Katalog</h4>
                                 <div class="card-header-action">
                                     <form method="GET" action="{{ route('admin.index.catalog') }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="search"
-                                                value="{{ $search ?? '' }}" placeholder="Search">
+                                                value="{{ $search ?? '' }}" placeholder="Cari...">
                                             <div class="input-group-btn">
                                                 <button type="submit" class="btn btn-primary"><i
                                                         class="fas fa-search"></i></button>
@@ -31,60 +32,25 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Judul Buku</th>
-                                                <th>Penulis</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($catalogs as $key => $catalog)
-                                                <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $catalog->final->buku->judul }}</td>
-                                                    <td>{{ $catalog->final->buku->bab->first()->author->username ?? '' }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <x-admin.table :headers="['No.', 'Judul Buku', 'Penulis']">
+                                    @forelse ($catalogs as $key => $catalog)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $catalog->final->buku->judul }}</td>
+                                            <td>{{ $catalog->final->buku->bab->first()->author->username ?? '-' }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                                Belum ada katalog
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </x-admin.table>
                             </div>
-                            <div class="card-footer">
-                                <nav aria-label="...">
-                                    <ul class="pagination justify-content-center">
-                                        @if ($catalogs->onFirstPage())
-                                            <li class="page-item disabled">
-                                                <span class="page-link">Previous</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $catalogs->previousPageUrl() }}"
-                                                    tabindex="-1">Previous</a>
-                                            </li>
-                                        @endif
-
-                                        @foreach ($catalogs->getUrlRange(1, $catalogs->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $catalogs->currentPage() ? 'active' : '' }}">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
-                                        @endforeach
-
-                                        @if ($catalogs->hasMorePages())
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $catalogs->nextPageUrl() }}">Next</a>
-                                            </li>
-                                        @else
-                                            <li class="page-item disabled">
-                                                <span class="page-link">Next</span>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                            <x-admin.pagination :paginator="$catalogs" />
+                        </x-admin.card>
                     </div>
                 </div>
             </div>

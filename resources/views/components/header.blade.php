@@ -12,7 +12,7 @@
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="/login"
                     class="dropdown-item has-icon text-danger">
-                    <i class="fas fa-sign-in-alt"></i> Login
+                    <i class="fas fa-sign-in-alt"></i> Masuk
                 </a>
             </div>
         </li>

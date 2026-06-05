@@ -10,77 +10,56 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Produksi</h1>
+                <h1><i class="fas fa-plus-circle"></i> Tambah Produksi</h1>
             </div>
 
             <div class="section-body">
+                <x-flash-message />
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
+                        <x-admin.card>
+                            <div class="card-header">
+                                <h4><i class="fas fa-industry"></i> Form Produksi</h4>
+                            </div>
                             <div class="card-body">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
                                 <form id="create-book-form" action="{{ route('admin.store.produksi') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Judul Buku
-                                            :</label>
-                                        <div class="col-sm-12 col-md-10">
-                                            <select class="form-control select2" tabindex="1" id="final_id"
-                                                name="final_id" value="{{ old('final_id') }}">
-                                                @foreach ($finalisasis as $finali)
-                                                    @if ($finali->buku)
-                                                        <option value="{{ $finali->id }}"
-                                                            @if (old('final_id') == $finali->id) selected @endif>
-                                                            {{ $finali->buku->judul }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Eksemplar
-                                            :</label>
-                                        <div class="col-sm-12 col-md-10">
-                                            <input type="text" tabindex="2" class="form-control" id="eksemplar"
-                                                name="eksemplar" value="{{ old('eksemplar') }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Biaya Produksi
-                                            :</label>
-                                        <div class="col-sm-12 col-md-10">
-                                            <input type="number" tabindex="3" class="form-control" id="biaya_produksi"
-                                                name="biaya_produksi" value="{{ old('biaya_produksi') }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-4">
-                                        <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Harga Jual
-                                            :</label>
-                                        <div class="col-sm-12 col-md-10">
-                                            <input type="number" tabindex="4" class="form-control" id="harga_jual"
-                                                name="harga_jual" value="{{ old('harga_jual') }}">
-                                        </div>
-                                    </div>
+                                    <x-admin.form-field label="Judul Buku" name="final_id">
+                                        <select class="form-control select2" tabindex="1" id="final_id"
+                                            name="final_id" value="{{ old('final_id') }}">
+                                            @foreach ($finalisasis as $finali)
+                                                @if ($finali->buku)
+                                                    <option value="{{ $finali->id }}"
+                                                        @if (old('final_id') == $finali->id) selected @endif>
+                                                        {{ $finali->buku->judul }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </x-admin.form-field>
+                                    <x-admin.form-field label="Eksemplar" name="eksemplar">
+                                        <input type="text" tabindex="2" class="form-control" id="eksemplar"
+                                            name="eksemplar" value="{{ old('eksemplar') }}" placeholder="Jumlah eksemplar cetak">
+                                    </x-admin.form-field>
+                                    <x-admin.form-field label="Biaya Produksi" name="biaya_produksi">
+                                        <input type="number" tabindex="3" class="form-control" id="biaya_produksi"
+                                            name="biaya_produksi" value="{{ old('biaya_produksi') }}" placeholder="Biaya produksi dalam Rupiah">
+                                    </x-admin.form-field>
+                                    <x-admin.form-field label="Harga Jual" name="harga_jual">
+                                        <input type="number" tabindex="4" class="form-control" id="harga_jual"
+                                            name="harga_jual" value="{{ old('harga_jual') }}" placeholder="Harga jual dalam Rupiah">
+                                    </x-admin.form-field>
                                     <div class="form-group row mb-4">
                                         <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
                                         <div class="col-sm-12 col-md-9">
-                                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-                                                Tambah</button>
+                                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>
+                                                Simpan</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                        </x-admin.card>
                     </div>
                 </div>
             </div>

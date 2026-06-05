@@ -1,9 +1,8 @@
 @extends('layouts.auth')
 
-@section('title', 'Login')
+@section('title', 'Masuk')
 
 @push('style')
-    <!-- CSS Libraries -->
     <link rel="stylesheet"
         href="{{ asset('library/bootstrap-social/bootstrap-social.css') }}">
 @endpush
@@ -11,7 +10,7 @@
 @section('main')
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Login</h4>
+            <h4><i class="fas fa-sign-in-alt"></i> Masuk</h4>
         </div>
 
         <div class="card-body">
@@ -30,22 +29,24 @@
                         name="email"
                         tabindex="1"
                         required
-                        autofocus>
+                        autofocus
+                        placeholder="Masukkan email Anda">
                     <div class="invalid-feedback">
-                        Please fill in your email
+                        Silakan masukkan email Anda
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Kata Sandi</label>
                     <input id="password"
                         type="password"
                         class="form-control"
                         name="password"
                         tabindex="2"
-                        required>
+                        required
+                        placeholder="Masukkan kata sandi Anda">
                     <div class="invalid-feedback">
-                        please fill in your password
+                        Silakan masukkan kata sandi Anda
                     </div>
                 </div>
 
@@ -53,14 +54,14 @@
                     <button type="submit"
                         class="btn btn-primary btn-lg btn-block"
                         tabindex="4">
-                        Login
+                        <i class="fas fa-sign-in-alt"></i> Masuk
                     </button>
                 </div>
             </form>
         </div>
     </div>
     {{-- <div class="text-muted mt-5 text-center">
-        I have an account! <a href="{{ route('register') }}">Register</a>
+        Sudah punya akun? <a href="{{ route('register') }}">Daftar</a>
     </div> --}}
 @endsection
 

@@ -5,11 +5,6 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Book PDF</title>
     <style>
-        /* @font-face {
-            font-family: 'Times New Roman';
-            src: url('{{ public_path('fonts/times-new-roman.ttf') }}') format('truetype');
-        } */
-
         body {
             margin: 0;
             padding: 20px;
@@ -39,8 +34,6 @@
         .bold {
             font-weight: bold;
         }
-
-       
     </style>
 </head>
 <body>
@@ -49,12 +42,12 @@
     </div>
 
     <div class="section">
-        <h2>Abstract</h2>
+        <h2>Abstrak</h2>
         {!!$abstract!!}
     </div>
 
     <div class="section">
-        <h2>Fill</h2>
+        <h2>Isi Buku</h2>
         {!!$fill!!}
     </div>
 </body>

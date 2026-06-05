@@ -1,6 +1,6 @@
 @extends('layouts.app-reviewer')
 
-@section('title', 'Dashboard')
+@section('title', 'Dasbor')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -19,7 +19,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Dashboard</h1>
+                <h1><i class="fas fa-tachometer-alt"></i> Dasbor</h1>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -57,7 +57,7 @@
                 <div class="col-lg-8 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Statistik</h4>
+                            <h4><i class="fas fa-chart-line"></i> Statistik</h4>
                         </div>
                         <div class="card-body">
                             <canvas id="myChart" height="182"></canvas>
@@ -67,7 +67,7 @@
                 <div class="col-lg-4 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Aktivitas Terakhir</h4>
+                            <h4><i class="fas fa-history"></i> Aktivitas Terakhir</h4>
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
@@ -80,7 +80,7 @@
                                                 {{ $activity->created_at->diffForHumans() }}</div>
                                             <div class="media-title">{{ $activity->author->username ?? '' }}</div>
                                             <span class="text-small text-muted">
-                                                Submitted chapter: {{ $activity->nama }}
+                                                <i class="fas fa-file-upload"></i> Bab yang dikirim: {{ $activity->nama }}
                                             </span>
                                         </div>
                                     </li>
@@ -109,7 +109,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Total Chapters Created per Day',
+                    label: 'Total Bab Dibuat per Hari',
                     data: data,
                     borderWidth: 2,
                     borderColor: '#6777ef',

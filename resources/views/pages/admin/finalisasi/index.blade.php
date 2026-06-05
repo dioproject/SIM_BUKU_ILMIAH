@@ -10,122 +10,49 @@
 @section('main')<div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Finalisasi Buku</h1>
+                <h1><i class="fas fa-check-double"></i> Finalisasi Buku</h1>
             </div>
             <div class="section-body">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible show fade">
-                        <div class="alert-body">
-                            <button class="close" data-dismiss="alert">
-                                <span>&times;</span>
-                            </button>
-                            {{ session('success') }}.
-                        </div>
-                    </div>
-                @endif
-
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible show fade">
-                        <div class="alert-body">
-                            <button class="close" data-dismiss="alert">
-                                <span>&times;</span>
-                            </button>
-                            {{ session('error') }}.
-                        </div>
-                    </div>
-                @endif
+                <x-flash-message />
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
-                            {{-- <div class="card-header">
-                                <a href="{{ route('admin.create.finalisasi') }}" class="btn btn-icon icon-left btn-primary"><i
-                                        class="far fa-edit"></i> Tambah Buku
-                                </a>
-                                <h4></h4>
-                                <div class="card-header-action">
-                                    <form action="{{ route('admin.index.finalisasi') }}" method="GET">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search" name="search"
-                                                value="{{ request('search') }}">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary" type="submit"><i
-                                                        class="fas fa-search"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div> --}}
+                        <x-admin.card>
+                            <div class="card-header">
+                                <h4><i class="fas fa-list"></i> Daftar Finalisasi</h4>
+                            </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Judul Buku</th>
-                                                <th>ISBN</th>
-                                                <th>Tanggal Finalisasi</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($finalisasis as $key => $finalisasi)
-                                                <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $finalisasi->buku->judul }}</td>
-                                                    <td>{{ $finalisasi->isbn }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($finalisasi->created_at)->translatedFormat('F Y') }}</td>
-                                                    <td>
-                                                        <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                            title="Edit"
-                                                            href="{{ route('admin.edit.finalisasi', $finalisasi->id) }}"><i
-                                                                class="fas fa-pencil-alt"></i>
-                                                        </a>
-                                                        <a class="btn btn-secondary btn-action mr-1" data-toggle="tooltip"
-                                                            title="Download"
-                                                            href="{{ Storage::url('upload/merge/' . $finalisasi->merge) }}" download="{{ $finalisasi->merge }}"><i
-                                                                class="fas fa-download"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <x-admin.table :headers="['No.', 'Judul Buku', 'ISBN', 'Tanggal Finalisasi', 'Aksi']">
+                                    @forelse ($finalisasis as $key => $finalisasi)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $finalisasi->buku->judul }}</td>
+                                            <td>{{ $finalisasi->isbn }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($finalisasi->created_at)->translatedFormat('F Y') }}</td>
+                                            <td>
+                                                <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
+                                                    title="Edit"
+                                                    href="{{ route('admin.edit.finalisasi', $finalisasi->id) }}"><i
+                                                        class="fas fa-pencil-alt"></i>
+                                                </a>
+                                                <a class="btn btn-secondary btn-action mr-1" data-toggle="tooltip"
+                                                    title="Download"
+                                                    href="{{ Storage::url('upload/merge/' . $finalisasi->merge) }}" download="{{ $finalisasi->merge }}"><i
+                                                        class="fas fa-download"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                                Belum ada finalisasi
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </x-admin.table>
                             </div>
-
-                            <div class="card-footer">
-                                <nav aria-label="...">
-                                    <ul class="pagination justify-content-center">
-                                        @if ($finalisasis->onFirstPage())
-                                            <li class="page-item disabled">
-                                                <span class="page-link">Previous</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $finalisasis->previousPageUrl() }}"
-                                                    tabindex="-1">Previous</a>
-                                            </li>
-                                        @endif
-
-                                        @foreach ($finalisasis->getUrlRange(1, $finalisasis->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $finalisasis->currentPage() ? 'active' : '' }}">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
-                                        @endforeach
-
-                                        @if ($finalisasis->hasMorePages())
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $finalisasis->nextPageUrl() }}">Next</a>
-                                            </li>
-                                        @else
-                                            <li class="page-item disabled">
-                                                <span class="page-link">Next</span>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                            <x-admin.pagination :paginator="$finalisasis" />
+                        </x-admin.card>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app-author')
 
-@section('title', 'Dashboard')
+@section('title', 'Dasbor')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -17,7 +17,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Dashboard</h1>
+                <h1><i class="fas fa-tachometer-alt"></i> Dasbor</h1>
             </div>
             <div class="row">
                 <div class="col-lg--12 col-md--12 col-sm--12 col-12">
@@ -27,7 +27,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Books</h4>
+                                <h4>Total Buku</h4>
                             </div>
                             <div class="card-body">
                                 {{ $books }}
@@ -40,7 +40,7 @@
                 <div class="col-lg-8 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Statistik</h4>
+                            <h4><i class="fas fa-chart-line"></i> Statistik</h4>
                         </div>
                         <div class="card-body">
                             <canvas id="myChart" height="182"></canvas>
@@ -50,7 +50,7 @@
                 <div class="col-lg-4 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Aktivitas Terakhir</h4>
+                            <h4><i class="fas fa-history"></i> Aktivitas Terakhir</h4>
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
@@ -61,7 +61,7 @@
                                             <div class="float-right text-primary">{{ $activity->created_at->diffForHumans() }}</div>
                                             <div class="media-title">{{ $activity->author->username ?? '' }}</div>
                                             <span class="text-small text-muted">
-                                                Submitted chapter: {{ $activity->nama }}
+                                                <i class="fas fa-file-upload"></i> Bab yang dikirim: {{ $activity->nama }}
                                             </span>
                                         </div>
                                     </li>
@@ -90,7 +90,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Total Chapters Created per Day',
+                    label: 'Total Bab Dibuat per Hari',
                     data: data,
                     borderWidth: 2,
                     borderColor: '#6777ef',
