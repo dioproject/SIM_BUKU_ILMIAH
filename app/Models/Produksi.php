@@ -20,7 +20,7 @@ class Produksi extends Model
     protected $casts = [
         'id' => 'integer',
         'final_id' => 'integer',
-        'tahun_terbit' => 'date',
+        'tahun_terbit' => 'integer',
     ];
 
     public function final()
