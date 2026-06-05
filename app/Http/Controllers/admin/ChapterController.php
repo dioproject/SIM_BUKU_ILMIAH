@@ -7,6 +7,7 @@ use App\Models\Bab;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Histori;
+use App\Models\User;
 
 class ChapterController extends Controller
 {
@@ -31,7 +32,9 @@ class ChapterController extends Controller
     public function show($id)
     {
         $bab = Bab::with(['author', 'reviewer', 'buku', 'status'])->findOrFail($id);
-        return view('pages.admin.chapters.show', compact('bab'));
+        $authors = User::where('user_role', 'AUTHOR')->orderBy('username')->get();
+        $reviewers = User::where('user_role', 'REVIEWER')->orderBy('username')->get();
+        return view('pages.admin.chapters.show', compact('bab', 'authors', 'reviewers'));
     }
 
     public function destroy($id)
