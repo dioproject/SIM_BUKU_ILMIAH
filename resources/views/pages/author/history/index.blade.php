@@ -50,16 +50,18 @@
                                                         'revisi' => 'Revisi',
                                                         default => ucfirst(str_replace('_', ' ', $his->action))
                                                     };
-                                                @endphp
-                                                <span class="badge {{ $actionClass }} action-badge">
-                                                    <i class="fas fa-{{ match($his->action) {
+
+                                                    $actionIcon = match($his->action) {
                                                         'create_book', 'create_chapter' => 'plus-circle',
                                                         'assign' => 'user-edit',
                                                         'upload', 'upload_review' => 'upload',
                                                         'approve' => 'check-circle',
                                                         'revisi' => 'exclamation-triangle',
                                                         default => 'info-circle'
-                                                    }}"></i>
+                                                    };
+                                                @endphp
+                                                <span class="badge {{ $actionClass }} action-badge">
+                                                    <i class="fas fa-{{ $actionIcon }}"></i>
                                                     {{ $actionLabel }}
                                                 </span>
                                             @endif
