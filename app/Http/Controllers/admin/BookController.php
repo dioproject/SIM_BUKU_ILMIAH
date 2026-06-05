@@ -317,13 +317,13 @@ class BookController extends Controller
                 Log::info("File bab tidak ditemukan: $chapterPath");
             }
 
-            $reviuPath = 'public/upload/books/' . $chapter->file_revieu;
-            if (Storage::exists($reviuPath)) {
-                if (!Storage::delete($reviuPath)) {
-                    Log::error("Gagal menghapus file reviu: $reviuPath");
+            $reviewPath = 'public/upload/books/' . $chapter->file_revieu;
+            if (Storage::exists($reviewPath)) {
+                if (!Storage::delete($reviewPath)) {
+                    Log::error("Gagal menghapus file review: $reviewPath");
                 }
             } else {
-                Log::info("File reviu tidak ditemukan: $reviuPath");
+                Log::info("File review tidak ditemukan: $reviewPath");
             }
 
             $chapter->delete();

@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <x-admin.table :headers="['No', 'Judul Buku', 'Penulis', 'Pereview', 'Bab', 'Tanggal Dibuat', 'Status']">
+                            <x-admin.table :headers="['No', 'Judul Buku', 'Penulis', 'Reviewer', 'Bab', 'Tanggal Dibuat', 'Status']">
                                 @foreach ($chapters as $key => $chapter)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>

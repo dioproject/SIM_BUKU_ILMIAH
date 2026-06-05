@@ -64,7 +64,7 @@
                                 </div>
                                 @if ($bab->reviewer)
                                     <div class="col-md-6">
-                                        <p class="mb-1"><strong>Pereview:</strong></p>
+                                        <p class="mb-1"><strong>Reviewer:</strong></p>
                                         <p><i class="fas fa-user-check"></i> {{ $bab->reviewer->username }}</p>
                                     </div>
                                 @endif

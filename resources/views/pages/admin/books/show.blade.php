@@ -137,7 +137,7 @@
                                             <th width="50">No</th>
                                             <th>Nama Bab</th>
                                             <th>Penulis</th>
-                                            <th>Pereview</th>
+                                            <th>Reviewer</th>
                                             <th width="150">Status</th>
                                             <th width="120">Aksi</th>
                                         </tr>
@@ -265,15 +265,15 @@
                     
                     <div class="form-group">
                         <label for="assignReviewer">
-                            <i class="fas fa-user-check"></i> Pereview
+                            <i class="fas fa-user-check"></i> Reviewer
                         </label>
                         <select name="reviewer_id" id="assignReviewer" class="form-control select2" style="width: 100%;">
-                            <option value="">-- Pilih Pereview (Opsional) --</option>
+                            <option value="">-- Pilih Reviewer (Opsional) --</option>
                             @foreach ($reviewers as $reviewer)
                                 <option value="{{ $reviewer->id }}">{{ $reviewer->username }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Pereview yang akan menilai bab ini</small>
+                        <small class="form-text text-muted">Reviewer yang akan menilai bab ini</small>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -11,6 +11,12 @@
 
 ## Solusi yang Direncanakan
 
+### Terminologi UI
+
+- Gunakan istilah **Reviewer** secara konsisten di UI, dokumentasi desain, dan label tabel.
+- Jangan gunakan padanan lain untuk role tersebut.
+- Gunakan istilah **Author** untuk role penulis jika mengikuti nama role database saat ini.
+
 ### 1. Pisahkan Assignment dari Detail
 
 **Sekarang:**

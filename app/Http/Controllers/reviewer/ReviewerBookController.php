@@ -60,7 +60,7 @@ class ReviewerBookController extends Controller
         $review = Bab::findOrFail($id);
 
         if ($review->reviewer_id !== Auth::id() || !$review->author_id || !$review->file_bab || !StatusHelper::canBeReviewed($review->status_id)) {
-            return redirect()->back()->with('error', 'Bab ini belum siap untuk direviu.');
+            return redirect()->back()->with('error', 'Bab ini belum siap untuk direview.');
         }
 
         $oldFile = $review->file_revieu;
@@ -105,9 +105,9 @@ class ReviewerBookController extends Controller
                 ]);
 
                 return redirect()->back()
-                    ->with('success', 'Berhasil mengunggah reviu.');
+                    ->with('success', 'Berhasil mengunggah review.');
             } else {
-                return redirect()->back()->with('error', 'Gagal mengunggah file reviu. Silahkan coba lagi.');
+                return redirect()->back()->with('error', 'Gagal mengunggah file review. Silakan coba lagi.');
             }
         }
 

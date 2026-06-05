@@ -64,7 +64,7 @@
                                 </div>
                                 @if ($bab->reviewer)
                                     <div class="col-md-6">
-                                        <p class="mb-1"><strong>Pereview:</strong></p>
+                                        <p class="mb-1"><strong>Reviewer:</strong></p>
                                         <p><i class="fas fa-user-check"></i> {{ $bab->reviewer->username }}</p>
                                     </div>
                                 @endif
@@ -114,7 +114,7 @@
                     
                     <!-- Catatan Reviewer -->
                     @if ($bab->catatan)
-                        <x-admin.card title="Catatan Pereview" icon="sticky-note" class="file-card file-notes">
+                        <x-admin.card title="Catatan Reviewer" icon="sticky-note" class="file-card file-notes">
                             <p class="mb-0">{{ $bab->catatan }}</p>
                         </x-admin.card>
                     @endif
