@@ -9,7 +9,7 @@
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Notifications
+                <div class="dropdown-header">Notifikasi
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
                     @foreach ($notifications as $notification)
@@ -18,9 +18,9 @@
                                 <i class="fas fa-info-circle"></i>
                             </div>
                             <div class="dropdown-item-desc">
-                                {{ $notification->data['chapter'] ?? 'Bab' }} 
-                                @if(isset($notification->data['uploaded_by']))
-                                    uploaded by {{ $notification->data['uploaded_by'] }}
+                                {{ is_array($notification->data) ? ($notification->data['chapter'] ?? 'Bab') : 'Bab' }}
+                                @if(is_array($notification->data) && isset($notification->data['uploaded_by']))
+                                    diunggah oleh {{ $notification->data['uploaded_by'] }}
                                 @endif
                                 <div class="time">{{ $notification->created_at->diffForHumans() }}</div>
                             </div>
@@ -40,7 +40,7 @@
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="dropdown-item has-icon text-danger" style="border:none;background:none;width:100%;text-align:left;">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> Keluar
                     </button>
                 </form>
             </div>

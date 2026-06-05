@@ -9,20 +9,20 @@
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Notifications
+                <div class="dropdown-header">Notifikasi
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
                     @foreach ($notifications as $notification)
                         <div class="dropdown-item">
                             <div class="dropdown-item-icon bg-info text-white">
-                                <i class="fas fa-info-user"></i>
+                                <i class="fas fa-info-circle"></i>
                             </div>
                             <div class="dropdown-item-desc">
-                                {{ $notification->data['chapter'] }}
+                                {{ $notification->data['chapter'] ?? 'Bab' }}
                                 <div class="small text-muted">
-                                    @if(isset($notification->data['status_id']))
+                                    @if(is_array($notification->data) && isset($notification->data['status_id']))
                                         {{ $notification->data['status_id'] }}
-                                    @else
+                                    @elseif(is_array($notification->data) && isset($notification->data['status']))
                                         {{ $notification->data['status'] }}
                                     @endif
                                 </div>
@@ -36,13 +36,13 @@
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="{{ asset('img/avatar/avatar-1.png') }}" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">AUTHOR, {{ auth()->user()->username }}</div>
+                <div class="d-sm-none d-lg-inline-block">PENULIS, {{ auth()->user()->username }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="dropdown-item has-icon text-danger" style="border:none;background:none;width:100%;text-align:left;">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> Keluar
                     </button>
                 </form>
             </div>
