@@ -19,8 +19,9 @@
                 <div class="row">
                     <div class="col-12">
                         @php
-                            $action = '<div class="d-flex align-items-center flex-wrap justify-content-end">
-                                <form action="' . route('admin.index.user') . '" method="GET" class="mr-2 mb-2">
+                            $action = '<div class="d-flex align-items-center flex-wrap justify-content-between w-100">
+                                <a href="' . route('admin.create.user') . '" class="btn btn-icon icon-left btn-primary mb-2"><i class="fas fa-user-plus"></i> Tambah Pengguna</a>
+                                <form action="' . route('admin.index.user') . '" method="GET" class="mb-2">
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="search" placeholder="Cari..." value="' . request()->query('search') . '">
                                         <div class="input-group-btn">
@@ -28,10 +29,9 @@
                                         </div>
                                     </div>
                                 </form>
-                                <a href="' . route('admin.create.user') . '" class="btn btn-icon icon-left btn-primary mb-2"><i class="fas fa-user-plus"></i> Tambah Pengguna</a>
                             </div>';
                         @endphp
-                        <x-admin.card title="Daftar Pengguna" icon="list" :action="$action">
+                        <x-admin.card :action="$action">
                             <div class="table-responsive">
                                 <table class="table-striped table" id="table-1">
                                     <thead>
