@@ -53,3 +53,18 @@ a.dropdown-item.has-icon i {
 .navbar .nav-link.nav-link-lg div {
     margin-top: 0;
 }
+
+/* ===== Page Section Header Icon Alignment ===== */
+.section .section-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.2;
+}
+
+.section .section-header h1 > i {
+    width: 28px;
+    min-width: 28px;
+    line-height: 1;
+    text-align: center;
+}
