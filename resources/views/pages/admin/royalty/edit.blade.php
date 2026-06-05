@@ -40,10 +40,10 @@
                                             <label>Author</label>
                                             <select class="form-control select2" tabindex="1" id="author_id"
                                                 name="author_id" value="{{ $royalty->author_id }} {{ old('author_id') }}">
-                                                @foreach ($manuscripts as $manuscript)
-                                                    <option value="{{ $manuscript->author_id }}"
-                                                        {{ $royalty->book_id == $manuscript->id ? 'selected' : '' }}>
-                                                        {{ $manuscript->author->first_name }}</option>
+                                                @foreach ($authors as $author)
+                                                    <option value="{{ $author->id }}"
+                                                        {{ $royalty->author_id == $author->id ? 'selected' : '' }}>
+                                                        {{ $author->username }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -54,7 +54,7 @@
                                                 @foreach ($books as $book)
                                                     <option value="{{ $book->id }}"
                                                         {{ $royalty->book_id == $book->id ? 'selected' : '' }}>
-                                                        {{ $book->manuscript->title }}</option>
+                                                        {{ $book->judul }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

@@ -72,6 +72,25 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
     Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
+    
+    // API routes for dynamic dropdowns
+    Route::get('/admin/api/chapters-by-produksi-author', function (\Illuminate\Http\Request $request) {
+        $produksiId = $request->input('produksi_id');
+        $userId = $request->input('user_id');
+        
+        $produksi = \App\Models\Produksi::with('final.buku')->find($produksiId);
+        
+        if (!$produksi || !$produksi->final || !$produksi->final->buku) {
+            return response()->json(['chapters' => []]);
+        }
+        
+        $chapters = \App\Models\Bab::where('buku_id', $produksi->final->buku->id)
+            ->where('author_id', $userId)
+            ->where('status_id', \App\Models\Status::DISETUJUI)
+            ->get(['id', 'nama']);
+        
+        return response()->json(['chapters' => $chapters]);
+    })->name('admin.api.chapters-by-produksi-author');
 });
 
 //REVIEWER ROUTE
@@ -86,6 +105,7 @@ Route::middleware(['auth', 'user-role:REVIEWER'])->group(function () {
     Route::get('/reviewer/chapters', [ReviewerChapterController::class, 'index'])->name('reviewer.index.chapter');
     Route::get('/reviewer/chapter/{id}', [ReviewerChapterController::class, 'show'])->name('reviewer.show.chapter');
     Route::put('/reviewer/chapter/{id}/approve', [ReviewerChapterController::class, 'approve'])->name('reviewer.approve.chapter');
+    Route::put('/reviewer/chapter/{id}/revisi', [ReviewerChapterController::class, 'revisi'])->name('reviewer.revisi.chapter');
     Route::get('/reviewer/history', [ReviewerHistoryController::class, 'index'])->name('reviewer.index.history');
 });
 

@@ -15,7 +15,8 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Histori</th>
+                                        <th>Aksi</th>
+                                        <th>Detail</th>
                                         <th>Tanggal</th>
                                     </tr>
                                 </thead>
@@ -23,6 +24,11 @@
                                     @foreach ($history as $key => $his)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>
+                                                @if($his->action)
+                                                    <span class="badge badge-info">{{ ucfirst(str_replace('_', ' ', $his->action)) }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{ $his->detail }}</td>
                                             <td>{{ \Carbon\Carbon::parse($his->created_at)->translatedFormat('l, d F Y') }}</td>
                                         </tr>

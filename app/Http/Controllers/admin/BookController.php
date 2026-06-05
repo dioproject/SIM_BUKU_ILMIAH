@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
+use App\Helpers\StatusHelper;
 
 class BookController extends Controller
 {
@@ -64,6 +65,8 @@ class BookController extends Controller
 
         if ($book) {
             Histori::create([
+                'user_id' => Auth::id(),
+                'action' => 'create_book',
                 'detail' => Auth::user()->username . ' tambah buku ' . $book->judul,
             ]);
             return redirect()->route('admin.index.book')->with('success', Auth::user()->username . ' tambah buku ' . $book->judul . ' sukses.');
@@ -85,10 +88,14 @@ class BookController extends Controller
             $newChapter = Bab::create([
                 'nama' => $bab,
                 'buku_id' => $book->id,
-                'status_id' => Status::findOrFail(2)->id,
+                'status_id' => Status::DRAFT,
             ]);
 
             Histori::create([
+                'user_id' => Auth::id(),
+                'bab_id' => $newChapter->id,
+                'status_id' => Status::DRAFT,
+                'action' => 'create_chapter',
                 'detail' => 'Tambah bab "' . $newChapter->nama . '" dari buku "' . $book->judul . '" oleh ' . Auth::user()->username,
             ]);
         }
@@ -114,6 +121,12 @@ class BookController extends Controller
         ]);
 
         $chapter = Bab::with(['buku'])->findOrFail($id);
+        
+        // Validate chapter can be assigned
+        if (!StatusHelper::canBeAssigned($chapter->status_id)) {
+            return redirect()->back()->with('error', 'Bab ini tidak dapat ditugaskan karena statusnya tidak sesuai.');
+        }
+        
         $author = User::where('user_role', 'AUTHOR')->findOrFail($request->author_id);
         $reviewerId = null;
 
@@ -125,15 +138,20 @@ class BookController extends Controller
         $chapter->update([
             'author_id' => $author->id,
             'reviewer_id' => $reviewerId,
-            'status_id' => Status::findOrFail(4)->id,
+            'status_id' => Status::DITUGASKAN,
         ]);
 
         Histori::create([
+            'user_id' => Auth::id(),
+            'bab_id' => $chapter->id,
+            'status_id' => Status::DITUGASKAN,
+            'action' => 'assign',
             'detail' => Auth::user()->username . ' menugaskan bab "' . $chapter->nama . '" kepada ' . $author->username,
         ]);
 
         Notifikasi::create([
             'user_id' => $author->id,
+            'bab_id' => $chapter->id,
             'data' => [
                 'chapter' => $chapter->nama,
                 'book' => $chapter->buku->judul,
@@ -144,6 +162,7 @@ class BookController extends Controller
         if ($reviewerId) {
             Notifikasi::create([
                 'user_id' => $reviewerId,
+                'bab_id' => $chapter->id,
                 'data' => [
                     'chapter' => $chapter->nama,
                     'book' => $chapter->buku->judul,
@@ -159,11 +178,20 @@ class BookController extends Controller
     {
         $book = Buku::findOrFail($id);
 
-        // Ambil semua chapter dengan status 'approved' dari buku
         $chapters = Bab::where('buku_id', $book->id)
-            ->where('status_id', 3) // Sesuaikan dengan field dan value yang tepat
+            ->where('status_id', Status::DISETUJUI)
             ->orderBy('created_at')
             ->get();
+
+        if ($chapters->count() < $book->total_bab) {
+            return redirect()->back()->with('error', 'Tidak dapat menggabungkan buku. Semua bab (' . $book->total_bab . ' bab) harus disetujui terlebih dahulu.');
+        }
+
+        // Validate all chapters are approved using StatusHelper
+        $chapterStatuses = $chapters->pluck('status_id')->toArray();
+        if (!StatusHelper::canBeMerged($chapterStatuses)) {
+            return redirect()->back()->with('error', 'Tidak dapat menggabungkan buku. Semua bab harus dalam status Disetujui.');
+        }
 
         // Buat objek PhpWord baru untuk dokumen yang digabung
         $phpWord = new PhpWord();

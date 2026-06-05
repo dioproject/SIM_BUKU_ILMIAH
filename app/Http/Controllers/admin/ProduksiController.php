@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Finalisasi;
 use App\Models\Produksi;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class ProduksiController extends Controller
@@ -27,9 +28,12 @@ class ProduksiController extends Controller
      */
     public function create()
     {
-        $finalisasis = Finalisasi::with(['buku'])->get();
-
-        // dd($finalisasis);
+        // Hanya tampilkan buku yang sudah finalisasi atau terbit
+        $finalisasis = Finalisasi::with(['buku'])
+            ->whereHas('buku', function ($query) {
+                $query->whereIn('status_id', [Status::FINALISASI, Status::TERBIT]);
+            })
+            ->get();
 
         return view('pages.admin.produksi.create', compact('finalisasis'));
     }
@@ -43,22 +47,23 @@ class ProduksiController extends Controller
     public function store(Request $request)
     {
         // Validasi data yang diterima dari form
-        $request->validate([
+        $validated = $request->validate([
             'final_id' => 'required|exists:finalisasis,id',
-            'eksemplar' => 'required|integer',
-            'biaya_produksi' => 'required|numeric',
-            'harga_jual' => 'required|numeric',
+            'eksemplar' => 'required|integer|min:1',
+            'biaya_produksi' => 'required|numeric|min:0',
+            'harga_jual' => 'required|numeric|min:0',
+            'tahun_terbit' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
         ]);
+
+        // Validasi: buku harus sudah finalisasi atau terbit
+        $final = Finalisasi::with('buku')->findOrFail($validated['final_id']);
+        if ($final->buku->status_id != Status::FINALISASI && $final->buku->status_id != Status::TERBIT) {
+            return back()->withErrors(['final_id' => 'Buku harus sudah finalisasi sebelum membuat data produksi.']);
+        }
 
         // Buat entri baru di tabel produksi
-        Produksi::create([
-            'final_id' => $request->final_id,
-            'eksemplar' => $request->eksemplar,
-            'biaya_produksi' => $request->biaya_produksi,
-            'harga_jual' => $request->harga_jual,
-        ]);
+        Produksi::create($validated);
 
-        // Redirect kembali ke halaman daftar produksi dengan pesan sukses
         return redirect()->route('admin.index.produksi')->with('success', 'Produksi berhasil ditambahkan.');
     }
 

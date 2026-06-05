@@ -15,6 +15,10 @@ class Status extends Model
     public const DITUGASKAN = 4;
     public const REVISI = 5;
     public const DALAM_REVIEW = 6;
+    public const DIKIRIM_AUTHOR = 7;
+    public const DIREVISI = 8;
+    public const FINALISASI = 9;
+    public const TERBIT = 10;
 
     /**
      * The attributes that are mass assignable.

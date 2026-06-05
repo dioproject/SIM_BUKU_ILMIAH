@@ -11,6 +11,7 @@ use App\Models\Notifikasi;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\StatusHelper;
 
 class ReviewerBookController extends Controller
 {
@@ -58,7 +59,7 @@ class ReviewerBookController extends Controller
 
         $review = Bab::findOrFail($id);
 
-        if ($review->reviewer_id !== Auth::id() || !$review->author_id || !$review->file_bab || $review->status_id === 3) {
+        if ($review->reviewer_id !== Auth::id() || !$review->author_id || !$review->file_bab || !StatusHelper::canBeReviewed($review->status_id)) {
             return redirect()->back()->with('error', 'Bab ini belum siap untuk direviu.');
         }
 
@@ -84,11 +85,16 @@ class ReviewerBookController extends Controller
                 }
 
                 Histori::create([
+                    'user_id' => Auth::id(),
+                    'bab_id' => $review->id,
+                    'status_id' => $review->status_id,
+                    'action' => 'upload_review',
                     'detail' => 'Reviewed chapter "' . $review->nama . '" for book "' . $review->buku->judul . '" by ' . Auth::user()->username,
                 ]);
 
                 Notifikasi::create([
                     'user_id' => $review->author_id,
+                    'bab_id' => $review->id,
                     'data' => [
                         'chapter' => $review->nama,
                         'status' => $review->status->option,

@@ -14,6 +14,10 @@ return new class extends Migration
             4 => 'Ditugaskan',
             5 => 'Revisi',
             6 => 'Dalam Review',
+            7 => 'Dikirim Author',
+            8 => 'Direvisi',
+            9 => 'Finalisasi',
+            10 => 'Terbit',
         ];
 
         foreach ($statuses as $id => $option) {
@@ -33,6 +37,10 @@ return new class extends Migration
             4 => 'Claimed',
             5 => 'Revisi',
             6 => 'Selected',
+            7 => 'Dikirim Author',
+            8 => 'Direvisi',
+            9 => 'Finalisasi',
+            10 => 'Terbit',
         ];
 
         foreach ($statuses as $id => $option) {

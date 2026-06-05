@@ -49,10 +49,12 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>Judul Buku</th>
+                                            <th>Author</th>
+                                            <th>Bab</th>
                                             <th>Penerbitan</th>
-                                            <th>Persentasse</th>
-                                            <th>Royalti</th>
-                                            {{-- <th>Action</th> --}}
+                                            <th>Persentase</th>
+                                            <th>Royalti/Bab</th>
+                                            <th>Total Royalti</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,18 +62,14 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $royalti->penerbitan->final->buku->judul ?? '' }}</td>
+                                                <td>{{ $royalti->user->username ?? '' }}</td>
+                                                <td>{{ $royalti->bab->nama ?? '' }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($royalti->created_at)->translatedFormat('F Y') }}
                                                 </td>
                                                 <td>{{ $royalti->persentase }} %</td>
+                                                <td>Rp. {{ number_format($royalti->royalti_bab, 0, ',', '.') }}</td>
                                                 <td>Rp. {{ number_format($royalti->total_royalti, 0, ',', '.') }}</td>
-                                                {{-- <td>
-                                                    <a class="btn btn-primary btn-action mr-1" data-toggle="tooltip"
-                                                        title="Edit"
-                                                        href="{{ route('admin.edit.royalti', $royalti->id) }}"><i
-                                                            class="fas fa-pencil-alt"></i>
-                                                    </a>
-                                                </td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>

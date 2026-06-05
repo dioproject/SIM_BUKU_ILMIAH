@@ -77,23 +77,20 @@
                                                     <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->file_bab)
-                                                            @if ($chapter->status->option == 'Available')
-                                                                <span
-                                                                    class="badge badge-primary">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Approve')
-                                                                <span
-                                                                    class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Selected')
-                                                                <span
-                                                                    class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Claimed')
-                                                                <span
-                                                                    class="badge badge-warning">Ditugaskan</span>
-                                                            @elseif($chapter->status->option == 'Pending')
-                                                                <span
-                                                                    class="badge badge-secondary">{{ $chapter->status->option }}</span>
-                                                            @endif
+                                                        @if ($chapter->status->option == 'Tersedia')
+                                                            <span class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Disetujui')
+                                                            <span class="badge badge-success">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Draft')
+                                                            <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Ditugaskan')
+                                                            <span class="badge badge-info">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Revisi')
+                                                            <span class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                        @elseif($chapter->status->option == 'Dalam Review')
+                                                            <span class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                                        @else
+                                                            <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
                                                         @endif
                                                     </td>
                                                 </tr>

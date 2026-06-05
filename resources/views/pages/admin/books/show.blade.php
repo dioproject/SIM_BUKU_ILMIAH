@@ -66,21 +66,20 @@
                                                         <td>{{ $bab->author->username ?? '' }}</td>
                                                         <td>{{ $bab->reviewer->username ?? '' }}</td>
                                                         <td>
-                                                            @if ($bab->status->option == 'Available')
-                                                                <span
-                                                                    class="badge badge-primary">{{ $bab->status->option }}</span>
-                                                            @elseif($bab->status->option == 'Approve')
-                                                                <span
-                                                                    class="badge badge-success">{{ $bab->status->option }}</span>
-                                                            @elseif($bab->status->option == 'Selected')
-                                                                <span
-                                                                    class="badge badge-danger">{{ $bab->status->option }}</span>
-                                                            @elseif($bab->status->option == 'Claimed')
-                                                                <span
-                                                                    class="badge badge-warning">Ditugaskan</span>
-                                                            @elseif($bab->status->option == 'Pending')
-                                                                <span
-                                                                    class="badge badge-secondary">{{ $bab->status->option }}</span>
+                                                            @if ($bab->status->option == 'Tersedia')
+                                                                <span class="badge badge-primary">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Disetujui')
+                                                                <span class="badge badge-success">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Draft')
+                                                                <span class="badge badge-secondary">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Ditugaskan')
+                                                                <span class="badge badge-info">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Revisi')
+                                                                <span class="badge badge-warning">{{ $bab->status->option }}</span>
+                                                            @elseif($bab->status->option == 'Dalam Review')
+                                                                <span class="badge badge-primary">{{ $bab->status->option }}</span>
+                                                            @else
+                                                                <span class="badge badge-secondary">{{ $bab->status->option }}</span>
                                                             @endif
                                                         </td>
                                                         <td>

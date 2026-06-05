@@ -57,7 +57,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-between col-md-12 py-1">
                                                     <small>Reviewer: {{ $bab->reviewer->username }}</small>
-                                                    @if ($bab->status->option != 'Pending')
+                                                    @if ($bab->status->option != 'Ditugaskan')
                                                         <small>Reviewed:
                                                             {{ \Carbon\Carbon::parse($bab->updated_at)->translatedFormat('l, d F Y') }}
                                                         </small>

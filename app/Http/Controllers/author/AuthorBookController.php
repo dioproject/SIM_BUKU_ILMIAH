@@ -12,6 +12,7 @@ use App\Models\Status;
 use App\Models\Notifikasi;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\StatusHelper;
 
 class AuthorBookController extends Controller
 {
@@ -51,18 +52,6 @@ class AuthorBookController extends Controller
         return view('pages.author.books.show', compact('buku', 'babs'));
     }
 
-    public function submit($id)
-    {
-        $chapter = Bab::findOrFail($id);
-        $chapter->update([
-            'status_id' => Status::findOrFail(2)->id,
-            'author_id' => Auth::id(),
-            'created_at' => now()
-        ]);
-
-        return redirect()->route('author.show.book', $chapter->book_id);
-    }
-
     public function upload(Request $request, $id)
     {
         $request->validate([
@@ -71,8 +60,8 @@ class AuthorBookController extends Controller
 
         $chapter = Bab::findOrFail($id);
 
-        if ($chapter->author_id !== Auth::id() || $chapter->status_id !== 4) {
-            return redirect()->back()->with('error', 'Anda hanya bisa mengunggah bab yang sudah Anda klaim.');
+        if ($chapter->author_id !== Auth::id() || !StatusHelper::canBeUploadedByAuthor($chapter->status_id)) {
+            return redirect()->back()->with('error', 'Anda hanya bisa mengunggah bab yang ditugaskan kepada Anda atau perlu direvisi.');
         }
 
         $oldFile = $chapter->file_bab;
@@ -88,6 +77,7 @@ class AuthorBookController extends Controller
                 $chapter->update([
                     'file_bab' => $fileName,
                     'author_id' => Auth::id(),
+                    'status_id' => Status::DIKIRIM_AUTHOR,
                     'uploaded_at' => now(),
                 ]);
 
@@ -96,6 +86,10 @@ class AuthorBookController extends Controller
                 }
 
                 Histori::create([
+                    'user_id' => Auth::id(),
+                    'bab_id' => $chapter->id,
+                    'status_id' => Status::DIKIRIM_AUTHOR,
+                    'action' => 'upload',
                     'detail' => 'Mengunggah bab "' . $chapter->nama . '" dari buku "' . $chapter->buku->judul . '" oleh ' . Auth::user()->username,
                 ]);
 
@@ -111,6 +105,7 @@ class AuthorBookController extends Controller
                 foreach ($users->filter() as $user) {
                     Notifikasi::create([
                         'user_id' => $user->id,
+                        'bab_id' => $chapter->id,
                         'data' => [
                             'chapter' => $chapter->nama,
                             'uploaded_by' => Auth::user()->username,

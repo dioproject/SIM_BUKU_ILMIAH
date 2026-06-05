@@ -77,32 +77,35 @@
                                                     </td>
                                                     <td>
                                                         @if ($chapter->file_bab)
-                                                            @if ($chapter->status->option == 'Available')
-                                                                <span
-                                                                    class="badge badge-primary">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Approve')
-                                                                <span
-                                                                    class="badge badge-success">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Selected')
-                                                                <span
-                                                                    class="badge badge-danger">{{ $chapter->status->option }}</span>
-                                                            @elseif($chapter->status->option == 'Claimed')
-                                                                <span
-                                                                    class="badge badge-warning">Ditugaskan</span>
-                                                            @elseif($chapter->status->option == 'Pending')
-                                                                <span
-                                                                    class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                                            @if ($chapter->status->option == 'Draft')
+                                                                <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Tersedia')
+                                                                <span class="badge badge-primary">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Ditugaskan')
+                                                                <span class="badge badge-info">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Dikirim Author')
+                                                                <span class="badge badge-info">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Dalam Review')
+                                                                <span class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Revisi')
+                                                                <span class="badge badge-danger">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Direvisi')
+                                                                <span class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                            @elseif($chapter->status->option == 'Disetujui')
+                                                                <span class="badge badge-success">{{ $chapter->status->option }}</span>
+                                                            @else
+                                                                <span class="badge badge-secondary">{{ $chapter->status->option }}</span>
                                                             @endif
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($chapter->status->option !== 'Approve' && $chapter->author_id !== null && $chapter->file_bab && $chapter->file_revieu)
+                                                        @if ($chapter->status->option !== 'Disetujui' && $chapter->author_id !== null && $chapter->file_bab && $chapter->file_revieu)
                                                             <form action="{{ route('reviewer.approve.chapter', $chapter->id) }}"
                                                                 method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="btn btn-success btn-action mr-1"
-                                                                    title="Approve" data-toggle="tooltip">
+                                                                    title="Setujui" data-toggle="tooltip">
                                                                     <i class="fas fa-check"></i>
                                                                 </button>
                                                             </form>

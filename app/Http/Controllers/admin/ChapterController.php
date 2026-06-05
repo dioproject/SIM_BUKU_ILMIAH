@@ -36,16 +36,15 @@ class ChapterController extends Controller
 
     public function destroy($id)
     {
-        $category = Bab::findOrFail($id);
-        $category->delete();
+        $chapter = Bab::findOrFail($id);
+        $chapter->delete();
 
-        if ($category) {
+        if ($chapter) {
             Histori::create([
-                'change_detail' => Auth::user()->first_name . ' deleted category ' . $category->name . ' successfully.',
-                'user_id' => Auth::id(),
+                'detail' => Auth::user()->username . ' menghapus bab "' . $chapter->nama . '" berhasil.',
             ]);
-            return redirect()->route('admin.index.category');
+            return redirect()->route('admin.index.chapter');
         }
-        return redirect()->route('admin.index.category');
+        return redirect()->route('admin.index.chapter');
     }
 }

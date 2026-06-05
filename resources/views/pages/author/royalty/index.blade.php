@@ -43,8 +43,8 @@
                                         @foreach ($royalty as $key => $royal)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $royal->book->manuscript->title }}</td>
-                                                <td>{{ $royal->book->manuscript->author->first_name }}</td>
+                                                <td>{{ $royal->buku->judul ?? '' }}</td>
+                                                <td>{{ $royal->author->username ?? '' }}</td>
                                                 <td>{{ $royal->amount }}</td>
                                                 <td>{{ $royal->status->option }}</td>
                                             </tr>
