@@ -16,8 +16,18 @@ class ProduksiController extends Controller
      */
     public function index()
     {
-        $produksis = Produksi::paginate(10);
-        return view('pages.admin.produksi.index', compact('produksis'));
+        $search = request('search');
+
+        $produksis = Produksi::with('final.buku')
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('final.buku', function ($bookQuery) use ($search) {
+                    $bookQuery->where('judul', 'like', '%' . $search . '%');
+                });
+            })
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
+        return view('pages.admin.produksi.index', compact('produksis', 'search'));
     }
 
     /**

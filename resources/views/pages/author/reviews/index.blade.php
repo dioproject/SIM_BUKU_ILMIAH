@@ -36,7 +36,7 @@
                             <x-admin.table :headers="['No', 'Judul Bab', 'Penulis', 'Ulasan', 'Terakhir Diubah']">
                                 @foreach ($reviews as $key => $rev)
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $reviews->firstItem() + $key }}</td>
                                         <td>{{ $rev->bab->buku->judul ?? ($rev->bab->nama ?? 'Buku tidak ditemukan.') }}</td>
                                         <td>{{ $rev->bab->author->name ?? ($rev->bab->author->username ?? 'Pengguna tidak ditemukan.') }}</td>
                                         <td>{{ $rev->content }}</td>

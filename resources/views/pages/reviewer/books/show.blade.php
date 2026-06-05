@@ -13,10 +13,24 @@
         </div>
         <div class="section-body">
             <x-flash-message />
+
+            @php
+                $chapterSearchAction = '
+                    <form action="' . route('reviewer.show.book', $buku->id) . '" method="GET" class="form-inline justify-content-end">
+                        <div class="input-group">
+                            <input type="text" name="chapter_search" class="form-control" placeholder="Cari bab..." value="' . e($chapterSearch ?? '') . '">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>';
+            @endphp
             
             <div class="row">
                 <div class="col-12">
-                    <x-admin.card title="Daftar Bab" icon="list">
+                    <x-admin.card title="Daftar Bab" icon="list" :action="$chapterSearchAction">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered">
                                 <thead>
@@ -29,9 +43,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($babs as $key => $bab)
+                                    @forelse ($babs as $key => $bab)
                                         <tr>
-                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $babs->firstItem() + $key }}</td>
                                             <td><strong>{{ $bab->nama }}</strong></td>
                                             <td>
                                                 @if($bab->author)
@@ -52,10 +66,15 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">Tidak ada bab yang cocok.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
+                        <x-admin.pagination :paginator="$babs" />
                     </x-admin.card>
                 </div>
             </div>

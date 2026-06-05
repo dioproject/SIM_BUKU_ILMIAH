@@ -29,6 +29,8 @@ class AuthorBookController extends Controller
         } else {
             $books = $booksQuery->paginate(10);
         }
+        $books->appends(['search' => $search]);
+
         $chapters = Bab::where('author_id', Auth::id())->get();
         $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
             $filledChaptersCount = $chapters->where('buku_id', $book->id)->whereNotNull('nama')->count();
@@ -39,17 +41,27 @@ class AuthorBookController extends Controller
         return view('pages.author.books.index', compact('books', 'search', 'chapters'));
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $chapterSearch = $request->input('chapter_search');
         $buku = Buku::whereHas('bab', function ($query) {
             $query->where('author_id', Auth::id());
         })->findOrFail($id);
         $babs = Bab::with(['author', 'reviewer', 'buku', 'status'])
             ->where('buku_id', $buku->id)
             ->where('author_id', Auth::id())
-            ->get();
+            ->when($chapterSearch, function ($query) use ($chapterSearch) {
+                $query->where(function ($subQuery) use ($chapterSearch) {
+                    $subQuery->where('nama', 'like', '%' . $chapterSearch . '%')
+                        ->orWhereHas('status', function ($statusQuery) use ($chapterSearch) {
+                            $statusQuery->where('option', 'like', '%' . $chapterSearch . '%');
+                        });
+                });
+            })
+            ->paginate(10)
+            ->appends(['chapter_search' => $chapterSearch]);
 
-        return view('pages.author.books.show', compact('buku', 'babs'));
+        return view('pages.author.books.show', compact('buku', 'babs', 'chapterSearch'));
     }
 
     public function upload(Request $request, $id)

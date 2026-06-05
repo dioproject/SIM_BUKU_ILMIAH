@@ -12,11 +12,27 @@ use Illuminate\Http\Request;
 
 class RoyaltyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $royalties = Royalti::with(['penerbitan.final.buku', 'user', 'bab'])->paginate(10);
+        $search = $request->input('search');
 
-        return view('pages.admin.royalty.index', compact('royalties'));
+        $royalties = Royalti::with(['penerbitan.final.buku', 'user', 'bab'])
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('penerbitan.final.buku', function ($bookQuery) use ($search) {
+                    $bookQuery->where('judul', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('username', 'like', '%' . $search . '%')
+                        ->orWhere('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('bab', function ($chapterQuery) use ($search) {
+                    $chapterQuery->where('nama', 'like', '%' . $search . '%');
+                });
+            })
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
+        return view('pages.admin.royalty.index', compact('royalties', 'search'));
     }
 
     public function create()

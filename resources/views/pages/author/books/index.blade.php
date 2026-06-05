@@ -32,7 +32,7 @@
                     <x-admin.table :headers="['No.', 'Judul Buku', 'Template', 'Total Bab', 'Aksi']">
                         @foreach ($books as $key => $book)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $books->firstItem() + $key }}</td>
                                 <td>{{ $book->judul ?? '' }}</td>
                                 <td>
                                     <a href="{{ Storage::url('upload/books/' . $book->template) }}" download="{{ $book->template }}">{{ $book->template }}</a>

@@ -27,6 +27,7 @@ class ChapterController extends Controller
         } else {
             $chapters = Bab::with(['buku', 'status', 'author', 'reviewer'])->paginate(10);
         }
+        $chapters->appends(['search' => $search]);
 
         return view('pages.admin.chapters.index', compact('chapters', 'search'));
     }

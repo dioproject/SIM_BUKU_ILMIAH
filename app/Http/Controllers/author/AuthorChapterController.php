@@ -28,6 +28,7 @@ class AuthorChapterController extends Controller
         } else {
             $chapters = $chaptersQuery->paginate(10);
         }
+        $chapters->appends(['search' => $search]);
 
         return view('pages.author.chapters.index', compact('chapters', 'search'));
     }

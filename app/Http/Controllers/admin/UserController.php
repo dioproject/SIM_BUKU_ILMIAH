@@ -19,7 +19,9 @@ class UserController extends Controller
         } else {
             $users = User::paginate(5);
         }
-        return view('pages.admin.users.index', compact('users'));
+        $users->appends(['search' => $search]);
+
+        return view('pages.admin.users.index', compact('users', 'search'));
     }
 
     public function create()

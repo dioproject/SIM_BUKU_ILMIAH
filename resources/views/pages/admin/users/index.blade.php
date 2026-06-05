@@ -46,7 +46,7 @@
                                     <tbody>
                                         @foreach ($users as $key => $user)
                                             <tr>
-                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $users->firstItem() + $key }}</td>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->user_role }}</td>
                                                 <td>{{ $user->created_at }}</td>
@@ -68,38 +68,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer">
-                                <nav aria-label="...">
-                                    <ul class="pagination justify-content-center">
-                                        @if ($users->onFirstPage())
-                                            <li class="page-item disabled">
-                                                <span class="page-link">Sebelumnya</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $users->previousPageUrl() }}"
-                                                    tabindex="-1">Sebelumnya</a>
-                                            </li>
-                                        @endif
-
-                                        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-                                            <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
-                                        @endforeach
-
-                                        @if ($users->hasMorePages())
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $users->nextPageUrl() }}">Selanjutnya</a>
-                                            </li>
-                                        @else
-                                            <li class="page-item disabled">
-                                                <span class="page-link">Selanjutnya</span>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </nav>
-                            </div>
+                            <x-admin.pagination :paginator="$users" />
                         </x-admin.card>
                     </div>
                 </div>

@@ -28,6 +28,8 @@ class ReviewerBookController extends Controller
         } else {
             $books = $booksQuery->paginate(10);
         }
+        $books->appends(['search' => $search]);
+
         $chapters = Bab::where('reviewer_id', Auth::id())->get();
         $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
             $filledChaptersCount = $chapters->where('buku_id', $book->id)->whereNotNull('nama')->count();
@@ -38,17 +40,31 @@ class ReviewerBookController extends Controller
         return view('pages.reviewer.books.index', compact('books', 'search', 'chapters'));
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $chapterSearch = $request->input('chapter_search');
         $buku = Buku::whereHas('bab', function ($query) {
             $query->where('reviewer_id', Auth::id());
         })->findOrFail($id);
         $babs = Bab::with(['author', 'buku', 'status'])
             ->where('buku_id', $buku->id)
             ->where('reviewer_id', Auth::id())
-            ->get();
+            ->when($chapterSearch, function ($query) use ($chapterSearch) {
+                $query->where(function ($subQuery) use ($chapterSearch) {
+                    $subQuery->where('nama', 'like', '%' . $chapterSearch . '%')
+                        ->orWhereHas('author', function ($authorQuery) use ($chapterSearch) {
+                            $authorQuery->where('username', 'like', '%' . $chapterSearch . '%')
+                                ->orWhere('name', 'like', '%' . $chapterSearch . '%');
+                        })
+                        ->orWhereHas('status', function ($statusQuery) use ($chapterSearch) {
+                            $statusQuery->where('option', 'like', '%' . $chapterSearch . '%');
+                        });
+                });
+            })
+            ->paginate(10)
+            ->appends(['chapter_search' => $chapterSearch]);
 
-        return view('pages.reviewer.books.show', compact('buku', 'babs'));
+        return view('pages.reviewer.books.show', compact('buku', 'babs', 'chapterSearch'));
     }
 
     public function upload(Request $request, $id)

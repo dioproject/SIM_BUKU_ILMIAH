@@ -64,9 +64,17 @@
         
         @php
             $totalBab = (int) $buku->total_bab;
-            $currentBabCount = $babs->count();
-            $assignedCount = $babs->where('author_id', '!=', null)->count();
-            $approvedCount = $babs->where('status_id', \App\Models\Status::DISETUJUI)->count();
+            $chapterSearchAction = '
+                <form action="' . route('admin.show.book', $buku->id) . '" method="GET" class="form-inline justify-content-end">
+                    <div class="input-group">
+                        <input type="text" name="chapter_search" class="form-control" placeholder="Cari bab..." value="' . e($chapterSearch ?? '') . '">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>';
         @endphp
         
         <div class="section-body">
@@ -102,7 +110,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <x-admin.card title="Daftar Bab" icon="list">
+                    <x-admin.card title="Daftar Bab" icon="list" :action="$chapterSearchAction">
                         @if ($currentBabCount < $totalBab)
                             <form action="{{ route('admin.store.chapter', $buku->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
@@ -143,9 +151,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($babs as $key => $bab)
+                                        @forelse ($babs as $key => $bab)
                                             <tr>
-                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $babs->firstItem() + $key }}</td>
                                                 <td>
                                                     <strong>{{ $bab->nama }}</strong>
                                                 </td>
@@ -182,10 +190,15 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center text-muted">Tidak ada bab yang cocok.</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
+                            <x-admin.pagination :paginator="$babs" />
                             
                             <!-- Progress Info -->
                             <div class="row mt-3">

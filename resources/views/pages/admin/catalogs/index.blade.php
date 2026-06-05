@@ -46,7 +46,7 @@
                                         }
                                     @endphp
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $catalogs->firstItem() + $key }}</td>
                                         <td>{{ $catalog->judul ?: ($catalog->final?->buku?->judul ?? '-') }}</td>
                                         <td>{{ $catalog->pengarang ?: ($fallbackAuthors ?: '-') }}</td>
                                         <td>{{ $catalog->isbn ?: ($catalog->final?->isbn ?? '-') }}</td>

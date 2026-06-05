@@ -31,6 +31,7 @@ class BookController extends Controller
         } else {
             $books = Buku::paginate(10);
         }
+        $books->appends(['search' => $search]);
 
         return view('pages.admin.books.index', compact('books', 'search'));
     }
@@ -103,14 +104,38 @@ class BookController extends Controller
         return redirect()->route('admin.show.book', $book->id)->with('success', 'Berhasil menyimpan bab.');
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $buku = Buku::findOrFail($id);
-        $babs = Bab::with(['author', 'reviewer', 'buku', 'status'])->where('buku_id', $buku->id)->get();
+        $chapterSearch = $request->input('chapter_search');
+        $chapterStats = Bab::where('buku_id', $buku->id);
+        $currentBabCount = (clone $chapterStats)->count();
+        $assignedCount = (clone $chapterStats)->whereNotNull('author_id')->count();
+        $approvedCount = (clone $chapterStats)->where('status_id', Status::DISETUJUI)->count();
+        $babs = Bab::with(['author', 'reviewer', 'buku', 'status'])
+            ->where('buku_id', $buku->id)
+            ->when($chapterSearch, function ($query) use ($chapterSearch) {
+                $query->where(function ($subQuery) use ($chapterSearch) {
+                    $subQuery->where('nama', 'like', '%' . $chapterSearch . '%')
+                        ->orWhereHas('author', function ($authorQuery) use ($chapterSearch) {
+                            $authorQuery->where('username', 'like', '%' . $chapterSearch . '%')
+                                ->orWhere('name', 'like', '%' . $chapterSearch . '%');
+                        })
+                        ->orWhereHas('reviewer', function ($reviewerQuery) use ($chapterSearch) {
+                            $reviewerQuery->where('username', 'like', '%' . $chapterSearch . '%')
+                                ->orWhere('name', 'like', '%' . $chapterSearch . '%');
+                        })
+                        ->orWhereHas('status', function ($statusQuery) use ($chapterSearch) {
+                            $statusQuery->where('option', 'like', '%' . $chapterSearch . '%');
+                        });
+                });
+            })
+            ->paginate(10)
+            ->appends(['chapter_search' => $chapterSearch]);
         $authors = User::where('user_role', 'AUTHOR')->orderBy('username')->get();
         $reviewers = User::where('user_role', 'REVIEWER')->orderBy('username')->get();
 
-        return view('pages.admin.books.show', compact('buku', 'babs', 'authors', 'reviewers'));
+        return view('pages.admin.books.show', compact('buku', 'babs', 'authors', 'reviewers', 'chapterSearch', 'currentBabCount', 'assignedCount', 'approvedCount'));
     }
 
     public function assignChapter(Request $request, $id)

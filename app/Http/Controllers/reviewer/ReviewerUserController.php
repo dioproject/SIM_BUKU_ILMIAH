@@ -21,6 +21,7 @@ class ReviewerUserController extends Controller
         }
 
         $users = $query->paginate(10);
+        $users->appends(['search' => $search]);
 
         return view('pages.reviewer.users.index', compact('users', 'search'));
     }

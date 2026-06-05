@@ -36,7 +36,7 @@
                             <x-admin.table :headers="['No', 'Nama', 'Peran', 'Dibuat Pada']">
                                 @foreach ($users as $key => $user)
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $users->firstItem() + $key }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->user_role }}</td>
                                         <td>{{ $user->created_at }}</td>

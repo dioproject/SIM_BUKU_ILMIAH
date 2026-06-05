@@ -32,6 +32,7 @@ class ReviewerChapterController extends Controller
         } else {
             $chapters = $chaptersQuery->paginate(10);
         }
+        $chapters->appends(['search' => $search]);
 
         return view('pages.reviewer.chapters.index', compact('chapters', 'search'));
     }

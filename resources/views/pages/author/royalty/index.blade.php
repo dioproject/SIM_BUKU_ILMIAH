@@ -45,7 +45,7 @@
                                 <x-admin.table :headers="['No', 'Judul Buku', 'Penulis', 'Royalti', 'Status']">
                                     @foreach ($royalty as $key => $royal)
                                         <tr>
-                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $royalty->firstItem() + $key }}</td>
                                             <td>
                                                 <strong>{{ $royal->buku->judul ?? '-' }}</strong>
                                             </td>

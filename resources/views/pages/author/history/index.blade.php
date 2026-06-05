@@ -22,12 +22,25 @@
 
             <div class="row">
                 <div class="col-12">
-                    <x-admin.card title="Histori Aktivitas" icon="clock">
+                    @php
+                        $action = '<div class="d-flex align-items-center flex-wrap justify-content-end w-100">
+                            <form method="GET" action="' . route('author.index.history') . '" class="mb-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search"
+                                        value="' . e($search ?? '') . '" placeholder="Cari histori...">
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>';
+                    @endphp
+                    <x-admin.card :action="$action">
                         @if($history->count() > 0)
                             <x-admin.table :headers="['No', 'Aksi', 'Detail', 'Tanggal']">
                                 @foreach ($history as $key => $his)
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $history->firstItem() + $key }}</td>
                                         <td>
                                             @if($his->action)
                                                 @php

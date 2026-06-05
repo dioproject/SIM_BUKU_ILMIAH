@@ -39,7 +39,7 @@
                                 <x-admin.table :headers="['No', 'Judul Buku', 'Penulis', 'Bab', 'Tanggal Dibuat', 'Status', 'Aksi']">
                                     @foreach ($chapters as $key => $chapter)
                                         <tr>
-                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $chapters->firstItem() + $key }}</td>
                                             <td>
                                                 <a href="{{ route('reviewer.show.book', $chapter->buku->id) }}">
                                                     {{ $chapter->buku->judul }}

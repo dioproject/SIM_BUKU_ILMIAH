@@ -9,10 +9,21 @@ use Illuminate\Support\Facades\Storage;
 
 class FinalisasiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $finalisasis = Finalisasi::paginate(10);
-        return view('pages.admin.finalisasi.index', compact('finalisasis'));
+        $search = $request->input('search');
+
+        $finalisasis = Finalisasi::with('buku')
+            ->when($search, function ($query) use ($search) {
+                $query->where('isbn', 'like', '%' . $search . '%')
+                    ->orWhereHas('buku', function ($bookQuery) use ($search) {
+                        $bookQuery->where('judul', 'like', '%' . $search . '%');
+                    });
+            })
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
+        return view('pages.admin.finalisasi.index', compact('finalisasis', 'search'));
     }
 
     public function edit($id)
