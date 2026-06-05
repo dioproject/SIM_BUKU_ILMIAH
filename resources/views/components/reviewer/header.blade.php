@@ -18,8 +18,10 @@
                                 <i class="fas fa-info-circle"></i>
                             </div>
                             <div class="dropdown-item-desc">
-                                {{ $notification->data['chapter'] }} uploaded by
-                                {{ $notification->data['uploaded_by'] }}
+                                {{ $notification->data['chapter'] ?? 'Bab' }} 
+                                @if(isset($notification->data['uploaded_by']))
+                                    uploaded by {{ $notification->data['uploaded_by'] }}
+                                @endif
                                 <div class="time">{{ $notification->created_at->diffForHumans() }}</div>
                             </div>
                         </div>
