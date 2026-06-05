@@ -177,7 +177,7 @@
                             @else
                                 <div class="alert alert-secondary mb-0">
                                     <i class="fas fa-info-circle"></i>
-                                    Status: {{ $bab->status->option }}
+                                    Status: {{ $bab->status->option ?? 'Belum Ada Status' }}
                                 </div>
                             @endif
                         </div>

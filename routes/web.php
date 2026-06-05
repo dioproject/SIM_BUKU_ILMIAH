@@ -60,6 +60,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
     Route::get('/admin/chapters', [ChapterController::class, 'index'])->name('admin.index.chapter');
     Route::get('/admin/chapter/{id}', [ChapterController::class, 'show'])->name('admin.show.chapter');
+    Route::put('/admin/chapter/{id}/approve', [ChapterController::class, 'approve'])->name('admin.approve.chapter');
     Route::get('/admin/finalisasi', [FinalisasiController::class, 'index'])->name('admin.index.finalisasi');
     Route::get('/admin/edit/finalisasi/{id}', [FinalisasiController::class, 'edit'])->name('admin.edit.finalisasi');
     Route::put('/admin/edit/finalisasi/{id}', [FinalisasiController::class, 'update'])->name('admin.update.finalisasi');

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bab;
+use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Helpers\StatusHelper;
 use App\Models\Histori;
 use App\Models\User;
 
@@ -35,6 +37,34 @@ class ChapterController extends Controller
         $authors = User::where('user_role', 'AUTHOR')->orderBy('username')->get();
         $reviewers = User::where('user_role', 'REVIEWER')->orderBy('username')->get();
         return view('pages.admin.chapters.show', compact('bab', 'authors', 'reviewers'));
+    }
+
+    public function approve($id)
+    {
+        $chapter = Bab::with(['buku', 'status'])->findOrFail($id);
+
+        if (!$chapter->status_id || !StatusHelper::canBeApproved($chapter->status_id)) {
+            return redirect()->back()->with('error', 'Bab ini belum siap untuk disetujui.');
+        }
+
+        if (!$chapter->file_bab) {
+            return redirect()->back()->with('error', 'Bab harus memiliki file naskah sebelum disetujui.');
+        }
+
+        $chapter->update([
+            'status_id' => Status::DISETUJUI,
+            'approved_at' => now(),
+        ]);
+
+        Histori::create([
+            'user_id' => Auth::id(),
+            'bab_id' => $chapter->id,
+            'status_id' => Status::DISETUJUI,
+            'action' => 'approve',
+            'detail' => Auth::user()->username . ' menyetujui bab "' . $chapter->nama . '" dari buku "' . $chapter->buku->judul . '"',
+        ]);
+
+        return redirect()->back()->with('success', 'Bab berhasil disetujui.');
     }
 
     public function destroy($id)

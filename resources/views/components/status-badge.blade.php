@@ -1,7 +1,10 @@
 @props(['status'])
 
 @php
-    $badgeClass = match($status->id) {
+    $statusId = $status->id ?? null;
+    $statusLabel = $status->option ?? 'Belum Ada Status';
+
+    $badgeClass = match($statusId) {
         \App\Models\Status::DRAFT => 'badge-secondary',
         \App\Models\Status::TERSEDIA => 'badge-primary',
         \App\Models\Status::DISETUJUI => 'badge-success',
@@ -15,7 +18,7 @@
         default => 'badge-secondary'
     };
 
-    $icon = match($status->id) {
+    $icon = match($statusId) {
         \App\Models\Status::DRAFT => 'file',
         \App\Models\Status::TERSEDIA => 'check-circle',
         \App\Models\Status::DISETUJUI => 'check-double',
@@ -32,5 +35,5 @@
 
 <span class="badge {{ $badgeClass }}">
     <i class="fas fa-{{ $icon }}"></i>
-    {{ $status->option }}
+    {{ $statusLabel }}
 </span>
