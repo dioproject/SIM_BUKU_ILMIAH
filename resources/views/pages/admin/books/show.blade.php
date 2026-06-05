@@ -203,9 +203,12 @@
                                 </div>
                                 <div class="col-md-6 text-right">
                                     @if($approvedCount == $totalBab)
-                                        <a href="{{ route('admin.merge.book', $buku->id) }}" class="btn btn-primary">
-                                            <i class="fas fa-object-group"></i> Gabungkan Bab
-                                        </a>
+                                        <form action="{{ route('admin.merge.bab', $buku->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-object-group"></i> Gabungkan Bab
+                                            </button>
+                                        </form>
                                     @else
                                         <span class="text-muted">
                                             <i class="fas fa-info-circle"></i> 
