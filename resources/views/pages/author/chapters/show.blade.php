@@ -96,26 +96,6 @@
                                             </form>
                                         </li>
                                     @endif
-                                    @if ($bab->status_id === 2)
-                                        <li class="list-group-item">
-                                            <form action="{{ route('author.claimed.chapter', $bab->id) }}" method="POST"
-                                                enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="row">
-                                                    <div class="col-md-10">
-                                                        <input type="file" name="file_bab" class="form-control-file"
-                                                            accept=".jpg,.jpeg,.png" required>
-                                                    </div>
-                                                    <div class="col-md-2 text-right">
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <i class="fas fa-upload"></i> Klaim
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </li>
-                                    @endif
                                 </ul>
                             </div>
                         </div>

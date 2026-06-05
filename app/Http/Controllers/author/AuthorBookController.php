@@ -18,12 +18,17 @@ class AuthorBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+
+        $booksQuery = Buku::whereHas('bab', function ($query) {
+            $query->where('author_id', Auth::id());
+        });
+
         if ($search) {
-            $books = Buku::where('judul', 'like',  '%' . $search . '%')->paginate(10);
+            $books = $booksQuery->where('judul', 'like',  '%' . $search . '%')->paginate(10);
         } else {
-            $books = Buku::paginate(10);
+            $books = $booksQuery->paginate(10);
         }
-        $chapters = Bab::all();
+        $chapters = Bab::where('author_id', Auth::id())->get();
         $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
             $filledChaptersCount = $chapters->where('buku_id', $book->id)->whereNotNull('nama')->count();
             $book->filledChaptersCount = $filledChaptersCount;
@@ -35,8 +40,13 @@ class AuthorBookController extends Controller
 
     public function show($id)
     {
-        $buku = Buku::findOrFail($id);
-        $babs = Bab::with(['author', 'buku', 'status'])->where('buku_id', $buku->id)->get();
+        $buku = Buku::whereHas('bab', function ($query) {
+            $query->where('author_id', Auth::id());
+        })->findOrFail($id);
+        $babs = Bab::with(['author', 'reviewer', 'buku', 'status'])
+            ->where('buku_id', $buku->id)
+            ->where('author_id', Auth::id())
+            ->get();
 
         return view('pages.author.books.show', compact('buku', 'babs'));
     }
@@ -89,9 +99,16 @@ class AuthorBookController extends Controller
                     'detail' => 'Mengunggah bab "' . $chapter->nama . '" dari buku "' . $chapter->buku->judul . '" oleh ' . Auth::user()->username,
                 ]);
 
-                $users = User::whereIn('user_role', ['REVIEWER', 'ADMIN'])->get();
+                $users = User::where('user_role', 'ADMIN')->get();
 
-                foreach ($users as $user) {
+                if ($chapter->reviewer_id) {
+                    $reviewer = User::find($chapter->reviewer_id);
+                    if ($reviewer) {
+                        $users->push($reviewer);
+                    }
+                }
+
+                foreach ($users->filter() as $user) {
                     Notifikasi::create([
                         'user_id' => $user->id,
                         'data' => [

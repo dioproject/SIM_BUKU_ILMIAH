@@ -19,10 +19,10 @@ class ChapterController extends Controller
                 ->orWhereHas('buku', function ($query) use ($search) {
                     $query->where('judul', 'like', '%' . $search . '%');
                 })
-                ->with(['buku', 'status'])
+                ->with(['buku', 'status', 'author', 'reviewer'])
                 ->paginate(10);
         } else {
-            $chapters = Bab::with(['buku', 'status'])->paginate(10);
+            $chapters = Bab::with(['buku', 'status', 'author', 'reviewer'])->paginate(10);
         }
 
         return view('pages.admin.chapters.index', compact('chapters', 'search'));
@@ -30,7 +30,7 @@ class ChapterController extends Controller
 
     public function show($id)
     {
-        $bab = Bab::findOrFail($id);
+        $bab = Bab::with(['author', 'reviewer', 'buku', 'status'])->findOrFail($id);
         return view('pages.admin.chapters.show', compact('bab'));
     }
 

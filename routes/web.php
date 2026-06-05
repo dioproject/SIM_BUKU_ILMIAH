@@ -54,6 +54,7 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/create/book', [BookController::class, 'create'])->name('admin.create.book');
     Route::post('/admin/create/book', [BookController::class, 'store'])->name('admin.store.book');
     Route::post('/admin/chapter/{id}', [BookController::class, 'storeChapter'])->name('admin.store.chapter');
+    Route::put('/admin/chapter/{id}/assign', [BookController::class, 'assignChapter'])->name('admin.assign.chapter');
     Route::get('/admin/book/{id}', [BookController::class, 'show'])->name('admin.show.book');
     Route::post('/admin/books/{id}/merge', [BookController::class, 'mergeBab'])->name('admin.merge.bab');
     Route::delete('/admin/book/{id}', [BookController::class, 'destroy'])->name('admin.destroy.book');
@@ -95,7 +96,6 @@ Route::middleware(['auth', 'user-role:AUTHOR'])->group(function () {
     Route::get('/author/books', [AuthorBookController::class, 'index'])->name('author.index.book');
     Route::get('/author/book/{id}', [AuthorBookController::class, 'show'])->name('author.show.book');
     Route::put('/author/chapter/{id}/upload', [AuthorBookController::class, 'upload'])->name('author.upload.chapter');
-    Route::put('/author/chapter/{id}/claim', [AuthorChapterController::class, 'claimed'])->name('author.claimed.chapter');
     Route::get('/author/chapters', [AuthorChapterController::class, 'index'])->name('author.index.chapter');
     Route::get('/author/chapter/{id}', [AuthorChapterController::class, 'show'])->name('author.show.chapter');
     Route::get('/author/history', [AuthorHistoryController::class, 'index'])->name('author.index.history');

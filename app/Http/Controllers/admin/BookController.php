@@ -11,6 +11,8 @@ use App\Models\Finalisasi;
 use App\Models\Status;
 use App\Models\Histori;
 use App\Models\Jenis;
+use App\Models\Notifikasi;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\IOFactory;
@@ -97,9 +99,60 @@ class BookController extends Controller
     public function show($id)
     {
         $buku = Buku::findOrFail($id);
-        $babs = Bab::with(['author', 'buku', 'status'])->where('buku_id', $buku->id)->get();
+        $babs = Bab::with(['author', 'reviewer', 'buku', 'status'])->where('buku_id', $buku->id)->get();
+        $authors = User::where('user_role', 'AUTHOR')->orderBy('username')->get();
+        $reviewers = User::where('user_role', 'REVIEWER')->orderBy('username')->get();
 
-        return view('pages.admin.books.show', compact('buku', 'babs'));
+        return view('pages.admin.books.show', compact('buku', 'babs', 'authors', 'reviewers'));
+    }
+
+    public function assignChapter(Request $request, $id)
+    {
+        $request->validate([
+            'author_id' => 'required|exists:users,id',
+            'reviewer_id' => 'nullable|exists:users,id',
+        ]);
+
+        $chapter = Bab::with(['buku'])->findOrFail($id);
+        $author = User::where('user_role', 'AUTHOR')->findOrFail($request->author_id);
+        $reviewerId = null;
+
+        if ($request->filled('reviewer_id')) {
+            $reviewer = User::where('user_role', 'REVIEWER')->findOrFail($request->reviewer_id);
+            $reviewerId = $reviewer->id;
+        }
+
+        $chapter->update([
+            'author_id' => $author->id,
+            'reviewer_id' => $reviewerId,
+            'status_id' => Status::findOrFail(4)->id,
+        ]);
+
+        Histori::create([
+            'detail' => Auth::user()->username . ' menugaskan bab "' . $chapter->nama . '" kepada ' . $author->username,
+        ]);
+
+        Notifikasi::create([
+            'user_id' => $author->id,
+            'data' => [
+                'chapter' => $chapter->nama,
+                'book' => $chapter->buku->judul,
+                'message' => 'Anda ditugaskan sebagai penulis bab.',
+            ],
+        ]);
+
+        if ($reviewerId) {
+            Notifikasi::create([
+                'user_id' => $reviewerId,
+                'data' => [
+                    'chapter' => $chapter->nama,
+                    'book' => $chapter->buku->judul,
+                    'message' => 'Anda ditugaskan sebagai reviewer bab.',
+                ],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Penugasan bab berhasil diperbarui.');
     }
 
     public function mergeBab($id)

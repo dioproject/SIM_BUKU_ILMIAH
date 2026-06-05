@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bab;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewerChapterController extends Controller
 {
@@ -13,15 +14,20 @@ class ReviewerChapterController extends Controller
     {
         $search = $request->input('search');
 
+        $chaptersQuery = Bab::with(['buku', 'status', 'author'])
+            ->where('reviewer_id', Auth::id());
+
         if ($search) {
-            $chapters = Bab::where('nama', 'like', '%' . $search . '%')
-                ->orWhereHas('buku', function ($query) use ($search) {
-                    $query->where('judul', 'like', '%' . $search . '%');
+            $chapters = $chaptersQuery
+                ->where(function ($query) use ($search) {
+                    $query->where('nama', 'like', '%' . $search . '%')
+                        ->orWhereHas('buku', function ($bookQuery) use ($search) {
+                            $bookQuery->where('judul', 'like', '%' . $search . '%');
+                        });
                 })
-                ->with(['buku', 'status'])
                 ->paginate(10);
         } else {
-            $chapters = Bab::with(['buku', 'status'])->paginate(10);
+            $chapters = $chaptersQuery->paginate(10);
         }
 
         return view('pages.reviewer.chapters.index', compact('chapters', 'search'));
@@ -29,7 +35,10 @@ class ReviewerChapterController extends Controller
 
     public function show($id)
     {
-        $bab = Bab::findOrFail($id);
+        $bab = Bab::with(['author', 'reviewer', 'buku', 'status'])
+            ->where('reviewer_id', Auth::id())
+            ->findOrFail($id);
+
         return view('pages.reviewer.chapters.show', compact('bab'));
     }
 
@@ -37,7 +46,7 @@ class ReviewerChapterController extends Controller
     {
         $chapter = Bab::with(['author', 'status', 'buku'])->findOrFail($id);
 
-        if (!$chapter->author_id || !$chapter->file_bab || !$chapter->file_revieu || $chapter->status_id === 3) {
+        if ($chapter->reviewer_id !== Auth::id() || !$chapter->author_id || !$chapter->file_bab || !$chapter->file_revieu || $chapter->status_id === 3) {
             return redirect()->back()->with('error', 'Bab ini belum siap untuk disetujui.');
         }
 

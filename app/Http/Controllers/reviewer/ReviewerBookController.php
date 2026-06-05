@@ -17,12 +17,17 @@ class ReviewerBookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+
+        $booksQuery = Buku::whereHas('bab', function ($query) {
+            $query->where('reviewer_id', Auth::id());
+        });
+
         if ($search) {
-            $books = Buku::where('judul', 'like',  '%' . $search . '%')->paginate(10);
+            $books = $booksQuery->where('judul', 'like',  '%' . $search . '%')->paginate(10);
         } else {
-            $books = Buku::paginate(10);
+            $books = $booksQuery->paginate(10);
         }
-        $chapters = Bab::all();
+        $chapters = Bab::where('reviewer_id', Auth::id())->get();
         $booksWithChaptersCount = $books->map(function ($book) use ($chapters) {
             $filledChaptersCount = $chapters->where('buku_id', $book->id)->whereNotNull('nama')->count();
             $book->filledChaptersCount = $filledChaptersCount;
@@ -34,8 +39,13 @@ class ReviewerBookController extends Controller
 
     public function show($id)
     {
-        $buku = Buku::findOrFail($id);
-        $babs = Bab::with(['author', 'buku', 'status'])->where('buku_id', $buku->id)->get();
+        $buku = Buku::whereHas('bab', function ($query) {
+            $query->where('reviewer_id', Auth::id());
+        })->findOrFail($id);
+        $babs = Bab::with(['author', 'buku', 'status'])
+            ->where('buku_id', $buku->id)
+            ->where('reviewer_id', Auth::id())
+            ->get();
 
         return view('pages.reviewer.books.show', compact('buku', 'babs'));
     }
@@ -48,7 +58,7 @@ class ReviewerBookController extends Controller
 
         $review = Bab::findOrFail($id);
 
-        if (!$review->author_id || !$review->file_bab || $review->status_id === 3) {
+        if ($review->reviewer_id !== Auth::id() || !$review->author_id || !$review->file_bab || $review->status_id === 3) {
             return redirect()->back()->with('error', 'Bab ini belum siap untuk direviu.');
         }
 

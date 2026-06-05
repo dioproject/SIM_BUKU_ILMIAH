@@ -53,6 +53,7 @@
                                                     <th>No.</th>
                                                     <th>Bab</th>
                                                     <th>Author</th>
+                                                    <th>Reviewer</th>
                                                     <th>Status</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -63,6 +64,7 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $bab->nama }}</td>
                                                         <td>{{ $bab->author->username ?? '' }}</td>
+                                                        <td>{{ $bab->reviewer->username ?? '' }}</td>
                                                         <td>
                                                             @if ($bab->status->option == 'Available')
                                                                 <span
@@ -75,13 +77,47 @@
                                                                     class="badge badge-danger">{{ $bab->status->option }}</span>
                                                             @elseif($bab->status->option == 'Claimed')
                                                                 <span
-                                                                    class="badge badge-warning">{{ $bab->status->option }}</span>
+                                                                    class="badge badge-warning">Ditugaskan</span>
                                                             @elseif($bab->status->option == 'Pending')
                                                                 <span
                                                                     class="badge badge-secondary">{{ $bab->status->option }}</span>
                                                             @endif
                                                         </td>
                                                         <td>
+                                                            <form action="{{ route('admin.assign.chapter', $bab->id) }}"
+                                                                method="POST" class="mb-2">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-row">
+                                                                    <div class="col-md-5 mb-2">
+                                                                        <select name="author_id" class="form-control form-control-sm" required>
+                                                                            <option value="">Pilih Author</option>
+                                                                            @foreach ($authors as $author)
+                                                                                <option value="{{ $author->id }}"
+                                                                                    {{ $bab->author_id == $author->id ? 'selected' : '' }}>
+                                                                                    {{ $author->username }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-5 mb-2">
+                                                                        <select name="reviewer_id" class="form-control form-control-sm">
+                                                                            <option value="">Pilih Reviewer</option>
+                                                                            @foreach ($reviewers as $reviewer)
+                                                                                <option value="{{ $reviewer->id }}"
+                                                                                    {{ $bab->reviewer_id == $reviewer->id ? 'selected' : '' }}>
+                                                                                    {{ $reviewer->username }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-2 mb-2">
+                                                                        <button type="submit" class="btn btn-primary btn-sm btn-block">
+                                                                            <i class="far fa-save"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
                                                             <a class="btn btn-success btn-Aksi" data-toggle="tooltip"
                                                                 title="Detail"
                                                                 href="{{ route('admin.show.chapter', $bab->id) }}"><i

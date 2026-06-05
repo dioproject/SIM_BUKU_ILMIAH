@@ -87,7 +87,7 @@
                                                                     class="badge badge-danger">{{ $chapter->status->option }}</span>
                                                             @elseif($chapter->status->option == 'Claimed')
                                                                 <span
-                                                                    class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                                    class="badge badge-warning">Ditugaskan</span>
                                                             @elseif($chapter->status->option == 'Pending')
                                                                 <span
                                                                     class="badge badge-secondary">{{ $chapter->status->option }}</span>

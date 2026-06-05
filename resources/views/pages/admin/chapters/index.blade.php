@@ -60,6 +60,7 @@
                                                 <th>No.</th>
                                                 <th>Judul Buku</th>
                                                 <th>Author</th>
+                                                <th>Reviewer</th>
                                                 <th>Bab</th>
                                                 <th>Tanggal unggah</th>
                                                 <th>Status</th>
@@ -71,6 +72,7 @@
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $chapter->buku->judul }}</td>
                                                     <td>{{ $chapter->author->username ?? '' }}</td>
+                                                    <td>{{ $chapter->reviewer->username ?? '' }}</td>
                                                     <td>{{ $chapter->nama }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}
                                                     </td>
@@ -87,7 +89,7 @@
                                                                     class="badge badge-danger">{{ $chapter->status->option }}</span>
                                                             @elseif($chapter->status->option == 'Claimed')
                                                                 <span
-                                                                    class="badge badge-warning">{{ $chapter->status->option }}</span>
+                                                                    class="badge badge-warning">Ditugaskan</span>
                                                             @elseif($chapter->status->option == 'Pending')
                                                                 <span
                                                                     class="badge badge-secondary">{{ $chapter->status->option }}</span>

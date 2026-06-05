@@ -22,7 +22,7 @@ class RoleWorkflowTest extends TestCase
         }
     }
 
-    public function test_author_chapter_index_only_shows_owned_or_available_chapters()
+    public function test_author_chapter_index_only_shows_assigned_chapters()
     {
         $author = User::factory()->create(['user_role' => 'AUTHOR']);
         $otherAuthor = User::factory()->create(['user_role' => 'AUTHOR']);
@@ -36,7 +36,7 @@ class RoleWorkflowTest extends TestCase
         ]);
 
         Bab::factory()->create([
-            'nama' => 'Bab Masih Tersedia',
+            'nama' => 'Bab Belum Ditugaskan',
             'author_id' => null,
             'buku_id' => $buku->id,
             'status_id' => 2,
@@ -53,24 +53,30 @@ class RoleWorkflowTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Bab Milik Saya');
-        $response->assertSee('Bab Masih Tersedia');
+        $response->assertDontSee('Bab Belum Ditugaskan');
         $response->assertDontSee('Bab Milik Orang Lain');
     }
 
-    public function test_author_cannot_claim_chapter_that_is_already_claimed()
+    public function test_admin_can_assign_author_and_reviewer_to_chapter()
     {
+        $admin = User::factory()->create(['user_role' => 'ADMIN']);
         $author = User::factory()->create(['user_role' => 'AUTHOR']);
-        $otherAuthor = User::factory()->create(['user_role' => 'AUTHOR']);
+        $reviewer = User::factory()->create(['user_role' => 'REVIEWER']);
         $chapter = Bab::factory()->create([
-            'author_id' => $otherAuthor->id,
-            'status_id' => 4,
+            'author_id' => null,
+            'reviewer_id' => null,
+            'status_id' => 2,
         ]);
 
-        $this->actingAs($author)->put(route('author.claimed.chapter', $chapter->id));
+        $this->actingAs($admin)->put(route('admin.assign.chapter', $chapter->id), [
+            'author_id' => $author->id,
+            'reviewer_id' => $reviewer->id,
+        ]);
 
         $this->assertDatabaseHas('babs', [
             'id' => $chapter->id,
-            'author_id' => $otherAuthor->id,
+            'author_id' => $author->id,
+            'reviewer_id' => $reviewer->id,
             'status_id' => 4,
         ]);
     }
@@ -101,6 +107,7 @@ class RoleWorkflowTest extends TestCase
         $author = User::factory()->create(['user_role' => 'AUTHOR']);
         $chapter = Bab::factory()->create([
             'author_id' => $author->id,
+            'reviewer_id' => $reviewer->id,
             'status_id' => 4,
             'file_bab' => 'bab.docx',
             'file_revieu' => null,
