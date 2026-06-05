@@ -124,7 +124,11 @@ class BookController extends Controller
         
         // Validate chapter can be assigned
         if (!StatusHelper::canBeAssigned($chapter->status_id)) {
-            return redirect()->back()->with('error', 'Bab ini tidak dapat ditugaskan karena statusnya tidak sesuai.');
+            $message = 'Bab ini tidak dapat ditugaskan karena statusnya tidak sesuai.';
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => $message], 422);
+            }
+            return redirect()->back()->with('error', $message);
         }
         
         $author = User::where('user_role', 'AUTHOR')->findOrFail($request->author_id);
@@ -171,7 +175,11 @@ class BookController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Penugasan bab berhasil diperbarui.');
+        $message = 'Penugasan bab berhasil diperbarui.';
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => $message]);
+        }
+        return redirect()->back()->with('success', $message);
     }
 
     public function mergeBab($id)

@@ -1,115 +1,90 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Royalti')
+@section('title', 'Daftar Royalti')
 
 @push('style')
-    <!-- CSS Libraries -->
+    <style>
+        .money-display {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
 @endpush
 
 @section('main')
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Royalti</h1>
+            <h1><i class="fas fa-coins"></i> Daftar Royalti</h1>
         </div>
         <div class="section-body">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible show fade">
-                    <div class="alert-body">
-                        <button class="close" data-dismiss="alert">
-                            <span>&times;</span>
-                        </button>
-                        {{ session('success') }}.
-                    </div>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible show fade">
-                    <div class="alert-body">
-                        <button class="close" data-dismiss="alert">
-                            <span>&times;</span>
-                        </button>
-                        {{ session('error') }}.
-                    </div>
-                </div>
-            @endif
+            <x-flash-message />
+            
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <x-admin.card>
                         <div class="card-header">
-                            <a href="{{ route('admin.create.royalty') }}" class="btn btn-icon icon-left btn-primary"><i
-                                    class="far fa-edit"></i> Tambah Royalti
+                            <a href="{{ route('admin.create.royalty') }}" class="btn btn-icon icon-left btn-primary">
+                                <i class="far fa-edit"></i> Tambah Royalti
                             </a>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
+                            @if($royalties->count() > 0)
+                                <x-admin.table :headers="['No', 'Judul Buku', 'Author', 'Bab', 'Penerbitan', 'Persentase', 'Royalti/Bab', 'Total Royalti']">
+                                    @foreach ($royalties as $key => $royalti)
                                         <tr>
-                                            <th>No.</th>
-                                            <th>Judul Buku</th>
-                                            <th>Author</th>
-                                            <th>Bab</th>
-                                            <th>Penerbitan</th>
-                                            <th>Persentase</th>
-                                            <th>Royalti/Bab</th>
-                                            <th>Total Royalti</th>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>
+                                                <strong>{{ $royalti->penerbitan->final->buku->judul ?? '-' }}</strong>
+                                            </td>
+                                            <td>
+                                                @if($royalti->user)
+                                                    <span class="badge badge-light">
+                                                        <i class="fas fa-user"></i> {{ $royalti->user->username }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($royalti->bab)
+                                                    <span class="badge badge-light">
+                                                        <i class="fas fa-book"></i> {{ $royalti->bab->nama }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($royalti->created_at)->translatedFormat('F Y') }}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">{{ $royalti->persentase }} %</span>
+                                            </td>
+                                            <td class="money-display">
+                                                Rp. {{ number_format($royalti->royalti_bab, 0, ',', '.') }}
+                                            </td>
+                                            <td class="money-display">
+                                                <strong>Rp. {{ number_format($royalti->total_royalti, 0, ',', '.') }}</strong>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($royalties as $key => $royalti)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $royalti->penerbitan->final->buku->judul ?? '' }}</td>
-                                                <td>{{ $royalti->user->username ?? '' }}</td>
-                                                <td>{{ $royalti->bab->nama ?? '' }}</td>
-                                                <td>
-                                                    {{ \Carbon\Carbon::parse($royalti->created_at)->translatedFormat('F Y') }}
-                                                </td>
-                                                <td>{{ $royalti->persentase }} %</td>
-                                                <td>Rp. {{ number_format($royalti->royalti_bab, 0, ',', '.') }}</td>
-                                                <td>Rp. {{ number_format($royalti->total_royalti, 0, ',', '.') }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <nav aria-label="...">
-                                <ul class="pagination justify-content-center">
-                                    @if ($royalties->onFirstPage())
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Previous</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $royalties->previousPageUrl() }}"
-                                                tabindex="-1">Previous</a>
-                                        </li>
-                                    @endif
-
-                                    @foreach ($royalties->getUrlRange(1, $royalties->lastPage()) as $page => $url)
-                                        <li class="page-item {{ $page == $royalties->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                        </li>
                                     @endforeach
-
-                                    @if ($royalties->hasMorePages())
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $royalties->nextPageUrl() }}">Next</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Next</span>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </nav>
+                                </x-admin.table>
+                            @else
+                                <div class="text-center py-5">
+                                    <i class="fas fa-coins fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">Belum ada data royalti</h5>
+                                    <p class="text-muted">Klik tombol "Tambah Royalti" untuk membuat perhitungan royalti baru.</p>
+                                    <a href="{{ route('admin.create.royalty') }}" class="btn btn-primary">
+                                        <i class="far fa-edit"></i> Tambah Royalti
+                                    </a>
+                                </div>
+                            @endif
                         </div>
-                    </div>
+                        
+                        <x-admin.pagination :paginator="$royalties" />
+                    </x-admin.card>
                 </div>
             </div>
         </div>
@@ -118,7 +93,4 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraries -->
-
-    <!-- Page Specific JS File -->
 @endpush
