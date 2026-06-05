@@ -25,35 +25,43 @@
                                 <form action="{{ route('admin.store.catalog') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <x-admin.form-field label="Judul Buku" name="book_id">
-                                        <select class="form-control select2" tabindex="1" id="book_id"
-                                            name="book_id" value="{{ old('book_id') }}">
-                                            @foreach ($books as $book)
-                                                <option value="{{ $book->id }}"
-                                                    @if (old('book_id') == $book->id) selected @endif>
-                                                    {{ $book->judul }}</option>
+                                    <x-admin.form-field label="Finalisasi Buku" name="final_id" required="true">
+                                        <select class="form-control select2" tabindex="1" id="final_id"
+                                            name="final_id" required>
+                                            <option value="">-- Pilih Buku Final --</option>
+                                            @foreach ($finalisasis as $finalisasi)
+                                                <option value="{{ $finalisasi->id }}"
+                                                    data-judul="{{ $finalisasi->buku->judul ?? '' }}"
+                                                    data-isbn="{{ $finalisasi->isbn ?? '' }}"
+                                                    @if (old('final_id') == $finalisasi->id) selected @endif>
+                                                    {{ $finalisasi->buku->judul ?? 'Tanpa Judul' }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </x-admin.form-field>
-                                    <x-admin.form-field label="Sampul" name="cover">
-                                        <input type="file" tabindex="2" name="cover"
-                                                class="form-control" id="cover" value="{{ old('cover') }}" accept=".jpg,.jpeg,.png" placeholder="Pilih file sampul">
+                                    <x-admin.form-field label="Judul" name="judul" required="true">
+                                        <input type="text" tabindex="2" class="form-control" id="judul"
+                                            name="judul" value="{{ old('judul') }}" required placeholder="Judul buku katalog">
                                     </x-admin.form-field>
-                                    <x-admin.form-field label="Ukuran" name="size">
-                                        <input type="text" tabindex="3" class="form-control" id="size"
-                                            name="size" value="{{ old('size') }}" placeholder="Contoh: 15.5 x 23 cm">
+                                    <x-admin.form-field label="Pengarang" name="pengarang" required="true">
+                                        <input type="text" tabindex="3" class="form-control" id="pengarang"
+                                            name="pengarang" value="{{ old('pengarang') }}" required placeholder="Nama pengarang">
                                     </x-admin.form-field>
-                                    <x-admin.form-field label="Tebal" name="thickness">
-                                        <input type="number" tabindex="4" class="form-control" id="thickness"
-                                            name="thickness" value="{{ old('thickness') }}" placeholder="Jumlah halaman">
+                                    <x-admin.form-field label="ISBN" name="isbn" required="true">
+                                        <input type="text" tabindex="4" class="form-control" id="isbn"
+                                            name="isbn" value="{{ old('isbn') }}" required placeholder="ISBN">
                                     </x-admin.form-field>
-                                    <x-admin.form-field label="Stok" name="stock">
-                                        <input type="number" tabindex="5" class="form-control" id="stock"
-                                            name="stock" value="{{ old('stock') }}" placeholder="Jumlah stok">
+                                    <x-admin.form-field label="Tahun Terbit" name="tahun_terbit" required="true">
+                                        <input type="number" tabindex="5" class="form-control" id="tahun_terbit"
+                                            name="tahun_terbit" value="{{ old('tahun_terbit', date('Y')) }}" required placeholder="Contoh: {{ date('Y') }}">
                                     </x-admin.form-field>
-                                    <x-admin.form-field label="Harga" name="price">
-                                        <input type="number" tabindex="5" class="form-control" id="price"
-                                            name="price" value="{{ old('price') }}" placeholder="Harga dalam Rupiah">
+                                    <x-admin.form-field label="Kategori" name="kategori" required="true">
+                                        <input type="text" tabindex="6" class="form-control" id="kategori"
+                                            name="kategori" value="{{ old('kategori') }}" required placeholder="Kategori katalog">
+                                    </x-admin.form-field>
+                                    <x-admin.form-field label="Deskripsi" name="deskripsi" required="true">
+                                        <textarea tabindex="7" class="form-control" id="deskripsi"
+                                            name="deskripsi" required placeholder="Deskripsi singkat buku">{{ old('deskripsi') }}</textarea>
                                     </x-admin.form-field>
                                     <div class="form-group row mb-4">
                                         <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
@@ -77,4 +85,15 @@
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
+    <script>
+        $('#final_id').on('change', function () {
+            var selected = $(this).find(':selected');
+            if (!$('#judul').val()) {
+                $('#judul').val(selected.data('judul') || '');
+            }
+            if (!$('#isbn').val()) {
+                $('#isbn').val(selected.data('isbn') || '');
+            }
+        }).trigger('change');
+    </script>
 @endpush

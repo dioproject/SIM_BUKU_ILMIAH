@@ -13,15 +13,36 @@ class CatalogController extends Controller
     {
         $search = $request->input('search');
 
+        $catalogQuery = Katalog::with(['final.buku.bab.author']);
+
         if ($search) {
-            $catalogs = Katalog::with('final.buku')->whereHas('final.buku', function ($query) use ($search) {
-                $query->where('judul', 'like', '%' . $search . '%');
-            })->paginate(10);
+            $catalogs = $catalogQuery
+                ->where(function ($query) use ($search) {
+                    $query->where('judul', 'like', '%' . $search . '%')
+                        ->orWhere('pengarang', 'like', '%' . $search . '%')
+                        ->orWhere('isbn', 'like', '%' . $search . '%')
+                        ->orWhereHas('final.buku', function ($bookQuery) use ($search) {
+                            $bookQuery->where('judul', 'like', '%' . $search . '%');
+                        });
+                })
+                ->paginate(10);
         } else {            
-            $catalogs = Katalog::with('final.buku')->paginate(10);
+            $catalogs = $catalogQuery->paginate(10);
         }
 
         return view('pages.admin.catalogs.index', compact('catalogs', 'search'));
+    }
+
+    public function create()
+    {
+        $finalisasis = Finalisasi::with('buku')
+            ->whereNotNull('isbn')
+            ->whereNotNull('cover')
+            ->whereNotNull('final_file')
+            ->whereDoesntHave('katalog')
+            ->get();
+
+        return view('pages.admin.catalogs.create', compact('finalisasis'));
     }
 
     public function store(Request $request)

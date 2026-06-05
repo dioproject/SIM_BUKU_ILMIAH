@@ -69,6 +69,8 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::post('/admin/create/produksi', [ProduksiController::class, 'store'])->name('admin.store.produksi');
     Route::get('/admin/edit/produksi', [ProduksiController::class, 'edit'])->name('admin.edit.produksi');
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
+    Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
+    Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
     Route::get('/admin/royalty', [RoyaltyController::class, 'index'])->name('admin.index.royalty');
     Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
     Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');

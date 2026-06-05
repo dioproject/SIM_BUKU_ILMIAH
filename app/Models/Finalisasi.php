@@ -26,4 +26,9 @@ class Finalisasi extends Model
     {
         return $this->belongsTo(Buku::class, 'buku_id');
     }
+
+    public function katalog()
+    {
+        return $this->hasOne(Katalog::class, 'final_id');
+    }
 }
