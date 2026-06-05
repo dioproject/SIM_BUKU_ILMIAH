@@ -12,7 +12,7 @@
                 </h4>
             @endif
             @if ($action)
-                <div class="card-header-action">
+                <div class="card-header-action {{ !$title ? 'w-100' : '' }}">
                     {!! $action !!}
                 </div>
             @endif
