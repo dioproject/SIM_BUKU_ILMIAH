@@ -36,8 +36,8 @@
                                     @forelse ($catalogs as $key => $catalog)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $catalog->final->buku->judul }}</td>
-                                            <td>{{ $catalog->final->buku->bab->first()->author->username ?? '-' }}</td>
+                                            <td>{{ $catalog->judul ?? $catalog->final?->buku?->judul ?? '-' }}</td>
+                                            <td>{{ $catalog->pengarang ?? $catalog->final?->buku?->bab->first()->author->username ?? '-' }}</td>
                                         </tr>
                                     @empty
                                         <tr>
