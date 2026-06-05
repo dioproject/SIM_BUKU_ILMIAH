@@ -46,7 +46,7 @@
                                                 </a>
                                             </td>
                                             <td><strong>{{ $chapter->nama }}</strong></td>
-                                            <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('l, d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($chapter->created_at)->translatedFormat('j F Y') }}</td>
                                             <td>
                                                 <x-status-badge :status="$chapter->status" />
                                             </td>

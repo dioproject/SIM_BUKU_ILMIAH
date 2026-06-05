@@ -70,7 +70,7 @@
                                         <td>
                                             <small class="text-muted">
                                                 <i class="fas fa-clock"></i>
-                                                {{ \Carbon\Carbon::parse($his->created_at)->translatedFormat('l, d F Y H:i') }}
+                                                {{ \Carbon\Carbon::parse($his->created_at)->translatedFormat('j F Y H:i') }}
                                             </small>
                                         </td>
                                     </tr>

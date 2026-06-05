@@ -63,7 +63,7 @@
                                 <div class="col-md-6">
                                     <p class="mb-1"><strong>Tenggat:</strong></p>
                                     <p><i class="fas fa-calendar"></i>
-                                        {{ \Carbon\Carbon::parse($bab->deadline)->translatedFormat('l, d F Y') }}
+                                        {{ \Carbon\Carbon::parse($bab->deadline)->translatedFormat('j F Y') }}
                                     </p>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                     <h5 class="mb-1">{{ $bab->file_bab }}</h5>
                                     <small class="text-muted">
                                         <i class="fas fa-clock"></i> Diunggah:
-                                        {{ $bab->uploaded_at ? \Carbon\Carbon::parse($bab->uploaded_at)->translatedFormat('l, d F Y H:i') : '-' }}
+                                        {{ $bab->uploaded_at ? \Carbon\Carbon::parse($bab->uploaded_at)->translatedFormat('j F Y H:i') : '-' }}
                                     </small>
                                 </div>
                                 <a class="btn btn-primary"
@@ -98,7 +98,7 @@
                                     <h5 class="mb-1">{{ $bab->file_revieu }}</h5>
                                     <small class="text-muted">
                                         <i class="fas fa-clock"></i> Direview:
-                                        {{ $bab->updated_at ? \Carbon\Carbon::parse($bab->updated_at)->translatedFormat('l, d F Y H:i') : '-' }}
+                                        {{ $bab->updated_at ? \Carbon\Carbon::parse($bab->updated_at)->translatedFormat('j F Y H:i') : '-' }}
                                     </small>
                                 </div>
                                 <a class="btn btn-success"
