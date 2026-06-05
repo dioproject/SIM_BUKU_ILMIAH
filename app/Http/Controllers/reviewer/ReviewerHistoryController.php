@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ReviewerHistoryController extends Controller
 {
     public function index() {
-        $history = Histori::paginate(10);
+        $history = Histori::where('user_id', Auth::id())->latest()->paginate(10);
 
         return view('pages.reviewer.history.index', compact('history'));
     }

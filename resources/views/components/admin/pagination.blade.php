@@ -1,10 +1,10 @@
 @props(['paginator'])
+@php $elements = $paginator->elements(); @endphp
 
 @if ($paginator->hasPages())
     <div class="card-footer">
         <nav>
             <ul class="pagination justify-content-center mb-0">
-                {{-- Previous Page Link --}}
                 @if ($paginator->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link">&laquo; Sebelumnya</span>
@@ -15,7 +15,6 @@
                     </li>
                 @endif
 
-                {{-- Pagination Elements --}}
                 @foreach ($elements as $element)
                     @if (is_string($element))
                         <li class="page-item disabled">
@@ -38,7 +37,6 @@
                     @endif
                 @endforeach
 
-                {{-- Next Page Link --}}
                 @if ($paginator->hasMorePages())
                     <li class="page-item">
                         <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">Selanjutnya &raquo;</a>
