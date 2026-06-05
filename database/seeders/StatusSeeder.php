@@ -11,22 +11,22 @@ class StatusSeeder extends Seeder
     {
         $StatusData = [
             [
-                'option' => 'Pending',
+                'option' => 'Draft',
             ],
             [
-                'option' => 'Available',
+                'option' => 'Tersedia',
             ],
             [
-                'option' => 'Approve',
+                'option' => 'Disetujui',
             ],
             [
-                'option' => 'Claimed',
+                'option' => 'Ditugaskan',
             ],
             [
                 'option' => 'Revisi',
             ],
             [
-                'option' => 'Selected',
+                'option' => 'Dalam Review',
             ],
         ];
         foreach ($StatusData as $key => $val) {
