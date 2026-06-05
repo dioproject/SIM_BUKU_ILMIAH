@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Finalisasi;
 use App\Models\Produksi;
-use App\Models\Status;
 use Illuminate\Http\Request;
 
 class ProduksiController extends Controller
@@ -28,11 +27,11 @@ class ProduksiController extends Controller
      */
     public function create()
     {
-        // Hanya tampilkan buku yang sudah finalisasi atau terbit
+        // Hanya tampilkan buku yang data finalnya sudah lengkap.
         $finalisasis = Finalisasi::with(['buku'])
-            ->whereHas('buku', function ($query) {
-                $query->whereIn('status_id', [Status::FINALISASI, Status::TERBIT]);
-            })
+            ->whereNotNull('isbn')
+            ->whereNotNull('cover')
+            ->whereNotNull('final_file')
             ->get();
 
         return view('pages.admin.produksi.create', compact('finalisasis'));
@@ -55,10 +54,10 @@ class ProduksiController extends Controller
             'tahun_terbit' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
         ]);
 
-        // Validasi: buku harus sudah finalisasi atau terbit
+        // Validasi: data final harus lengkap sebelum masuk produksi.
         $final = Finalisasi::with('buku')->findOrFail($validated['final_id']);
-        if ($final->buku->status_id != Status::FINALISASI && $final->buku->status_id != Status::TERBIT) {
-            return back()->withErrors(['final_id' => 'Buku harus sudah finalisasi sebelum membuat data produksi.']);
+        if (empty($final->isbn) || empty($final->cover) || empty($final->final_file)) {
+            return back()->withErrors(['final_id' => 'Data final belum lengkap. ISBN, cover, dan file final PDF wajib diisi sebelum produksi.']);
         }
 
         // Buat entri baru di tabel produksi

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Katalog;
 use App\Models\Finalisasi;
-use App\Models\Status;
 use Illuminate\Http\Request;
 
 class CatalogController extends Controller
@@ -29,11 +28,6 @@ class CatalogController extends Controller
     {
         $final = Finalisasi::with('buku')->findOrFail($request->final_id);
         
-        // Validasi: buku harus sudah finalisasi
-        if ($final->buku->status_id != Status::FINALISASI && $final->buku->status_id != Status::TERBIT) {
-            return back()->withErrors(['final_id' => 'Buku harus sudah finalisasi sebelum masuk katalog.']);
-        }
-
         // Validasi: data final harus lengkap
         if (empty($final->isbn) || empty($final->cover) || empty($final->final_file)) {
             return back()->withErrors(['final_id' => 'Data final belum lengkap. ISBN, cover, dan file final PDF wajib diisi.']);

@@ -50,6 +50,10 @@
                                         <input type="number" tabindex="4" class="form-control" id="harga_jual"
                                             name="harga_jual" value="{{ old('harga_jual') }}" placeholder="Harga jual dalam Rupiah">
                                     </x-admin.form-field>
+                                    <x-admin.form-field label="Tahun Terbit" name="tahun_terbit">
+                                        <input type="number" tabindex="5" class="form-control" id="tahun_terbit"
+                                            name="tahun_terbit" value="{{ old('tahun_terbit', date('Y')) }}" placeholder="Contoh: {{ date('Y') }}">
+                                    </x-admin.form-field>
                                     <div class="form-group row mb-4">
                                         <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2"></label>
                                         <div class="col-sm-12 col-md-9">
