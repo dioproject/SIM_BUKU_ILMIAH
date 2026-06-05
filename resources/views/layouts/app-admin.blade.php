@@ -22,6 +22,8 @@
         href="{{ asset('css/style.css') }}">
     <link rel="stylesheet"
         href="{{ asset('css/components.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('css/custom.css') }}">
 
     <!-- Start GA -->
     <script async

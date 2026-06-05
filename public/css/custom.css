@@ -5,4 +5,51 @@
  * 
  */
 
-/*# sourceMappingURL=custom.css.map */
+/* ===== Header Navbar Icon Alignment ===== */
+.navbar .nav-link.nav-link-lg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar .nav-link.nav-link-lg i {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Notification bell - bigger, centered */
+.navbar .nav-link.notification-toggle i {
+    font-size: 22px;
+}
+
+/* ===== Dropdown Menu Items with Icons ===== */
+a.dropdown-item.has-icon {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+}
+
+a.dropdown-item.has-icon i {
+    margin-top: 0 !important;
+    font-size: 16px !important;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* ===== User Profile in Header ===== */
+.navbar .nav-link.nav-link-user {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+}
+
+.navbar .nav-link.nav-link-user img {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+}
+
+.navbar .nav-link.nav-link-lg div {
+    margin-top: 0;
+}
