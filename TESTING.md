@@ -38,7 +38,7 @@ Semua file test:
 | | `ReviewerWorkflowTest.php` | 14 | Reviewer: review, approve, revisi, pagar akses |
 | | `AdminWorkflowFullTest.php` | 19 | Merge, finalisasi, produksi, katalog, royalti |
 | | `HistoriNotifikasiTest.php` | 12 | Histori aktivitas & notifikasi tiap aksi |
-| | **Total** | **110** | |
+| | **Total** | **111** | |
 
 ---
 
@@ -79,17 +79,16 @@ Memastikan fitur CRUD buku di halaman admin berfungsi penuh.
 
 ---
 
-### 3. FinalisasiTest — Finalisasi dan Katalog (3 test)
+### 3. FinalisasiTest — Finalisasi (2 test)
 
 Menguji proses finalisasi buku dan pembuatan katalog.
 
 | Test | Deskripsi | Hasil |
 |------|-----------|-------|
-| `test_update_finalisasi_creates_katalog_once` | Finalisasi yang pertama kali di-update akan membuat 1 katalog | ✅ |
-| `test_update_finalisasi_does_not_duplicate_katalog` | Update finalisasi kedua tidak membuat duplikasi katalog | ✅ |
-| `test_finalisasi_index_page_renders` | Halaman daftar finalisasi bisa diakses admin | ✅ |
+| `test_finalisasi_index_renders` | Halaman daftar finalisasi bisa diakses admin | ✅ |
+| `test_finalisasi_update_creates_katalog` | Update finalisasi dengan isbn + file PDF | ✅ |
 
-**Tujuan**: Memastikan bug duplikasi katalog (yang pernah terjadi sebelumnya) sudah teratasi dan tidak akan muncul lagi. Katalog hanya dibuat sekali, tidak peduli berapa kali finalisasi di-update.
+**Tujuan**: Memastikan admin bisa mengupdate finalisasi (ISBN, file final) tanpa error.
 
 ---
 
@@ -230,7 +229,7 @@ Memastikan reviewer hanya bisa menilai bab yang ditugaskan dan harus memberi fil
 
 ---
 
-### 11. AdminWorkflowFullTest — Alur Lengkap Admin (16 test)
+### 11. AdminWorkflowFullTest — Alur Lengkap Admin (19 test)
 
 Menguji merge, finalisasi, produksi, katalog, dan royalti dari ujung ke ujung.
 
@@ -246,7 +245,7 @@ Menguji merge, finalisasi, produksi, katalog, dan royalti dari ujung ke ujung.
 | `test_merge_fails_when_chapters_not_all_approved` | Merge gagal jika ada bab belum Disetujui | ✅ |
 | `test_merge_fails_when_chapter_count_is_less_than_total_bab` | Merge gagal jika jumlah bab kurang | ✅ |
 | `test_finalisasi_index_renders` | Halaman daftar finalisasi | ✅ |
-| `test_finalisasi_update_creates_katalog` | Update finalisasi dengan isbn + cover + file | ✅ |
+| `test_finalisasi_update_creates_katalog` | Update finalisasi dengan ISBN + file final | ✅ |
 | `test_produksi_index_renders` | Halaman daftar produksi | ✅ |
 | `test_produksi_store_validates_data` | Simpan produksi dengan data valid | ✅ |
 | `test_produksi_store_fails_without_complete_final_data` | Produksi gagal jika data final belum lengkap | ✅ |
@@ -289,18 +288,18 @@ Berikut adalah hasil eksekusi seluruh test:
 ```
 PHPUnit 9.6.20
 
-...............................................................  108 / 108 (100%)
+...............................................................  111 / 111 (100%)
 
-Time: 00:05.230, Memory: 62.80 MB
+Time: 00:06.286, Memory: 22.00 MB
 
-OK (110 tests, 295 assertions)
+OK (111 tests, 214 assertions)
 ```
 
 | Metrik | Nilai |
 |--------|-------|
-| Total test | 108 |
-| Total asersi | 286 |
-| Test lulus (OK) | 108 |
+| Total test | 111 |
+| Total asersi | 214 |
+| Test lulus (OK) | 111 |
 | Test gagal | **0** |
 | Error | **0** |
 
@@ -345,7 +344,7 @@ Pengujian otomatis ini mencakup **seluruh fitur dan alur editorial** aplikasi SI
 - ✅ Histori aktivitas dan notifikasi
 - ✅ Pencegahan akses antar role (author/reviewer tidak bisa akses admin)
 
-Dengan **110 test dan 295 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
+Dengan **111 test dan 214 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
 
 ---
 
