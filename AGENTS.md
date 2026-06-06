@@ -4,6 +4,17 @@
 
 Setiap perubahan kode WAJIB langsung di-commit dan di-push ke GitHub. Jangan ada perubahan yang tertinggal di lokal.
 
+## Git Config
+
+Pastikan git config local repo menggunakan email yang terverifikasi di GitHub agar commit tertaut ke profil:
+
+```bash
+git config user.email "91179318+dioproject@users.noreply.github.com"
+git config user.name "dioproject"
+```
+
+Jalankan di root repo setiap kali bekerja di environment baru (VPS, laptop, dll).
+
 ## Prinsip Kerja Project
 
 Project ini adalah SIM Buku Ilmiah, bukan sekadar aplikasi upload dokumen atau CRUD buku. Setiap perubahan harus menjaga alur editorial penerbitan buku ilmiah agar rapi, terkontrol, dan masuk akal secara proses akademik.
