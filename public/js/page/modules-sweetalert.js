@@ -80,14 +80,14 @@ $(document).on('click', '.delete-button', function(e) {
     var actionUrl = form.attr('action');
 
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Konfirmasi Hapus',
+        text: "Data yang dihapus tidak bisa dikembalikan!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: "Yeah, just delete it!",
-        cancelButtonText: "Not, return!",
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
         reverseButtons: true,
     }).then((result) => {
         if (result.isConfirmed) {
@@ -96,18 +96,20 @@ $(document).on('click', '.delete-button', function(e) {
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response) {
-                    Swal.fire(
-                        'Deleted!',
-                        'Your data has been deleted.',
-                        'success'
-                    ).then(() => {
+                    Swal.fire({
+                        title: 'Berhasil Dihapus!',
+                        text: 'Data berhasil dihapus.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    }).then(() => {
                         location.reload();
                     });
                 },
                 error: function(xhr, status, error) {
                     Swal.fire(
-                        'Error!',
-                        'There was a problem deleting your data: ' + error,
+                        'Gagal!',
+                        'Terjadi masalah saat menghapus data.',
                         'error'
                     );
                 }
