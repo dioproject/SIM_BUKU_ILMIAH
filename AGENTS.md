@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Aturan Wajib
+
+Setiap perubahan kode WAJIB langsung di-commit dan di-push ke GitHub. Jangan ada perubahan yang tertinggal di lokal.
+
 ## Prinsip Kerja Project
 
 Project ini adalah SIM Buku Ilmiah, bukan sekadar aplikasi upload dokumen atau CRUD buku. Setiap perubahan harus menjaga alur editorial penerbitan buku ilmiah agar rapi, terkontrol, dan masuk akal secara proses akademik.
