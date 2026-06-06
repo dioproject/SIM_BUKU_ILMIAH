@@ -22,6 +22,7 @@ class User extends Model implements Authenticatable
         'email',
         'password',
         'contact',
+        'phone_region',
         'user_role',
     ];
 

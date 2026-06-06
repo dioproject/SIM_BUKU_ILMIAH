@@ -36,7 +36,8 @@ class UserController extends Controller
             'name' => 'required|max:100',
             'email' => 'required|email|max:50|unique:users',
             'password' => 'required|min:8',
-            'contact' => 'required|max:30',
+            'contact' => 'required|regex:/^[0-9]{6,15}$/',
+            'phone_region' => 'required|string|max:5',
             'user_role' => 'required|in:ADMIN,REVIEWER,AUTHOR',
         ]);
 
@@ -45,6 +46,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'contact' => $request->contact,
+            'phone_region' => $request->phone_region,
             'password' => Hash::make($request->password),
             'user_role' => $request->user_role,
         ]);
@@ -71,7 +73,8 @@ class UserController extends Controller
             'username' => 'required|max:30',
             'name' => 'required|max:100',
             'password' => 'required|min:8',
-            'contact' => 'required|max:30',
+            'contact' => 'required|regex:/^[0-9]{6,15}$/',
+            'phone_region' => 'required|string|max:5',
             'user_role' => 'required|in:ADMIN,REVIEWER,AUTHOR',
         ]);
 
@@ -80,6 +83,7 @@ class UserController extends Controller
             'username' => $request->username,
             'name' => $request->name,
             'contact' => $request->contact,
+            'phone_region' => $request->phone_region,
             'password' => Hash::make($request->password),
             'user_role' => $request->user_role,
             'updated_at' => now(),

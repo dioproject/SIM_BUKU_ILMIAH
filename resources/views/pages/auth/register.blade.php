@@ -41,8 +41,37 @@
                 </div>
                 <div class="form-group">
                     <label for="contact">Kontak</label>
-                    <input id="contact" type="number" class="form-control" name="contact" tabindex="4" required
-                        autofocus placeholder="Masukkan nomor kontak Anda">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <select class="form-control" id="phone_region" name="phone_region" style="width: auto; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                                <option value="+62" {{ old('phone_region', '+62') == '+62' ? 'selected' : '' }}>+62 (ID)</option>
+                                <option value="+60" {{ old('phone_region') == '+60' ? 'selected' : '' }}>+60 (MY)</option>
+                                <option value="+65" {{ old('phone_region') == '+65' ? 'selected' : '' }}>+65 (SG)</option>
+                                <option value="+1" {{ old('phone_region') == '+1' ? 'selected' : '' }}>+1 (US/CA)</option>
+                                <option value="+44" {{ old('phone_region') == '+44' ? 'selected' : '' }}>+44 (UK)</option>
+                                <option value="+61" {{ old('phone_region') == '+61' ? 'selected' : '' }}>+61 (AU)</option>
+                                <option value="+81" {{ old('phone_region') == '+81' ? 'selected' : '' }}>+81 (JP)</option>
+                                <option value="+86" {{ old('phone_region') == '+86' ? 'selected' : '' }}>+86 (CN)</option>
+                                <option value="+91" {{ old('phone_region') == '+91' ? 'selected' : '' }}>+91 (IN)</option>
+                                <option value="+63" {{ old('phone_region') == '+63' ? 'selected' : '' }}>+63 (PH)</option>
+                                <option value="+66" {{ old('phone_region') == '+66' ? 'selected' : '' }}>+66 (TH)</option>
+                                <option value="+84" {{ old('phone_region') == '+84' ? 'selected' : '' }}>+84 (VN)</option>
+                                <option value="+82" {{ old('phone_region') == '+82' ? 'selected' : '' }}>+82 (KR)</option>
+                                <option value="+49" {{ old('phone_region') == '+49' ? 'selected' : '' }}>+49 (DE)</option>
+                                <option value="+33" {{ old('phone_region') == '+33' ? 'selected' : '' }}>+33 (FR)</option>
+                                <option value="+971" {{ old('phone_region') == '+971' ? 'selected' : '' }}>+971 (AE)</option>
+                                <option value="+966" {{ old('phone_region') == '+966' ? 'selected' : '' }}>+966 (SA)</option>
+                                <option value="+92" {{ old('phone_region') == '+92' ? 'selected' : '' }}>+92 (PK)</option>
+                                <option value="+55" {{ old('phone_region') == '+55' ? 'selected' : '' }}>+55 (BR)</option>
+                                <option value="+52" {{ old('phone_region') == '+52' ? 'selected' : '' }}>+52 (MX)</option>
+                                <option value="+20" {{ old('phone_region') == '+20' ? 'selected' : '' }}>+20 (EG)</option>
+                                <option value="+27" {{ old('phone_region') == '+27' ? 'selected' : '' }}>+27 (ZA)</option>
+                            </select>
+                        </div>
+                        <input id="contact" type="tel" class="form-control" name="contact" tabindex="4" required
+                            autofocus placeholder="Masukkan nomor kontak Anda"
+                            pattern="[0-9]{6,15}" title="Hanya angka, 6-15 digit">
+                    </div>
                     <div class="invalid-feedback">
                         Silakan masukkan kontak Anda
                     </div>

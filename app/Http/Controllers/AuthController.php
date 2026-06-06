@@ -67,7 +67,8 @@ class AuthController extends Controller
             'name' => 'required|max:100',
             'email' => 'required|email|max:50|unique:users',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()],
-            'contact' => 'required|max:30',
+            'contact' => 'required|regex:/^[0-9]{6,15}$/',
+            'phone_region' => 'required|string|max:5',
         ]);
 
         $user = User::create([
@@ -75,6 +76,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'contact' => $request->contact,
+            'phone_region' => $request->phone_region,
             'password' => Hash::make($request->password),
             'user_role' => 'AUTHOR',
         ]);
