@@ -31,7 +31,14 @@ Semua file test berada di folder `tests/Feature/`:
 | `FinalisasiTest.php` | 3 | Finalisasi + pencegahan duplikasi katalog |
 | `RoyaltiTest.php` | 3 | Chain relasi Royalti → Produksi → Finalisasi → Buku |
 | `DashboardTest.php` | 4 | Render dashboard setiap role + tampil data bab |
-| **Total** | **22** | |
+| `StatusTransitionTest.php` | 15 | Validasi transisi status editorial via StatusHelper |
+| `UserManagementTest.php` | 12 | CRUD user, validasi phone_region, search, akses role |
+| `ChapterAssignmentTest.php` | 8 | Assign author/reviewer, store chapter, approve admin |
+| `AuthorWorkflowTest.php` | 9 | Author: buku ditugaskan, upload, revisi, pagar akses |
+| `ReviewerWorkflowTest.php` | 14 | Reviewer: review, approve, revisi, pagar akses |
+| `AdminWorkflowFullTest.php` | 16 | Merge, finalisasi, produksi, katalog, royalti |
+| `HistoriNotifikasiTest.php` | 12 | Histori aktivitas & notifikasi tiap aksi |
+| **Total** | **108** | |
 
 ---
 
@@ -115,6 +122,166 @@ Memastikan halaman dashboard setiap role bisa di-render tanpa error.
 
 ---
 
+### 6. StatusTransitionTest — Transisi Status Editorial (15 test)
+
+Memvalidasi aturan transisi status menggunakan `StatusHelper` agar alur editorial tidak bisa dilompati.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_draft_can_transition_to_tersedia` | Draft → Tersedia valid | ✅ |
+| `test_draft_cannot_transition_directly_to_disetujui` | Draft → Disetujui langsung tidak valid | ✅ |
+| `test_ditugaskan_can_transition_to_dikirim_author` | Ditugaskan → Dikirim Author valid | ✅ |
+| `test_dikirim_author_can_transition_to_dalam_review` | Dikirim Author → Dalam Review valid | ✅ |
+| `test_dalam_review_can_approve_or_revisi` | Dalam Review → Disetujui/Revisi valid | ✅ |
+| `test_revisi_can_transition_to_direvisi` | Revisi → Direvisi valid | ✅ |
+| `test_direvisi_can_transition_back_to_dalam_review` | Direvisi → Dalam Review valid | ✅ |
+| `test_disetujui_can_transition_to_finalisasi` | Disetujui → Finalisasi valid | ✅ |
+| `test_disetujui_cannot_go_back_to_revisi` | Disetujui → Revisi tidak valid | ✅ |
+| `test_terbit_is_final_no_transitions` | Terbit tidak punya transisi keluar | ✅ |
+| `test_can_be_uploaded_by_author_allows_ditugaskan_and_revisi` | Hanya Ditugaskan & Revisi bisa upload author | ✅ |
+| `test_can_be_approved_allows_dalam_review_and_direvisi` | Hanya Dalam Review & Direvisi bisa disetujui | ✅ |
+| `test_can_be_assigned_allows_draft_and_tersedia` | Hanya Draft & Tersedia bisa di-assign | ✅ |
+| `test_can_be_merged_returns_true_only_when_all_disetujui` | Merge hanya jika semua bab Disetujui | ✅ |
+
+**Tujuan**: Status helper adalah fondasi alur editorial. Test ini memastikan tidak ada transisi ilegal yang lolos (misal: Draft langsung Disetujui, atau Disetujui balik ke Revisi).
+
+---
+
+### 7. UserManagementTest — Manajemen User Admin (12 test)
+
+Memastikan admin bisa mengelola user dan validasi data berfungsi.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_admin_can_view_users_list` | Admin lihat daftar user | ✅ |
+| `test_admin_can_search_users` | Pencarian user berdasarkan username | ✅ |
+| `test_admin_can_view_create_user_page` | Halaman tambah user bisa diakses | ✅ |
+| `test_admin_can_create_user` | Admin membuat user AUTHOR | ✅ |
+| `test_admin_can_create_reviewer` | Admin membuat user REVIEWER | ✅ |
+| `test_create_user_validation_fails_with_non_numeric_contact` | Kontak non-angka ditolak | ✅ |
+| `test_create_user_validation_fails_with_duplicate_email` | Email duplikat ditolak | ✅ |
+| `test_admin_can_edit_user` | Halaman edit user bisa diakses | ✅ |
+| `test_admin_can_update_user` | Update user dengan data baru | ✅ |
+| `test_admin_can_delete_user` | Hapus user berhasil | ✅ |
+| `test_non_admin_cannot_access_user_management` | User AUTHOR kena 403 | ✅ |
+
+**Tujuan**: Memvalidasi CRUD user admin dengan aturan baru (`phone_region`, regex kontak `[0-9]{6,15}`), serta memastikan user non-admin tidak bisa mengakses halaman ini.
+
+---
+
+### 8. ChapterAssignmentTest — Assignment Chapter (8 test)
+
+Menguji proses admin menambahkan bab dan menugaskan author/reviewer.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_admin_can_assign_author_and_reviewer` | Assign author + reviewer → status Ditugaskan | ✅ |
+| `test_admin_can_assign_author_only_without_reviewer` | Assign author saja, reviewer null | ✅ |
+| `test_assign_fails_when_chapter_status_not_draft_or_tersedia` | Assign gagal jika status bukan Draft/Tersedia | ✅ |
+| `test_assign_fails_with_invalid_author_id` | Assign dengan author_id tidak valid | ✅ |
+| `test_admin_can_store_chapters` | Admin membuat beberapa bab sekaligus | ✅ |
+| `test_admin_can_approve_chapter` | Admin menyetujui bab yang sudah siap | ✅ |
+| `test_admin_cannot_approve_chapter_without_file` | Admin tidak bisa approve bab tanpa file naskah | ✅ |
+
+**Tujuan**: Assignment harus melalui admin — tidak boleh ada author claim sendiri. Test ini memvalidasi bahwa alur assignment editorial bekerja dengan benar dan kondisi invalid ditolak.
+
+---
+
+### 9. AuthorWorkflowTest — Workflow Author (9 test)
+
+Memastikan author hanya bisa mengerjakan bab yang ditugaskan kepadanya.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_author_chapter_index_only_shows_assigned_chapters` | Hanya bab miliknya yang muncul di daftar | ✅ |
+| `test_author_books_index_only_shows_books_with_assigned_chapters` | Hanya buku yang punya bab tugasnya yang muncul | ✅ |
+| `test_author_can_upload_chapter` | Author upload naskah → status Dikirim Author | ✅ |
+| `test_author_can_upload_revision_when_status_is_revisi` | Author upload revisi → status Direvisi | ✅ |
+| `test_author_cannot_upload_chapter_owned_by_another_author` | Upload bab milik author lain ditolak | ✅ |
+| `test_author_cannot_upload_chapter_with_wrong_status` | Upload saat status bukan Ditugaskan/Revisi ditolak | ✅ |
+| `test_author_show_book_only_shows_their_chapters` | Detail buku hanya menampilkan chapter tugasnya | ✅ |
+| `test_author_cannot_access_admin_routes` | Author akses admin → 403 | ✅ |
+
+**Tujuan**: Author tidak bisa sembarangan upload ke bab mana pun. Hanya bab dengan status Ditugaskan atau Revisi yang bisa diupload, dan hanya oleh author yang ditugaskan.
+
+---
+
+### 10. ReviewerWorkflowTest — Workflow Reviewer (14 test)
+
+Memastikan reviewer hanya bisa menilai bab yang ditugaskan dan harus memberi file review/catatan sebelum approve.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_reviewer_chapter_index_only_shows_assigned_chapters` | Hanya bab tugasnya yang muncul | ✅ |
+| `test_reviewer_books_index_only_shows_books_with_assigned_chapters` | Hanya buku tugasnya yang muncul | ✅ |
+| `test_reviewer_can_upload_review_file` | Upload review → status Dalam Review | ✅ |
+| `test_reviewer_cannot_upload_review_for_unassigned_chapter` | Upload review bab orang lain ditolak | ✅ |
+| `test_reviewer_cannot_upload_review_for_chapter_without_author_file` | Upload review tanpa naskah author ditolak | ✅ |
+| `test_reviewer_can_approve_chapter_with_review_file` | Approve dengan file review berhasil | ✅ |
+| `test_reviewer_can_approve_chapter_with_notes_only` | Approve dengan catatan saja berhasil | ✅ |
+| `test_reviewer_cannot_approve_without_review_file_or_notes` | Approve tanpa file/catatan ditolak | ✅ |
+| `test_reviewer_can_request_revision` | Request revisi berhasil → status Revisi | ✅ |
+| `test_reviewer_cannot_request_revision_without_review_file_or_notes` | Revisi tanpa file/catatan ditolak | ✅ |
+| `test_reviewer_cannot_approve_chapter_not_assigned_to_them` | Approve bab orang lain ditolak | ✅ |
+| `test_reviewer_cannot_upload_note_for_unassigned_chapter` | Catatan untuk bab orang lain ditolak | ✅ |
+| `test_reviewer_cannot_access_admin_routes` | Reviewer akses admin → 403 | ✅ |
+
+**Tujuan**: Reviewer HARUS memberikan file review atau catatan sebelum approve/minta revisi. Tidak ada approve instan tanpa bukti review.
+
+---
+
+### 11. AdminWorkflowFullTest — Alur Lengkap Admin (16 test)
+
+Menguji merge, finalisasi, produksi, katalog, dan royalti dari ujung ke ujung.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_admin_can_view_books_list` | Halaman daftar buku | ✅ |
+| `test_admin_can_search_books` | Pencarian judul buku | ✅ |
+| `test_admin_can_view_create_book_page` | Halaman tambah buku | ✅ |
+| `test_admin_can_store_book` | Simpan buku baru dengan template | ✅ |
+| `test_admin_can_view_book_detail` | Detail buku menampilkan bab | ✅ |
+| `test_admin_can_delete_book` | Hapus buku beserta bab-babnya | ✅ |
+| `test_merge_succeeds_when_all_chapters_approved` | Merge berhasil jika semua bab Disetujui | ✅ |
+| `test_merge_fails_when_chapters_not_all_approved` | Merge gagal jika ada bab belum Disetujui | ✅ |
+| `test_merge_fails_when_chapter_count_is_less_than_total_bab` | Merge gagal jika jumlah bab kurang | ✅ |
+| `test_finalisasi_index_renders` | Halaman daftar finalisasi | ✅ |
+| `test_finalisasi_update_creates_katalog` | Update finalisasi dengan isbn + cover + file | ✅ |
+| `test_produksi_index_renders` | Halaman daftar produksi | ✅ |
+| `test_produksi_store_validates_data` | Simpan produksi dengan data valid | ✅ |
+| `test_produksi_store_fails_without_complete_final_data` | Produksi gagal jika data final belum lengkap | ✅ |
+| `test_katalog_index_renders` | Halaman daftar katalog | ✅ |
+| `test_katalog_store_creates_entry` | Katalog terbuat dengan status_publish = true | ✅ |
+| `test_royalti_store_calculates_correctly` | Royalti tersimpan dengan perhitungan benar | ✅ |
+| `test_royalti_store_fails_when_bab_not_belonging_to_user` | Royalti gagal jika bab bukan milik user | ✅ |
+| `test_royalti_index_displays_buku_judul` | Halaman royalti menampilkan judul buku | ✅ |
+
+**Tujuan**: End-to-end workflow dari admin bikin buku → merge → finalisasi → produksi → katalog → royalti. Setiap tahap hanya bisa dilanjutkan jika prasyarat tahap sebelumnya terpenuhi.
+
+---
+
+### 12. HistoriNotifikasiTest — Activity Log & Notifikasi (12 test)
+
+Memastikan setiap aksi penting tercatat di histori dan notifikasi dikirim ke pihak terkait.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_create_user_creates_history` | Hapus user mencatat histori | ✅ |
+| `test_delete_user_creates_history` | Hapus user mencatat histori | ✅ |
+| `test_assign_chapter_creates_history` | Assign chapter mencatat histori | ✅ |
+| `test_assign_chapter_creates_notification_for_author` | Assign mengirim notifikasi ke author | ✅ |
+| `test_assign_chapter_creates_notification_for_reviewer` | Assign mengirim notifikasi ke reviewer | ✅ |
+| `test_author_upload_creates_history` | Upload naskah mencatat histori | ✅ |
+| `test_author_upload_creates_notification_for_admin` | Upload naskah memberi notifikasi admin | ✅ |
+| `test_reviewer_approve_creates_history` | Approve reviewer mencatat histori | ✅ |
+| `test_reviewer_approve_creates_notification_for_author` | Approve memberi notifikasi author | ✅ |
+| `test_reviewer_revisi_creates_history` | Request revisi mencatat histori | ✅ |
+| `test_admin_approve_creates_history` | Approve admin mencatat histori | ✅ |
+
+**Tujuan**: Setiap langkah dalam alur editorial harus tercatat (histori) dan memberi tahu pihak terkait (notifikasi). Test ini menjamin tidak ada aksi "silent" yang tidak terlacak.
+
+---
+
 ## Hasil Pengujian
 
 Berikut adalah hasil eksekusi seluruh test:
@@ -122,22 +289,22 @@ Berikut adalah hasil eksekusi seluruh test:
 ```
 PHPUnit 9.6.20
 
-.........................                                         25 / 25 (100%)
+...............................................................  108 / 108 (100%)
 
-Time: 00:02.080, Memory: 40.50 MB
+Time: 00:05.230, Memory: 62.80 MB
 
-OK (25 tests, 47 assertions)
+OK (108 tests, 286 assertions)
 ```
 
 | Metrik | Nilai |
 |--------|-------|
-| Total test | 25 |
-| Total asersi | 47 |
-| Test lulus (OK) | 25 |
+| Total test | 108 |
+| Total asersi | 286 |
+| Test lulus (OK) | 108 |
 | Test gagal | **0** |
 | Error | **0** |
 
-> **Catatan**: Angka 25 test mencakup 22 test buatan + 3 test dari framework Laravel (ExampleTest yang sudah disesuaikan). Seluruhnya berhasil 100%.
+> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `php vendor/bin/phpunit`.
 
 ---
 
@@ -165,15 +332,20 @@ docker exec -it app php vendor/bin/phpunit --testdox
 
 ## Kesimpulan
 
-Pengujian otomatis ini mencakup **seluruh fitur utama** aplikasi SIM BUKU ILMIAH:
+Pengujian otomatis ini mencakup **seluruh fitur dan alur editorial** aplikasi SIM BUKU ILMIAH:
 
-- ✅ Autentikasi dan role-based access
-- ✅ Manajemen buku oleh admin (CRUD, search)
-- ✅ Finalisasi dan katalog (tanpa duplikasi)
-- ✅ Royalti dan chain relasi multi-tabel
-- ✅ Dashboard setiap role (admin, author, reviewer)
+- ✅ Autentikasi dan role-based access / redirect
+- ✅ Manajemen user oleh admin (CRUD, search, validasi)
+- ✅ Manajemen buku dan chapter oleh admin
+- ✅ Assignment author & reviewer oleh admin
+- ✅ Upload naskah oleh author (naskah awal & revisi)
+- ✅ Review dan keputusan reviewer (approve / revisi)
+- ✅ Finalisasi, merge, produksi, katalog, royalti
+- ✅ Status transisi editorial (validasi larangan lompat status)
+- ✅ Histori aktivitas dan notifikasi
+- ✅ Pencegahan akses antar role (author/reviewer tidak bisa akses admin)
 
-Dengan **25 test dan 47 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
+Dengan **108 test dan 286 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
 
 ---
 
