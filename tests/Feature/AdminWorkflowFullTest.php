@@ -177,12 +177,10 @@ class AdminWorkflowFullTest extends TestCase
         $buku = Buku::factory()->create(['judul' => 'Buku Final', 'total_bab' => 1, 'jenis_id' => $this->jenisId]);
         $finalisasi = Finalisasi::create(['buku_id' => $buku->id]);
 
-        $cover = UploadedFile::fake()->image('cover.jpg');
         $pdf = UploadedFile::fake()->create('final.pdf', 100);
 
         $response = $this->actingAs($this->admin)->put(route('admin.update.finalisasi', $finalisasi->id), [
             'isbn' => '9786021234567',
-            'cover' => $cover,
             'final_file' => $pdf,
         ]);
 
