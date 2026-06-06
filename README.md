@@ -1,75 +1,60 @@
-<p align="center">
-  <a href="https://laravel.com/">
-    <img src="https://laravel.com/img/logomark.min.svg" alt="laravel logo" width="75" height="75">
-  </a>
-  <a href="https://getstisla.com">
-    <img src="https://avatars2.githubusercontent.com/u/45754626?s=75&v=4" alt="Stisla logo" width="75" height="75">
-  </a>
-</p>
-
-<h1 align="center">Laravel Stisla</h1>
-
-<span align="center">
-
-**Laravel Stisla** is a Free Bootstrap Admin Template which will help you to speed up your project and design your own dashboard UI using Laravel blade templating engine.
-
-</span>
-
-<br>
+<h1 align="center">SIM Buku Ilmiah</h1>
 
 <p align="center">
-  <a href="https://getstisla.com">Homepage</a>
-  •
-  <a href="https://github.com/edikurniawan-dev/laravel-stisla#quick-start">Getting Started</a>
-  •
-  <a href="https://demo.getstisla.com" target="_new">Demo</a>
-  •
-  <a href="https://getstisla.com/docs">Documentation</a>
-  •
-  <a href="https://getstisla.com/blog">Blog</a>
-  •
-  <a href="https://github.com/edikurniawan-dev/laravel-stisla/issues">Issue</a>
+  Sistem Informasi Manajemen Penerbitan Buku Ilmiah dengan alur editorial terstruktur.
 </p>
 
-<br>
+## Tentang
 
-[![Stisla Preview](https://camo.githubusercontent.com/2135e0f6544a7286a3412cdc3df32d47fc91b045/68747470733a2f2f692e6962622e636f2f3674646d6358302f323031382d31312d31312d31352d33352d676574737469736c612d636f6d2e706e67)](https://getstisla.com)
+SIM Buku Ilmiah adalah aplikasi berbasis web untuk mengelola proses penerbitan buku ilmiah dari hulu ke hilir:
 
-## Table of Contents
+- Manajemen user (admin, author, reviewer)
+- Pembuatan buku dan struktur bab
+- Assignment author & reviewer ke bab
+- Upload naskah, review, dan revisi
+- Finalisasi buku dan katalog
+- Produksi dan royalti
 
-- [Table of Contents](#table-of-contents)
-- [Quick start](#quick-start)
-- [License](#license)
-- [Supports](#supports)
+## Alur Editorial
 
-## Quick start
+```
+Admin buat bab → Assign author/reviewer → Author upload naskah
+→ Reviewer nilai → Revisi jika perlu → Disetujui → Finalisasi → Terbit
+```
 
-Several quick start options are available:
+## Tech Stack
 
--   Clone the repo: `git clone https://github.com/edikurniawan-dev/laravel-stisla.git`
--   Run `cd` to the newly created `/laravel-stisla` directory
--   Run `composer install` command
--   Run `npm install` command
--   Run `npm run dev` command
--   Run `cp .env.example .env` command
--   Run `php artisan key:generate` command
--   Run `php artisan serve` command
--   Done
+- **Laravel** — PHP Framework
+- **Stisla** — Bootstrap Admin Template
+- **MySQL** — Database
+- **Docker** — Deployment (VPS)
 
-Read the [documentation page](https://getstisla.com/docs) for more information on the framework contents, templates and examples, and more.
+## Prasyarat
 
-## License
+- PHP ^8.1
+- Composer
+- MySQL
+- Node.js & NPM
 
-**Stisla** is licensed under the [MIT License](LICENSE)
+## Instalasi
 
-## Supports
+```bash
+git clone https://github.com/dioproject/SIM_BUKU_ILMIAH.git
+cd SIM_BUKU_ILMIAH
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
 
-Thanks to BrowserStack for their support on this open-source project!
+## Testing
 
-<a href="https://www.browserstack.com">
-  <img src="https://getstisla.com/svg/Browserstack-logo.svg" alt="BrowserStack" width="250">
-</a>
+```bash
+php artisan test
+```
 
----
+## Lisensi
 
-Stisla is created by [Nauval](http://nauv.al) ([Twitter](https://twitter.com/mhdnauvalazhar)). You can support the author by donation [here](https://www.buymeacoffee.com/mhd).
+[MIT](LICENSE)
