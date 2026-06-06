@@ -55,8 +55,8 @@
                                     <label class="col-form-label text-md-right col-12 col-md-4 col-lg-2">Kontak</label>
                                     <div class="col-sm-12 col-md-10">
                                         <div class="row">
-                                            <div class="col-4 col-md-3">
-                                                <select class="form-control" id="phone_region" name="phone_region" style="height: 100%;">
+                                            <div class="col-auto">
+                                                <select class="form-control" id="phone_region" name="phone_region">
                                                     <option value="+62" {{ old('phone_region', $user->phone_region ?? '+62') == '+62' ? 'selected' : '' }}>+62 (ID)</option>
                                                     <option value="+60" {{ old('phone_region', $user->phone_region ?? '+62') == '+60' ? 'selected' : '' }}>+60 (MY)</option>
                                                     <option value="+65" {{ old('phone_region', $user->phone_region ?? '+62') == '+65' ? 'selected' : '' }}>+65 (SG)</option>
@@ -81,7 +81,7 @@
                                                     <option value="+27" {{ old('phone_region', $user->phone_region ?? '+62') == '+27' ? 'selected' : '' }}>+27 (ZA)</option>
                                                 </select>
                                             </div>
-                                            <div class="col-8 col-md-9">
+                                            <div class="col">
                                                 <input type="tel" tabindex="5" class="form-control" id="contact"
                                                     name="contact" value="{{ old('contact', $user->contact) }}" placeholder="Masukkan nomor kontak"
                                                     pattern="[0-9]{6,15}" title="Hanya angka, 6-15 digit">
