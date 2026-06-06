@@ -52,6 +52,7 @@ class AuthTest extends TestCase
             'password' => 'Password123',
             'password_confirmation' => 'Password123',
             'contact' => '08123456789',
+            'phone_region' => '+62',
         ]);
 
         $response->assertRedirect(route('author.dashboard'));
@@ -59,6 +60,7 @@ class AuthTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
             'user_role' => 'AUTHOR',
+            'phone_region' => '+62',
         ]);
     }
 

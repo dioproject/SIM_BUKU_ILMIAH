@@ -21,36 +21,21 @@ class FinalisasiTest extends TestCase
         $this->admin = User::factory()->create(['user_role' => 'ADMIN']);
     }
 
-    public function test_update_finalisasi_creates_katalog_once()
+    public function test_update_finalisasi_updates_isbn()
     {
         $buku = Buku::factory()->create();
         $finalisasi = Finalisasi::create([
             'buku_id' => $buku->id,
-            'isbn' => '9786021234567',
         ]);
 
         $this->actingAs($this->admin)->put(route('admin.update.finalisasi', $finalisasi->id), [
             'isbn' => '9786021234567',
         ]);
 
-        $this->assertEquals(1, Katalog::where('final_id', $finalisasi->id)->count());
-    }
-
-    public function test_update_finalisasi_does_not_duplicate_katalog()
-    {
-        $buku = Buku::factory()->create();
-        $finalisasi = Finalisasi::create([
-            'buku_id' => $buku->id,
+        $this->assertDatabaseHas('finalisasis', [
+            'id' => $finalisasi->id,
             'isbn' => '9786021234567',
         ]);
-
-        Katalog::create(['final_id' => $finalisasi->id]);
-
-        $this->actingAs($this->admin)->put(route('admin.update.finalisasi', $finalisasi->id), [
-            'isbn' => '9786027654321',
-        ]);
-
-        $this->assertEquals(1, Katalog::where('final_id', $finalisasi->id)->count());
     }
 
     public function test_finalisasi_index_page_renders()

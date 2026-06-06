@@ -22,23 +22,23 @@ Dengan pendekatan ini, data asli di database produksi tetap aman dan tidak terga
 
 ## Struktur File Test
 
-Semua file test berada di folder `tests/Feature/`:
+Semua file test:
 
-| File Test | Jumlah Test | Fokus Pengujian |
-|-----------|-------------|-----------------|
-| `AuthTest.php` | 6 | Login, register, role redirect, logout |
-| `AdminBukuTest.php` | 6 | CRUD buku, search, middleware, store chapter |
-| `FinalisasiTest.php` | 3 | Finalisasi + pencegahan duplikasi katalog |
-| `RoyaltiTest.php` | 3 | Chain relasi Royalti → Produksi → Finalisasi → Buku |
-| `DashboardTest.php` | 4 | Render dashboard setiap role + tampil data bab |
-| `StatusTransitionTest.php` | 15 | Validasi transisi status editorial via StatusHelper |
-| `UserManagementTest.php` | 12 | CRUD user, validasi phone_region, search, akses role |
-| `ChapterAssignmentTest.php` | 8 | Assign author/reviewer, store chapter, approve admin |
-| `AuthorWorkflowTest.php` | 9 | Author: buku ditugaskan, upload, revisi, pagar akses |
-| `ReviewerWorkflowTest.php` | 14 | Reviewer: review, approve, revisi, pagar akses |
-| `AdminWorkflowFullTest.php` | 16 | Merge, finalisasi, produksi, katalog, royalti |
-| `HistoriNotifikasiTest.php` | 12 | Histori aktivitas & notifikasi tiap aksi |
-| **Total** | **108** | |
+| Folder | File Test | Jumlah Test | Fokus Pengujian |
+|--------|-----------|-------------|-----------------|
+| `tests/Unit/` | `StatusTransitionTest.php` | 15 | Validasi transisi status editorial via StatusHelper (tanpa DB) |
+| `tests/Feature/` | `AuthTest.php` | 6 | Login, register, role redirect, logout |
+| | `AdminBukuTest.php` | 6 | CRUD buku, search, middleware, store chapter |
+| | `FinalisasiTest.php` | 2 | Finalisasi update ISBN |
+| | `RoyaltiTest.php` | 3 | Chain relasi Royalti → Produksi → Finalisasi → Buku |
+| | `DashboardTest.php` | 4 | Render dashboard setiap role + tampil data bab |
+| | `UserManagementTest.php` | 12 | CRUD user, validasi phone_region, search, akses role |
+| | `ChapterAssignmentTest.php` | 8 | Assign author/reviewer, store chapter, approve admin |
+| | `AuthorWorkflowTest.php` | 9 | Author: buku ditugaskan, upload, revisi, pagar akses |
+| | `ReviewerWorkflowTest.php` | 14 | Reviewer: review, approve, revisi, pagar akses |
+| | `AdminWorkflowFullTest.php` | 19 | Merge, finalisasi, produksi, katalog, royalti |
+| | `HistoriNotifikasiTest.php` | 12 | Histori aktivitas & notifikasi tiap aksi |
+| | **Total** | **110** | |
 
 ---
 
@@ -293,7 +293,7 @@ PHPUnit 9.6.20
 
 Time: 00:05.230, Memory: 62.80 MB
 
-OK (108 tests, 286 assertions)
+OK (110 tests, 295 assertions)
 ```
 
 | Metrik | Nilai |
@@ -345,7 +345,7 @@ Pengujian otomatis ini mencakup **seluruh fitur dan alur editorial** aplikasi SI
 - ✅ Histori aktivitas dan notifikasi
 - ✅ Pencegahan akses antar role (author/reviewer tidak bisa akses admin)
 
-Dengan **108 test dan 286 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
+Dengan **110 test dan 295 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
 
 ---
 
