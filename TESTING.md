@@ -283,14 +283,153 @@ Memastikan setiap aksi penting tercatat di histori dan notifikasi dikirim ke pih
 
 ## Hasil Pengujian
 
-Berikut adalah hasil eksekusi seluruh test:
+Berikut adalah hasil eksekusi seluruh test menggunakan format `--testdox`:
 
 ```
-PHPUnit 9.6.20
+PHPUnit 9.6.20 by Sebastian Bergmann and contributors.
 
-...............................................................  111 / 111 (100%)
+Example (Tests\Unit\Example)
+ ✔ That true is true
 
-Time: 00:06.286, Memory: 22.00 MB
+Status Transition (Tests\Unit\StatusTransition)
+ ✔ Draft can transition to tersedia
+ ✔ Draft cannot transition directly to disetujui
+ ✔ Ditugaskan can transition to dikirim author
+ ✔ Dikirim author can transition to dalam review
+ ✔ Dalam review can approve or revisi
+ ✔ Revisi can transition to direvisi
+ ✔ Direvisi can transition back to dalam review
+ ✔ Disetujui can transition to finalisasi
+ ✔ Disetujui cannot go back to revisi
+ ✔ Terbit is final no transitions
+ ✔ Can be uploaded by author allows ditugaskan and revisi
+ ✔ Can be approved allows dalam review and direvisi
+ ✔ Can be assigned allows draft and tersedia
+ ✔ Can be merged returns true only when all disetujui
+
+Admin Buku (Tests\Feature\AdminBuku)
+ ✔ Admin can view books list
+ ✔ Admin can search books by judul
+ ✔ Admin can view create book page
+ ✔ Admin can delete book
+ ✔ Admin cannot access if not admin
+ ✔ Admin can store chapter
+
+Admin Workflow Full (Tests\Feature\AdminWorkflowFull)
+ ✔ Admin can view books list
+ ✔ Admin can search books
+ ✔ Admin can view create book page
+ ✔ Admin can store book
+ ✔ Admin can view book detail
+ ✔ Admin can delete book
+ ✔ Merge succeeds when all chapters approved
+ ✔ Merge fails when chapters not all approved
+ ✔ Merge fails when chapter count is less than total bab
+ ✔ Finalisasi index renders
+ ✔ Finalisasi update creates katalog
+ ✔ Produksi index renders
+ ✔ Produksi store validates data
+ ✔ Produksi store fails without complete final data
+ ✔ Katalog index renders
+ ✔ Katalog store creates entry
+ ✔ Royalti store calculates correctly
+ ✔ Royalti store fails when bab not belonging to user
+ ✔ Royalti index displays buku judul
+
+Auth (Tests\Feature\Auth)
+ ✔ Login page can be rendered
+ ✔ Admin redirected to admin dashboard
+ ✔ Reviewer redirected to reviewer dashboard
+ ✔ Author redirected to author dashboard
+ ✔ Register creates user
+ ✔ Login authenticates user
+ ✔ Logout redirects to login
+
+Author Workflow (Tests\Feature\AuthorWorkflow)
+ ✔ Author chapter index only shows assigned chapters
+ ✔ Author books index only shows books with assigned chapters
+ ✔ Author can upload chapter
+ ✔ Author can upload revision when status is revisi
+ ✔ Author cannot upload chapter owned by another author
+ ✔ Author cannot upload chapter with wrong status
+ ✔ Author show book only shows their chapters
+ ✔ Author cannot access admin routes
+
+Chapter Assignment (Tests\Feature\ChapterAssignment)
+ ✔ Admin can assign author and reviewer
+ ✔ Admin can assign author only without reviewer
+ ✔ Assign fails when chapter status not draft or tersedia
+ ✔ Assign fails with invalid author id
+ ✔ Admin can store chapters
+ ✔ Admin can approve chapter
+ ✔ Admin cannot approve chapter without file
+
+Dashboard (Tests\Feature\Dashboard)
+ ✔ Admin dashboard renders
+ ✔ Author dashboard renders
+ ✔ Reviewer dashboard renders
+ ✔ Dashboard shows recent chapters with author nama
+
+Example (Tests\Feature\Example)
+ ✔ Guest is redirected to login
+
+Finalisasi (Tests\Feature\Finalisasi)
+ ✔ Update finalisasi updates isbn
+ ✔ Finalisasi index page renders
+
+Histori Notifikasi (Tests\Feature\HistoriNotifikasi)
+ ✔ Create user creates history
+ ✔ Delete user creates history
+ ✔ Assign chapter creates history
+ ✔ Assign chapter creates notification for author
+ ✔ Assign chapter creates notification for reviewer
+ ✔ Author upload creates history
+ ✔ Author upload creates notification for admin
+ ✔ Reviewer approve creates history
+ ✔ Reviewer approve creates notification for author
+ ✔ Reviewer revisi creates history
+ ✔ Admin approve creates history
+
+Reviewer Workflow (Tests\Feature\ReviewerWorkflow)
+ ✔ Reviewer chapter index only shows assigned chapters
+ ✔ Reviewer books index only shows books with assigned chapters
+ ✔ Reviewer can upload review file
+ ✔ Reviewer cannot upload review for unassigned chapter
+ ✔ Reviewer cannot upload review for chapter without author file
+ ✔ Reviewer can approve chapter with review file
+ ✔ Reviewer can approve chapter with notes only
+ ✔ Reviewer cannot approve without review file or notes
+ ✔ Reviewer can request revision
+ ✔ Reviewer cannot request revision without review file or notes
+ ✔ Reviewer cannot approve chapter not assigned to them
+ ✔ Reviewer cannot upload note for unassigned chapter
+ ✔ Reviewer cannot access admin routes
+
+Role Workflow (Tests\Feature\RoleWorkflow)
+ ✔ Author chapter index only shows assigned chapters
+ ✔ Admin can assign author and reviewer to chapter
+ ✔ Author cannot upload chapter owned by another author
+ ✔ Reviewer cannot approve chapter without review file
+
+Royalti (Tests\Feature\Royalti)
+ ✔ Royalti can access buku through chain
+ ✔ Royalti index page displays buku judul
+ ✔ Create royalti page shows produksi list
+
+User Management (Tests\Feature\UserManagement)
+ ✔ Admin can view users list
+ ✔ Admin can search users
+ ✔ Admin can view create user page
+ ✔ Admin can create user
+ ✔ Admin can create reviewer
+ ✔ Create user validation fails with non numeric contact
+ ✔ Create user validation fails with duplicate email
+ ✔ Admin can edit user
+ ✔ Admin can update user
+ ✔ Admin can delete user
+ ✔ Non admin cannot access user management
+
+Time: 00:05.006, Memory: 46.50 MB
 
 OK (111 tests, 214 assertions)
 ```
@@ -302,8 +441,9 @@ OK (111 tests, 214 assertions)
 | Test lulus (OK) | 111 |
 | Test gagal | **0** |
 | Error | **0** |
+| Waktu eksekusi | 5 detik |
 
-> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `php vendor/bin/phpunit`.
+> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `docker exec -it app php vendor/bin/phpunit --testdox`.
 
 ---
 
