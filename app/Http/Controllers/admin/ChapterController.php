@@ -70,15 +70,18 @@ class ChapterController extends Controller
 
     public function destroy($id)
     {
-        $chapter = Bab::findOrFail($id);
+        $chapter = Bab::with('buku')->findOrFail($id);
+
+        Histori::create([
+            'user_id' => Auth::id(),
+            'bab_id' => $chapter->id,
+            'status_id' => $chapter->status_id,
+            'action' => 'delete',
+            'detail' => Auth::user()->username . ' menghapus bab "' . $chapter->nama . '" dari buku "' . ($chapter->buku->judul ?? 'N/A') . '"',
+        ]);
+
         $chapter->delete();
 
-        if ($chapter) {
-            Histori::create([
-                'detail' => Auth::user()->username . ' menghapus bab "' . $chapter->nama . '" berhasil.',
-            ]);
-            return redirect()->route('admin.index.chapter');
-        }
         return redirect()->route('admin.index.chapter');
     }
 }
