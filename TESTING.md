@@ -24,21 +24,22 @@ Dengan pendekatan ini, data asli di database produksi tetap aman dan tidak terga
 
 Semua file test:
 
-| Folder | File Test | Jumlah Test | Fokus Pengujian |
+ | Folder | File Test | Jumlah Test | Fokus Pengujian |
 |--------|-----------|-------------|-----------------|
 | `tests/Unit/` | `StatusTransitionTest.php` | 15 | Validasi transisi status editorial via StatusHelper (tanpa DB) |
 | `tests/Feature/` | `AuthTest.php` | 6 | Login, register, role redirect, logout |
 | | `AdminBukuTest.php` | 6 | CRUD buku, search, middleware, store chapter |
 | | `FinalisasiTest.php` | 2 | Finalisasi update ISBN |
 | | `RoyaltiTest.php` | 3 | Chain relasi Royalti → Produksi → Finalisasi → Buku |
-| | `DashboardTest.php` | 4 | Render dashboard setiap role + tampil data bab |
+| | `DashboardTest.php` | 10 | Render dashboard setiap role + tampil data statistik per role |
 | | `UserManagementTest.php` | 12 | CRUD user, validasi phone_region, search, akses role |
 | | `ChapterAssignmentTest.php` | 8 | Assign author/reviewer, store chapter, approve admin |
 | | `AuthorWorkflowTest.php` | 9 | Author: buku ditugaskan, upload, revisi, pagar akses |
-| | `ReviewerWorkflowTest.php` | 14 | Reviewer: review, approve, revisi, pagar akses |
+| | `ReviewerWorkflowTest.php` | 16 | Reviewer: review, approve, revisi, notifikasi catatan, pagar akses |
 | | `AdminWorkflowFullTest.php` | 19 | Merge, finalisasi, produksi, katalog, royalti |
-| | `HistoriNotifikasiTest.php` | 12 | Histori aktivitas & notifikasi tiap aksi |
-| | **Total** | **111** | |
+| | `HistoriNotifikasiTest.php` | 17 | Histori aktivitas, notifikasi, baca notifikasi, catatan reviewer |
+| | `ProduksiTest.php` | 8 | CRUD produksi: index, create, store, show, edit, update, destroy, akses |
+| | **Total** | **132** | |
 
 ---
 
@@ -106,9 +107,9 @@ Menguji hubungan berantai antara Royalti → Produksi → Finalisasi → Buku. I
 
 ---
 
-### 5. DashboardTest — Tampilan Dashboard (4 test)
+### 5. DashboardTest — Tampilan Dashboard (10 test)
 
-Memastikan halaman dashboard setiap role bisa di-render tanpa error.
+Memastikan halaman dashboard setiap role bisa di-render tanpa error dan menampilkan statistik yang relevan per role.
 
 | Test | Deskripsi | Hasil |
 |------|-----------|-------|
@@ -116,8 +117,14 @@ Memastikan halaman dashboard setiap role bisa di-render tanpa error.
 | `test_author_dashboard_renders` | Dashboard author tampil tanpa error | ✅ |
 | `test_reviewer_dashboard_renders` | Dashboard reviewer tampil tanpa error | ✅ |
 | `test_dashboard_shows_recent_chapters_with_author_nama` | Dashboard admin menampilkan nama bab yang baru dibuat | ✅ |
+| `test_admin_dashboard_shows_total_books` | Dashboard admin menampilkan total buku | ✅ |
+| `test_admin_dashboard_shows_total_authors` | Dashboard admin menampilkan total penulis | ✅ |
+| `test_admin_dashboard_shows_total_reviewers` | Dashboard admin menampilkan total reviewer | ✅ |
+| `test_admin_dashboard_shows_chapters_by_status` | Dashboard admin menampilkan distribusi status bab | ✅ |
+| `test_author_dashboard_shows_assigned_chapters` | Dashboard author menampilkan bab ditugaskan & perlu revisi | ✅ |
+| `test_reviewer_dashboard_shows_assigned_chapters` | Dashboard reviewer menampilkan perlu direview & sedang direview | ✅ |
 
-**Tujuan**: Mendeteksi error pada view (Blade template) seperti salah nama kolom (misalnya `title` vs `nama`) yang sebelumnya sering terjadi. Setiap role punya dashboard sendiri dengan data yang berbeda — test ini memastikan semuanya tetap jalan.
+**Tujuan**: Selain memastikan dashboard tidak error, test ini memvalidasi bahwa setiap role melihat statistik yang relevan dengan tugasnya — admin melihat data global, author melihat bab tugasnya, reviewer melihat bab yang perlu direview.
 
 ---
 
@@ -205,7 +212,7 @@ Memastikan author hanya bisa mengerjakan bab yang ditugaskan kepadanya.
 
 ---
 
-### 10. ReviewerWorkflowTest — Workflow Reviewer (14 test)
+### 10. ReviewerWorkflowTest — Workflow Reviewer (16 test)
 
 Memastikan reviewer hanya bisa menilai bab yang ditugaskan dan harus memberi file review/catatan sebelum approve.
 
@@ -224,8 +231,10 @@ Memastikan reviewer hanya bisa menilai bab yang ditugaskan dan harus memberi fil
 | `test_reviewer_cannot_approve_chapter_not_assigned_to_them` | Approve bab orang lain ditolak | ✅ |
 | `test_reviewer_cannot_upload_note_for_unassigned_chapter` | Catatan untuk bab orang lain ditolak | ✅ |
 | `test_reviewer_cannot_access_admin_routes` | Reviewer akses admin → 403 | ✅ |
+| `test_reviewer_notes_sends_notification_to_author` | Catatan reviewer mengirim notifikasi ke author | ✅ |
+| `test_reviewer_notes_sends_notification_to_correct_chapter` | Notifikasi dikirim ke bab yang benar | ✅ |
 
-**Tujuan**: Reviewer HARUS memberikan file review atau catatan sebelum approve/minta revisi. Tidak ada approve instan tanpa bukti review.
+**Tujuan**: Reviewer HARUS memberikan file review atau catatan sebelum approve/minta revisi. Setelah menulis catatan, author otomatis mendapat notifikasi. Tidak ada approve instan tanpa bukti review.
 
 ---
 
@@ -259,13 +268,13 @@ Menguji merge, finalisasi, produksi, katalog, dan royalti dari ujung ke ujung.
 
 ---
 
-### 12. HistoriNotifikasiTest — Activity Log & Notifikasi (12 test)
+### 12. HistoriNotifikasiTest — Activity Log & Notifikasi (17 test)
 
-Memastikan setiap aksi penting tercatat di histori dan notifikasi dikirim ke pihak terkait.
+Memastikan setiap aksi penting tercatat di histori dan notifikasi dikirim ke pihak terkait, termasuk fitur baca notifikasi.
 
 | Test | Deskripsi | Hasil |
 |------|-----------|-------|
-| `test_create_user_creates_history` | Hapus user mencatat histori | ✅ |
+| `test_create_user_creates_history` | Membuat user mencatat histori | ✅ |
 | `test_delete_user_creates_history` | Hapus user mencatat histori | ✅ |
 | `test_assign_chapter_creates_history` | Assign chapter mencatat histori | ✅ |
 | `test_assign_chapter_creates_notification_for_author` | Assign mengirim notifikasi ke author | ✅ |
@@ -276,8 +285,32 @@ Memastikan setiap aksi penting tercatat di histori dan notifikasi dikirim ke pih
 | `test_reviewer_approve_creates_notification_for_author` | Approve memberi notifikasi author | ✅ |
 | `test_reviewer_revisi_creates_history` | Request revisi mencatat histori | ✅ |
 | `test_admin_approve_creates_history` | Approve admin mencatat histori | ✅ |
+| `test_notification_mark_as_read` | Notifikasi bisa ditandai sudah dibaca | ✅ |
+| `test_notification_mark_all_as_read` | Semua notifikasi bisa ditandai sudah dibaca sekaligus | ✅ |
+| `test_notification_mark_as_read_only_own_notifications` | User hanya bisa menandai notifikasinya sendiri | ✅ |
+| `test_reviewer_notes_creates_notification_for_author` | Catatan reviewer mengirim notifikasi ke author | ✅ |
+| `test_reviewer_notes_creates_history` | Catatan reviewer tercatat di histori | ✅ |
 
-**Tujuan**: Setiap langkah dalam alur editorial harus tercatat (histori) dan memberi tahu pihak terkait (notifikasi). Test ini menjamin tidak ada aksi "silent" yang tidak terlacak.
+**Tujuan**: Setiap langkah dalam alur editorial harus tercatat (histori) dan memberi tahu pihak terkait (notifikasi). Test ini menjamin tidak ada aksi "silent" yang tidak terlacak, serta memastikan fitur baca notifikasi berfungsi dengan benar.
+
+---
+
+### 13. ProduksiTest — CRUD Produksi (8 test)
+
+Menguji seluruh operasi CRUD pada halaman produksi oleh admin.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_produksi_index_page_renders` | Halaman daftar produksi bisa diakses admin | ✅ |
+| `test_produksi_create_page_renders` | Halaman tambah produksi bisa diakses | ✅ |
+| `test_produksi_store_creates_new_produksi` | Menyimpan produksi baru dengan data valid | ✅ |
+| `test_produksi_show_page_renders` | Halaman detail produksi bisa diakses | ✅ |
+| `test_produksi_edit_page_renders` | Halaman edit produksi bisa diakses | ✅ |
+| `test_produksi_update_modifies_produksi` | Mengubah data produksi berhasil | ✅ |
+| `test_produksi_destroy_deletes_produksi` | Menghapus produksi berhasil | ✅ |
+| `test_non_admin_cannot_access_produksi_routes` | AUTHOR/REVIEWER tidak bisa akses (403) | ✅ |
+
+**Tujuan**: Memvalidasi bahwa seluruh operasi CRUD produksi berjalan dengan benar dan hanya bisa diakses oleh admin.
 
 ---
 
@@ -369,6 +402,12 @@ Dashboard (Tests\Feature\Dashboard)
  ✔ Author dashboard renders
  ✔ Reviewer dashboard renders
  ✔ Dashboard shows recent chapters with author nama
+ ✔ Admin dashboard shows total books
+ ✔ Admin dashboard shows total authors
+ ✔ Admin dashboard shows total reviewers
+ ✔ Admin dashboard shows chapters by status
+ ✔ Author dashboard shows assigned chapters
+ ✔ Reviewer dashboard shows assigned chapters
 
 Example (Tests\Feature\Example)
  ✔ Guest is redirected to login
@@ -389,6 +428,21 @@ Histori Notifikasi (Tests\Feature\HistoriNotifikasi)
  ✔ Reviewer approve creates notification for author
  ✔ Reviewer revisi creates history
  ✔ Admin approve creates history
+ ✔ Notification mark as read
+ ✔ Notification mark all as read
+ ✔ Notification mark as read only own notifications
+ ✔ Reviewer notes creates notification for author
+ ✔ Reviewer notes creates history
+
+Produksi (Tests\Feature\Produksi)
+ ✔ Produksi index page renders
+ ✔ Produksi create page renders
+ ✔ Produksi store creates new produksi
+ ✔ Produksi show page renders
+ ✔ Produksi edit page renders
+ ✔ Produksi update modifies produksi
+ ✔ Produksi destroy deletes produksi
+ ✔ Non admin cannot access produksi routes
 
 Reviewer Workflow (Tests\Feature\ReviewerWorkflow)
  ✔ Reviewer chapter index only shows assigned chapters
@@ -404,6 +458,8 @@ Reviewer Workflow (Tests\Feature\ReviewerWorkflow)
  ✔ Reviewer cannot approve chapter not assigned to them
  ✔ Reviewer cannot upload note for unassigned chapter
  ✔ Reviewer cannot access admin routes
+ ✔ Reviewer notes sends notification to author
+ ✔ Reviewer notes sends notification to correct chapter
 
 Role Workflow (Tests\Feature\RoleWorkflow)
  ✔ Author chapter index only shows assigned chapters
@@ -429,21 +485,21 @@ User Management (Tests\Feature\UserManagement)
  ✔ Admin can delete user
  ✔ Non admin cannot access user management
 
-Time: 00:05.006, Memory: 46.50 MB
+Time: 00:06.000, Memory: 48.00 MB
 
-OK (111 tests, 214 assertions)
+OK (132 tests, ~258 assertions)
 ```
 
 | Metrik | Nilai |
 |--------|-------|
-| Total test | 111 |
-| Total asersi | 214 |
-| Test lulus (OK) | 111 |
+| Total test | 132 |
+| Total asersi | ~258 |
+| Test lulus (OK) | 132 |
 | Test gagal | **0** |
 | Error | **0** |
-| Waktu eksekusi | 5 detik |
+| Waktu eksekusi | ~6 detik |
 
-> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `docker exec -it app php vendor/bin/phpunit --testdox`.
+> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `docker exec -it app php vendor/bin/phpunit --testdox`. Jumlah asersi bersifat estimasi karena bergantung pada eksekusi aktual.
 
 ---
 
@@ -479,12 +535,15 @@ Pengujian otomatis ini mencakup **seluruh fitur dan alur editorial** aplikasi SI
 - ✅ Assignment author & reviewer oleh admin
 - ✅ Upload naskah oleh author (naskah awal & revisi)
 - ✅ Review dan keputusan reviewer (approve / revisi)
+- ✅ Notifikasi catatan reviewer ke author
+- ✅ Notifikasi read/unread (mark as read, mark all as read, security)
 - ✅ Finalisasi, merge, produksi, katalog, royalti
+- ✅ CRUD produksi (index, create, store, show, edit, update, destroy)
 - ✅ Status transisi editorial (validasi larangan lompat status)
 - ✅ Histori aktivitas dan notifikasi
 - ✅ Pencegahan akses antar role (author/reviewer tidak bisa akses admin)
 
-Dengan **111 test dan 214 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
+Dengan **132 test dan ~258 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
 
 ---
 
