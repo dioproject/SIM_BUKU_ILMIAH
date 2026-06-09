@@ -9,45 +9,100 @@
 @endpush
 
 @section('main')
-    @php
-        use App\Models\User;
-        use App\Models\Buku;
-
-        $author = User::where('user_role', 'AUTHOR')->count();
-        $books = Buku::all()->count();
-    @endphp
     <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1><i class="fas fa-tachometer-alt"></i> Dasbor</h1>
             </div>
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-primary">
-                            <i class="far fa-solid fa-feather"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Total Penulis</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $author }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
                             <i class="fas fa-solid fa-book"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Buku</h4>
+                                <h4>Buku Di-assign</h4>
                             </div>
                             <div class="card-body">
-                                {{ $books }}
+                                {{ $reviewerBooks ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Bab Ditugaskan</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $assignedChapters ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-danger">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Perlu Direview</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $needsReview ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Sedang Direview</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $inReview ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-warning">
+                            <i class="fas fa-undo"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Revisi</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $revisi ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-dark">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Disetujui</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $approved ?? 0 }}
                             </div>
                         </div>
                     </div>

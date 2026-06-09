@@ -9,18 +9,13 @@
 @endpush
 
 @section('main')
-    @php
-        use App\Models\Buku;
-
-        $books = Buku::all()->count();
-    @endphp
     <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1><i class="fas fa-tachometer-alt"></i> Dasbor</h1>
             </div>
             <div class="row">
-                <div class="col-lg--12 col-md--12 col-sm--12 col-12">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
                             <i class="fas fa-solid fa-book"></i>
@@ -30,7 +25,101 @@
                                 <h4>Total Buku</h4>
                             </div>
                             <div class="card-body">
-                                {{ $books }}
+                                {{ $authorBooks ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Bab Ditugaskan</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $assignedChapters ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Draft</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $draftChapters ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-spinner"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Dalam Proses</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $inProgress ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Perlu Revisi</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $needsRevision ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-secondary">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Dikirim</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $submitted ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-dark">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Disetujui</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $approved ?? 0 }}
                             </div>
                         </div>
                     </div>

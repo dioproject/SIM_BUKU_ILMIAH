@@ -7,15 +7,6 @@
 @endpush
 
 @section('main')
-    @php
-        use App\Models\User;
-        use App\Models\Buku;
-
-        $author = User::where('user_role', 'AUTHOR')->count();
-        $reviewer = User::where('user_role', 'REVIEWER')->count();
-        $users = User::all()->count();
-        $books = Buku::all()->count();
-    @endphp
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -32,7 +23,7 @@
                                 <h4>Total Penulis</h4>
                             </div>
                             <div class="card-body">
-                                {{ $author }}
+                                {{ $totalAuthors ?? 0 }}
                             </div>
                         </div>
                     </div>
@@ -47,7 +38,7 @@
                                 <h4>Total Reviewer</h4>
                             </div>
                             <div class="card-body">
-                                {{ $reviewer }}
+                                {{ $totalReviewers ?? 0 }}
                             </div>
                         </div>
                     </div>
@@ -62,7 +53,7 @@
                                 <h4>Total Pengguna</h4>
                             </div>
                             <div class="card-body">
-                                {{ $users }}
+                                {{ $totalUsers ?? 0 }}
                             </div>
                         </div>
                     </div>
@@ -77,7 +68,71 @@
                                 <h4>Total Buku</h4>
                             </div>
                             <div class="card-body">
-                                {{ $books }}
+                                {{ $totalBooks ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-secondary">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Bab</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $totalChapters ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Perlu Direview</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $chaptersNeedingReview ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-dark">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Bab Disetujui</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $approvedChapters ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-warning">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Status Bab</h4>
+                            </div>
+                            <div class="card-body">
+                                @foreach($chaptersByStatus ?? [] as $item)
+                                    <div>{{ $item->status->option ?? 'N/A' }}: {{ $item->count }}</div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
