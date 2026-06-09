@@ -34,7 +34,7 @@
                             </div>';
                         @endphp
                         <x-admin.card :action="$action">
-                            <x-admin.table :headers="['No.', 'Judul Buku', 'Eksemplar', 'Penerbitan', 'Biaya Produksi', 'Harga Jual']">
+                            <x-admin.table :headers="['No.', 'Judul Buku', 'Eksemplar', 'Penerbitan', 'Biaya Produksi', 'Harga Jual', 'Aksi']">
                                 @forelse ($produksis as $key => $produksi)
                                     <tr>
                                         <td>{{ $produksis->firstItem() + $key }}</td>
@@ -44,10 +44,33 @@
                                         </td>
                                         <td>Rp. {{ number_format($produksi->biaya_produksi, 0, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($produksi->harga_jual, 0, ',', '.') }}</td>
+                                        <td>
+                                            <a class="btn btn-info btn-action mr-1" data-toggle="tooltip"
+                                                title="Detail"
+                                                href="{{ route('admin.show.produksi', $produksi->id) }}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a class="btn btn-warning btn-action mr-1" data-toggle="tooltip"
+                                                title="Edit"
+                                                href="{{ route('admin.edit.produksi', $produksi->id) }}">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <button class="btn btn-danger btn-action" data-toggle="tooltip"
+                                                title="Hapus"
+                                                onclick="confirmDelete({{ $produksi->id }}, '{{ $produksi->final->buku->judul ?? 'produksi ini' }}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <form id="delete-form-{{ $produksi->id }}"
+                                                action="{{ route('admin.destroy.produksi', $produksi->id) }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted">
+                                        <td colspan="7" class="text-center text-muted">
                                             <i class="fas fa-inbox fa-2x mb-2"></i><br>
                                             Belum ada data produksi
                                         </td>
@@ -66,4 +89,22 @@
 @push('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/page/modules-sweetalert.js') }}"></script>
+    <script>
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Hapus Produksi',
+                text: 'Apakah Anda yakin ingin menghapus produksi "' + name + '"?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-trash"></i> Hapus',
+                cancelButtonText: '<i class="fas fa-times"></i> Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 @endpush

@@ -84,7 +84,9 @@ class ProduksiController extends Controller
      */
     public function show($id)
     {
-        //
+        $produksi = Produksi::with('final.buku')->findOrFail($id);
+
+        return view('pages.admin.produksi.show', compact('produksi'));
     }
 
     /**
@@ -95,7 +97,16 @@ class ProduksiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $produksi = Produksi::with('final.buku')->findOrFail($id);
+
+        // Only show finalisasi with complete data
+        $finalisasis = Finalisasi::with('buku')
+            ->whereNotNull('isbn')
+            ->whereNotNull('cover')
+            ->whereNotNull('final_file')
+            ->get();
+
+        return view('pages.admin.produksi.edit', compact('produksi', 'finalisasis'));
     }
 
     /**
@@ -107,7 +118,24 @@ class ProduksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'final_id' => 'required|exists:finalisasis,id',
+            'eksemplar' => 'required|integer|min:1',
+            'biaya_produksi' => 'required|numeric|min:0',
+            'harga_jual' => 'required|numeric|min:0',
+            'tahun_terbit' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+        ]);
+
+        // Validate: finalisasi data must be complete
+        $final = Finalisasi::findOrFail($validated['final_id']);
+        if (empty($final->isbn) || empty($final->cover) || empty($final->final_file)) {
+            return back()->withErrors(['final_id' => 'Data final belum lengkap. ISBN, cover, dan file final PDF wajib diisi sebelum produksi.']);
+        }
+
+        $produksi = Produksi::findOrFail($id);
+        $produksi->update($validated);
+
+        return redirect()->route('admin.index.produksi')->with('success', 'Produksi berhasil diperbarui.');
     }
 
     /**
@@ -118,6 +146,9 @@ class ProduksiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $produksi = Produksi::findOrFail($id);
+        $produksi->delete();
+
+        return redirect()->route('admin.index.produksi')->with('success', 'Produksi berhasil dihapus.');
     }
 }
