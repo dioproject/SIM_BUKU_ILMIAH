@@ -147,6 +147,7 @@
                                             <th>Penulis</th>
                                             <th>Reviewer</th>
                                             <th width="150">Status</th>
+                                            <th width="120">Deadline</th>
                                             <th width="120">Aksi</th>
                                         </tr>
                                     </thead>
@@ -179,6 +180,24 @@
                                                     <x-status-badge :status="$bab->status" />
                                                 </td>
                                                 <td>
+                                                    @if($bab->deadline)
+                                                        @php
+                                                            $deadline = \Carbon\Carbon::parse($bab->deadline);
+                                                            $now = \Carbon\Carbon::now();
+                                                            $daysLeft = $now->diffInDays($deadline, false);
+                                                        @endphp
+                                                        @if($daysLeft < 0)
+                                                            <span class="badge badge-danger"><i class="fas fa-exclamation-circle"></i> Terlambat {{ abs($daysLeft) }} hari</span>
+                                                        @elseif($daysLeft <= 3)
+                                                            <span class="badge badge-warning"><i class="fas fa-clock"></i> {{ $daysLeft }} hari lagi</span>
+                                                        @else
+                                                            <span class="badge badge-info">{{ $deadline->translatedFormat('d M Y') }}</span>
+                                                        @endif
+                                                    @else
+                                                        <span class="text-muted">-</span>
+                                                    @endif
+                                                </td>
+                                                <td>
                                                     <button class="btn btn-info btn-sm assign-btn" 
                                                         data-toggle="tooltip" title="Penugasan"
                                                         onclick="openAssignModal({{ $bab->id }}, '{{ $bab->nama }}', {{ $bab->author_id ?? 'null' }}, {{ $bab->reviewer_id ?? 'null' }})">
@@ -192,7 +211,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">Tidak ada bab yang cocok.</td>
+                                                <td colspan="7" class="text-center text-muted">Tidak ada bab yang cocok.</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

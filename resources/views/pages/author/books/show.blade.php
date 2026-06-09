@@ -53,6 +53,7 @@
                                         <th>Nama Bab</th>
                                         <th>Penulis</th>
                                         <th width="150">Status</th>
+                                        <th width="120">Deadline</th>
                                         <th width="100">Aksi</th>
                                     </tr>
                                 </thead>
@@ -74,6 +75,24 @@
                                                 <x-status-badge :status="$bab->status" />
                                             </td>
                                             <td>
+                                                @if($bab->deadline)
+                                                    @php
+                                                        $deadline = \Carbon\Carbon::parse($bab->deadline);
+                                                        $now = \Carbon\Carbon::now();
+                                                        $daysLeft = $now->diffInDays($deadline, false);
+                                                    @endphp
+                                                    @if($daysLeft < 0)
+                                                        <span class="badge badge-danger"><i class="fas fa-exclamation-circle"></i> Terlambat {{ abs($daysLeft) }} hari</span>
+                                                    @elseif($daysLeft <= 3)
+                                                        <span class="badge badge-warning"><i class="fas fa-clock"></i> {{ $daysLeft }} hari lagi</span>
+                                                    @else
+                                                        <span class="badge badge-info">{{ $deadline->translatedFormat('d M Y') }}</span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 <a class="btn btn-success btn-sm" data-toggle="tooltip" title="Detail"
                                                     href="{{ route('author.show.chapter', $bab->id) }}">
                                                     <i class="fas fa-list"></i>
@@ -82,7 +101,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted">Tidak ada bab yang cocok.</td>
+                                            <td colspan="6" class="text-center text-muted">Tidak ada bab yang cocok.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
