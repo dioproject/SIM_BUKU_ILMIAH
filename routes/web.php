@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\ChapterController;
 use App\Http\Controllers\admin\FinalisasiController;
 use App\Http\Controllers\admin\ProduksiController;
 use App\Http\Controllers\admin\RoyaltyController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\author\AuthorBookController;
 use App\Http\Controllers\author\AuthorChapterController;
 use App\Http\Controllers\author\AuthorHistoryController;
@@ -67,7 +68,10 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/produksi', [ProduksiController::class, 'index'])->name('admin.index.produksi');
     Route::get('/admin/create/produksi', [ProduksiController::class, 'create'])->name('admin.create.produksi');
     Route::post('/admin/create/produksi', [ProduksiController::class, 'store'])->name('admin.store.produksi');
-    Route::get('/admin/edit/produksi', [ProduksiController::class, 'edit'])->name('admin.edit.produksi');
+    Route::get('/admin/produksi/{id}', [ProduksiController::class, 'show'])->name('admin.show.produksi');
+    Route::get('/admin/edit/produksi/{id}', [ProduksiController::class, 'edit'])->name('admin.edit.produksi');
+    Route::put('/admin/edit/produksi/{id}', [ProduksiController::class, 'update'])->name('admin.update.produksi');
+    Route::delete('/admin/produksi/{id}', [ProduksiController::class, 'destroy'])->name('admin.destroy.produksi');
     Route::get('/admin/catalogs', [CatalogController::class, 'index'])->name('admin.index.catalog');
     Route::get('/admin/create/catalog', [CatalogController::class, 'create'])->name('admin.create.catalog');
     Route::post('/admin/create/catalog', [CatalogController::class, 'store'])->name('admin.store.catalog');
@@ -75,6 +79,10 @@ Route::middleware(['auth', 'user-role:ADMIN'])->group(function () {
     Route::get('/admin/create/royalty', [RoyaltyController::class, 'create'])->name('admin.create.royalty');
     Route::post('/admin/create/royalty', [RoyaltyController::class, 'store'])->name('admin.store.royalty');
     Route::get('/admin/history', [HistoryController::class, 'index'])->name('admin.index.history');
+    
+    // Notification routes
+    Route::post('/admin/notification/{id}/read', [NotificationController::class, 'markAsRead'])->name('admin.notification.read');
+    Route::post('/admin/notification/read-all', [NotificationController::class, 'markAllAsRead'])->name('admin.notification.readAll');
     
     // API routes for dynamic dropdowns
     Route::get('/admin/api/chapters-by-produksi-author', function (\Illuminate\Http\Request $request) {
@@ -110,6 +118,10 @@ Route::middleware(['auth', 'user-role:REVIEWER'])->group(function () {
     Route::put('/reviewer/chapter/{id}/approve', [ReviewerChapterController::class, 'approve'])->name('reviewer.approve.chapter');
     Route::put('/reviewer/chapter/{id}/revisi', [ReviewerChapterController::class, 'revisi'])->name('reviewer.revisi.chapter');
     Route::get('/reviewer/history', [ReviewerHistoryController::class, 'index'])->name('reviewer.index.history');
+    
+    // Notification routes
+    Route::post('/reviewer/notification/{id}/read', [NotificationController::class, 'markAsRead'])->name('reviewer.notification.read');
+    Route::post('/reviewer/notification/read-all', [NotificationController::class, 'markAllAsRead'])->name('reviewer.notification.readAll');
 });
 
 // AUTHOR ROUTE
@@ -122,4 +134,8 @@ Route::middleware(['auth', 'user-role:AUTHOR'])->group(function () {
     Route::get('/author/chapters', [AuthorChapterController::class, 'index'])->name('author.index.chapter');
     Route::get('/author/chapter/{id}', [AuthorChapterController::class, 'show'])->name('author.show.chapter');
     Route::get('/author/history', [AuthorHistoryController::class, 'index'])->name('author.index.history');
+    
+    // Notification routes
+    Route::post('/author/notification/{id}/read', [NotificationController::class, 'markAsRead'])->name('author.notification.read');
+    Route::post('/author/notification/read-all', [NotificationController::class, 'markAllAsRead'])->name('author.notification.readAll');
 });
