@@ -297,4 +297,52 @@ class ReviewerWorkflowTest extends TestCase
         $response = $this->actingAs($this->reviewer)->get(route('admin.index.book'));
         $response->assertStatus(403);
     }
+
+    public function test_reviewer_notes_sends_notification_to_author()
+    {
+        $chapter = Bab::factory()->create([
+            'reviewer_id' => $this->reviewer->id,
+            'author_id' => $this->author->id,
+            'status_id' => Status::DALAM_REVIEW,
+            'file_bab' => 'bab.docx',
+        ]);
+
+        $this->actingAs($this->reviewer)->put(route('reviewer.notes.review', $chapter->id), [
+            'catatan' => 'Catatan review untuk author',
+        ]);
+
+        $this->assertDatabaseHas('notifikasis', [
+            'user_id' => $this->author->id,
+            'bab_id' => $chapter->id,
+        ]);
+    }
+
+    public function test_reviewer_notes_sends_notification_to_correct_chapter()
+    {
+        $chapter1 = Bab::factory()->create([
+            'reviewer_id' => $this->reviewer->id,
+            'author_id' => $this->author->id,
+            'status_id' => Status::DALAM_REVIEW,
+            'file_bab' => 'bab1.docx',
+        ]);
+        $chapter2 = Bab::factory()->create([
+            'reviewer_id' => $this->reviewer->id,
+            'author_id' => $this->author->id,
+            'status_id' => Status::DALAM_REVIEW,
+            'file_bab' => 'bab2.docx',
+        ]);
+
+        $this->actingAs($this->reviewer)->put(route('reviewer.notes.review', $chapter1->id), [
+            'catatan' => 'Catatan untuk bab 1',
+        ]);
+
+        $this->assertDatabaseHas('notifikasis', [
+            'user_id' => $this->author->id,
+            'bab_id' => $chapter1->id,
+        ]);
+        $this->assertDatabaseMissing('notifikasis', [
+            'user_id' => $this->author->id,
+            'bab_id' => $chapter2->id,
+        ]);
+    }
 }

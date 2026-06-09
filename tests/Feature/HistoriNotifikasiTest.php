@@ -251,4 +251,96 @@ class HistoriNotifikasiTest extends TestCase
             'action' => 'approve',
         ]);
     }
+
+    public function test_notification_mark_as_read()
+    {
+        $notification = Notifikasi::create([
+            'user_id' => $this->author->id,
+            'bab_id' => null,
+            'data' => ['chapter' => 'Bab Test', 'status' => 'Test'],
+            'is_read' => false,
+        ]);
+
+        $this->actingAs($this->author)->post(route('author.notification.read', $notification->id));
+
+        $notification->refresh();
+        $this->assertTrue($notification->is_read);
+    }
+
+    public function test_notification_mark_all_as_read()
+    {
+        Notifikasi::create([
+            'user_id' => $this->author->id,
+            'bab_id' => null,
+            'data' => ['chapter' => 'Bab 1'],
+            'is_read' => false,
+        ]);
+        Notifikasi::create([
+            'user_id' => $this->author->id,
+            'bab_id' => null,
+            'data' => ['chapter' => 'Bab 2'],
+            'is_read' => false,
+        ]);
+
+        $this->actingAs($this->author)->post(route('author.notification.readAll'));
+
+        $unreadCount = Notifikasi::where('user_id', $this->author->id)->where('is_read', false)->count();
+        $this->assertEquals(0, $unreadCount);
+    }
+
+    public function test_notification_mark_as_read_only_own_notifications()
+    {
+        $otherUser = User::factory()->create(['user_role' => 'AUTHOR']);
+        $notification = Notifikasi::create([
+            'user_id' => $otherUser->id,
+            'bab_id' => null,
+            'data' => ['chapter' => 'Bab Orang Lain'],
+            'is_read' => false,
+        ]);
+
+        $this->actingAs($this->author)->post(route('author.notification.read', $notification->id));
+
+        $notification->refresh();
+        $this->assertFalse($notification->is_read);
+    }
+
+    public function test_reviewer_notes_creates_notification_for_author()
+    {
+        $chapter = Bab::factory()->create([
+            'nama' => 'Bab Catatan',
+            'author_id' => $this->author->id,
+            'reviewer_id' => $this->reviewer->id,
+            'status_id' => Status::DALAM_REVIEW,
+            'file_bab' => 'bab.docx',
+        ]);
+
+        $this->actingAs($this->reviewer)->put(route('reviewer.notes.review', $chapter->id), [
+            'catatan' => 'Catatan dari reviewer',
+        ]);
+
+        $this->assertDatabaseHas('notifikasis', [
+            'user_id' => $this->author->id,
+            'bab_id' => $chapter->id,
+        ]);
+    }
+
+    public function test_reviewer_notes_creates_history()
+    {
+        $chapter = Bab::factory()->create([
+            'nama' => 'Bab History Notes',
+            'author_id' => $this->author->id,
+            'reviewer_id' => $this->reviewer->id,
+            'status_id' => Status::DALAM_REVIEW,
+            'file_bab' => 'bab.docx',
+        ]);
+
+        $this->actingAs($this->reviewer)->put(route('reviewer.notes.review', $chapter->id), [
+            'catatan' => 'Catatan review',
+        ]);
+
+        $this->assertDatabaseHas('historis', [
+            'bab_id' => $chapter->id,
+            'action' => 'notes',
+        ]);
+    }
 }
