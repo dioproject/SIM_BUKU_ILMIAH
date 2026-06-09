@@ -13,6 +13,7 @@ class Notifikasi extends Model
         'user_id',
         'bab_id',
         'data',
+        'is_read',
     ];
 
     protected $casts = [
@@ -20,6 +21,7 @@ class Notifikasi extends Model
         'user_id' => 'integer',
         'bab_id' => 'integer',
         'data' => 'array',
+        'is_read' => 'boolean',
     ];
 
     public function user()
