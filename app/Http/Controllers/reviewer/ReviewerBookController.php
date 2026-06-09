@@ -142,8 +142,26 @@ class ReviewerBookController extends Controller
             $chapter->update([
                 'catatan' => $request->catatan,
             ]);
+
+            Notifikasi::create([
+                'user_id' => $chapter->author_id,
+                'bab_id' => $chapter->id,
+                'data' => [
+                    'chapter' => $chapter->nama,
+                    'status' => 'Reviewer memberikan catatan',
+                    'uploaded_by' => Auth::user()->username,
+                ],
+            ]);
+
+            Histori::create([
+                'user_id' => Auth::id(),
+                'bab_id' => $chapter->id,
+                'status_id' => $chapter->status_id,
+                'action' => 'notes',
+                'detail' => 'Reviewer menulis catatan untuk bab "' . $chapter->nama . '"',
+            ]);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Catatan berhasil disimpan.');
     }
 }
