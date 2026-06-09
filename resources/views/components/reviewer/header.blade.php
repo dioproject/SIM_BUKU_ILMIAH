@@ -7,15 +7,26 @@
     </form>
     <ul class="navbar-nav navbar-right">
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                class="nav-link notification-toggle nav-link-lg"><i class="far fa-bell"></i></a>
+                class="nav-link notification-toggle nav-link-lg">
+                <i class="far fa-bell"></i>
+                @if($unreadCount > 0)
+                    <span class="badge badge-danger badge-notification">{{ $unreadCount }}</span>
+                @endif
+            </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
                 <div class="dropdown-header">Notifikasi
+                    @if($unreadCount > 0)
+                        <form method="POST" action="{{ route('reviewer.notification.readAll') }}" class="float-right">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-link text-white p-0">Tandai semua dibaca</button>
+                        </form>
+                    @endif
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
                     @foreach ($notifications as $notification)
-                        <div class="dropdown-item">
-                            <div class="dropdown-item-icon bg-info text-white">
-                                <i class="fas fa-info-circle"></i>
+                        <div class="dropdown-item {{ $notification->is_read ? '' : 'bg-light' }}">
+                            <div class="dropdown-item-icon {{ $notification->is_read ? 'bg-secondary' : 'bg-info' }} text-white">
+                                <i class="fas {{ $notification->is_read ? 'fa-check-circle' : 'fa-info-circle' }}"></i>
                             </div>
                             <div class="dropdown-item-desc">
                                 {{ is_array($notification->data) ? ($notification->data['chapter'] ?? 'Bab') : 'Bab' }}
@@ -23,9 +34,21 @@
                                     diunggah oleh {{ $notification->data['uploaded_by'] }}
                                 @endif
                                 <div class="time">{{ $notification->created_at->diffForHumans() }}</div>
+                                @if(!$notification->is_read)
+                                    <form method="POST" action="{{ route('reviewer.notification.read', $notification->id) }}" class="mt-1">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-info">Tandai sudah dibaca</button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     @endforeach
+                    @if($notifications->isEmpty())
+                        <div class="dropdown-item text-center text-muted">
+                            <i class="fas fa-bell-slash fa-2x mb-2"></i><br>
+                            Tidak ada notifikasi
+                        </div>
+                    @endif
                 </div>
             </div>
         </li>

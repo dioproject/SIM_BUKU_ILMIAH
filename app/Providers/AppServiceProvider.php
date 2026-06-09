@@ -12,30 +12,35 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('components.admin.header', function ($view) {
+            $userId = FacadesAuth::id();
             $notifications = Notifikasi::with(['user', 'bab.status'])
-                ->whereHas('user', function ($query) {
-                    $query->where('user_role', 'ADMIN');
-                })
+                ->where('user_id', $userId)
                 ->orderBy('created_at', 'desc')
+                ->limit(20)
                 ->get();
-            $view->with('notifications', $notifications);
+            $unreadCount = Notifikasi::where('user_id', $userId)->where('is_read', false)->count();
+            $view->with('notifications', $notifications)->with('unreadCount', $unreadCount);
         });
         View::composer('components.reviewer.header', function ($view) {
+            $userId = FacadesAuth::id();
             $notifications = Notifikasi::with(['user', 'bab.status'])
-                ->whereHas('user', function ($query) {
-                    $query->where('user_role', 'REVIEWER');
-                })
+                ->where('user_id', $userId)
                 ->orderBy('created_at', 'desc')
+                ->limit(20)
                 ->get();
-            $view->with('notifications', $notifications);
+            $unreadCount = Notifikasi::where('user_id', $userId)->where('is_read', false)->count();
+            $view->with('notifications', $notifications)->with('unreadCount', $unreadCount);
         });
 
         View::composer('components.author.header', function ($view) {
+            $userId = FacadesAuth::id();
             $notifications = Notifikasi::with(['user', 'bab.status'])
-                ->where('user_id', FacadesAuth::id())
+                ->where('user_id', $userId)
                 ->orderBy('created_at', 'desc')
+                ->limit(20)
                 ->get();
-            $view->with('notifications', $notifications);
+            $unreadCount = Notifikasi::where('user_id', $userId)->where('is_read', false)->count();
+            $view->with('notifications', $notifications)->with('unreadCount', $unreadCount);
         });
     }
 }
