@@ -26,26 +26,29 @@ Semua file test:
 
  | Folder | File Test | Jumlah Test | Fokus Pengujian |
 |--------|-----------|-------------|-----------------|
-| `tests/Unit/` | `StatusTransitionTest.php` | 15 | Validasi transisi status editorial via StatusHelper (tanpa DB) |
-| `tests/Feature/` | `AuthTest.php` | 6 | Login, register, role redirect, logout |
+| `tests/Unit/` | `StatusTransitionTest.php` | 14 | Validasi transisi status editorial via StatusHelper (tanpa DB) |
+| `tests/Unit/` | `ExampleTest.php` | 1 | Test dasar lingkungan PHPUnit |
+| `tests/Feature/` | `AuthTest.php` | 7 | Login, register, role redirect, logout |
 | | `AdminBukuTest.php` | 6 | CRUD buku, search, middleware, store chapter |
 | | `FinalisasiTest.php` | 2 | Finalisasi update ISBN |
 | | `RoyaltiTest.php` | 3 | Chain relasi Royalti → Produksi → Finalisasi → Buku |
 | | `DashboardTest.php` | 10 | Render dashboard setiap role + tampil data statistik per role |
-| | `UserManagementTest.php` | 12 | CRUD user, validasi phone_region, search, akses role |
-| | `ChapterAssignmentTest.php` | 8 | Assign author/reviewer, store chapter, approve admin |
-| | `AuthorWorkflowTest.php` | 9 | Author: buku ditugaskan, upload, revisi, pagar akses |
-| | `ReviewerWorkflowTest.php` | 16 | Reviewer: review, approve, revisi, notifikasi catatan, pagar akses |
+| | `UserManagementTest.php` | 11 | CRUD user, validasi phone_region, search, akses role |
+| | `ChapterAssignmentTest.php` | 7 | Assign author/reviewer, store chapter, approve admin |
+| | `AuthorWorkflowTest.php` | 8 | Author: buku ditugaskan, upload, revisi, pagar akses |
+| | `ReviewerWorkflowTest.php` | 15 | Reviewer: review, approve, revisi, notifikasi catatan, pagar akses |
 | | `AdminWorkflowFullTest.php` | 19 | Merge, finalisasi, produksi, katalog, royalti |
-| | `HistoriNotifikasiTest.php` | 17 | Histori aktivitas, notifikasi, baca notifikasi, catatan reviewer |
+| | `HistoriNotifikasiTest.php` | 16 | Histori aktivitas, notifikasi, baca notifikasi, catatan reviewer |
 | | `ProduksiTest.php` | 8 | CRUD produksi: index, create, store, show, edit, update, destroy, akses |
+| | `RoleWorkflowTest.php` | 4 | Test integrasi akses silang role |
+| | `ExampleTest.php` | 1 | Test dasar fitur HTTP |
 | | **Total** | **132** | |
 
 ---
 
 ## Detail Pengujian per Fitur
 
-### 1. AuthTest — Autentikasi dan Otorisasi (6 test)
+### 1. AuthTest — Autentikasi dan Otorisasi (7 test)
 
 Memastikan sistem login, register, dan redirect berdasarkan role berfungsi dengan benar.
 
@@ -128,7 +131,7 @@ Memastikan halaman dashboard setiap role bisa di-render tanpa error dan menampil
 
 ---
 
-### 6. StatusTransitionTest — Transisi Status Editorial (15 test)
+### 6. StatusTransitionTest — Transisi Status Editorial (14 test)
 
 Memvalidasi aturan transisi status menggunakan `StatusHelper` agar alur editorial tidak bisa dilompati.
 
@@ -153,7 +156,7 @@ Memvalidasi aturan transisi status menggunakan `StatusHelper` agar alur editoria
 
 ---
 
-### 7. UserManagementTest — Manajemen User Admin (12 test)
+### 7. UserManagementTest — Manajemen User Admin (11 test)
 
 Memastikan admin bisa mengelola user dan validasi data berfungsi.
 
@@ -175,7 +178,7 @@ Memastikan admin bisa mengelola user dan validasi data berfungsi.
 
 ---
 
-### 8. ChapterAssignmentTest — Assignment Chapter (8 test)
+### 8. ChapterAssignmentTest — Assignment Chapter (7 test)
 
 Menguji proses admin menambahkan bab dan menugaskan author/reviewer.
 
@@ -193,7 +196,7 @@ Menguji proses admin menambahkan bab dan menugaskan author/reviewer.
 
 ---
 
-### 9. AuthorWorkflowTest — Workflow Author (9 test)
+### 9. AuthorWorkflowTest — Workflow Author (8 test)
 
 Memastikan author hanya bisa mengerjakan bab yang ditugaskan kepadanya.
 
@@ -212,7 +215,7 @@ Memastikan author hanya bisa mengerjakan bab yang ditugaskan kepadanya.
 
 ---
 
-### 10. ReviewerWorkflowTest — Workflow Reviewer (16 test)
+### 10. ReviewerWorkflowTest — Workflow Reviewer (15 test)
 
 Memastikan reviewer hanya bisa menilai bab yang ditugaskan dan harus memberi file review/catatan sebelum approve.
 
@@ -268,7 +271,7 @@ Menguji merge, finalisasi, produksi, katalog, dan royalti dari ujung ke ujung.
 
 ---
 
-### 12. HistoriNotifikasiTest — Activity Log & Notifikasi (17 test)
+### 12. HistoriNotifikasiTest — Activity Log & Notifikasi (16 test)
 
 Memastikan setiap aksi penting tercatat di histori dan notifikasi dikirim ke pihak terkait, termasuk fitur baca notifikasi.
 
@@ -311,6 +314,45 @@ Menguji seluruh operasi CRUD pada halaman produksi oleh admin.
 | `test_non_admin_cannot_access_produksi_routes` | AUTHOR/REVIEWER tidak bisa akses (403) | ✅ |
 
 **Tujuan**: Memvalidasi bahwa seluruh operasi CRUD produksi berjalan dengan benar dan hanya bisa diakses oleh admin.
+
+---
+
+### 14. RoleWorkflowTest — Integrasi Akses Role (4 test)
+
+Menguji skenario integrasi akses silang antar role dalam satu alur.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_author_chapter_index_only_shows_assigned_chapters` | Author hanya melihat chapter tugasnya | ✅ |
+| `test_admin_can_assign_author_and_reviewer_to_chapter` | Admin bisa assign author dan reviewer | ✅ |
+| `test_author_cannot_upload_chapter_owned_by_another_author` | Author tidak bisa upload chapter milik author lain | ✅ |
+| `test_reviewer_cannot_approve_chapter_without_review_file` | Reviewer tidak bisa approve tanpa file review | ✅ |
+
+**Tujuan**: Memvalidasi bahwa pembatasan akses berdasarkan role tetap terjaga dalam skenario integrasi, bukan hanya dalam isolasi per-file test.
+
+---
+
+### 15. ExampleTest (Unit) — Test Dasar (1 test)
+
+Test dasar untuk memastikan lingkungan PHPUnit dan autoloading berfungsi.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_that_true_is_true` | Assert dasar bahwa true adalah true | ✅ |
+
+**Tujuan**: Verifikasi bahwa PHPUnit dapat berjalan dan autoloading composer tidak bermasalah.
+
+---
+
+### 16. ExampleTest (Feature) — Test Dasar HTTP (1 test)
+
+Test dasar untuk memastikan routing dan middleware berfungsi.
+
+| Test | Deskripsi | Hasil |
+|------|-----------|-------|
+| `test_guest_is_redirected_to_login` | Guest diarahkan ke halaman login | ✅ |
+
+**Tujuan**: Verifikasi bahwa middleware auth bekerja dan guest diarahkan ke halaman login.
 
 ---
 
@@ -485,21 +527,21 @@ User Management (Tests\Feature\UserManagement)
  ✔ Admin can delete user
  ✔ Non admin cannot access user management
 
-Time: 00:06.000, Memory: 48.00 MB
+Time: 00:05.564, Memory: 46.50 MB
 
-OK (132 tests, ~258 assertions)
+OK (132 tests, 247 assertions)
 ```
 
 | Metrik | Nilai |
 |--------|-------|
 | Total test | 132 |
-| Total asersi | ~258 |
+| Total asersi | 247 |
 | Test lulus (OK) | 132 |
 | Test gagal | **0** |
 | Error | **0** |
-| Waktu eksekusi | ~6 detik |
+| Waktu eksekusi | ~5-6 detik |
 
-> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `docker exec -it app php vendor/bin/phpunit --testdox`. Jumlah asersi bersifat estimasi karena bergantung pada eksekusi aktual.
+> **Catatan**: Seluruh test menggunakan `RefreshDatabase` sehingga setiap test dimulai dengan database kosong. Dijalankan di VPS via `docker exec -it app php vendor/bin/phpunit --testdox`.
 
 ---
 
@@ -543,7 +585,7 @@ Pengujian otomatis ini mencakup **seluruh fitur dan alur editorial** aplikasi SI
 - ✅ Histori aktivitas dan notifikasi
 - ✅ Pencegahan akses antar role (author/reviewer tidak bisa akses admin)
 
-Dengan **132 test dan ~258 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
+Dengan **132 test dan 247 asersi**, aplikasi telah terverifikasi bahwa semua fitur berjalan dengan benar dan siap digunakan. Jika ada perubahan atau penambahan fitur di masa depan, test ini akan menjadi jaring pengaman (*safety net*) yang mendeteksi jika terjadi *regression* (kerusakan pada fitur yang sebelumnya sudah berfungsi).
 
 ---
 
