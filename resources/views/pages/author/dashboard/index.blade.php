@@ -15,7 +15,7 @@
                 <h1><i class="fas fa-tachometer-alt"></i> Dasbor</h1>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
                             <i class="fas fa-solid fa-book"></i>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-primary">
                             <i class="fas fa-file-alt"></i>
@@ -45,6 +45,38 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-secondary">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Dikirim</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $submitted ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-dark">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Disetujui</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $approved ?? 0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-warning">
@@ -60,8 +92,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-info">
@@ -88,38 +118,6 @@
                             </div>
                             <div class="card-body">
                                 {{ $needsRevision ?? 0 }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-secondary">
-                            <i class="fas fa-paper-plane"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Dikirim</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $submitted ?? 0 }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-dark">
-                            <i class="fas fa-check-double"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Disetujui</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $approved ?? 0 }}
                             </div>
                         </div>
                     </div>
