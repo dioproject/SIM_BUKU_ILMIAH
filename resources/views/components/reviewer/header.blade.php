@@ -14,39 +14,80 @@
                 @endif
             </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Notifikasi
+                <div class="dropdown-header">
+                    Notifikasi
                     @if($unreadCount > 0)
                         <form method="POST" action="{{ route('reviewer.notification.readAll') }}" class="float-right">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-link text-white p-0">Tandai semua dibaca</button>
+                            <button type="submit" class="btn btn-sm btn-link p-0" style="color:inherit;">Tandai semua dibaca</button>
                         </form>
                     @endif
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
                     @foreach ($notifications as $notification)
-                        <div class="dropdown-item {{ $notification->is_read ? '' : 'bg-light' }}">
-                            <div class="dropdown-item-icon {{ $notification->is_read ? 'bg-secondary' : 'bg-info' }} text-white">
-                                <i class="fas {{ $notification->is_read ? 'fa-check-circle' : 'fa-info-circle' }}"></i>
+                        @php
+                            $data = $notification->data ?? [];
+                            $isUnread = !$notification->is_read;
+                            if (isset($data['message'])) {
+                                $icon = 'fa-user-plus';
+                                $bgColor = 'bg-info';
+                            } elseif (isset($data['uploaded_by']) && ($data['status'] ?? '') === 'Reviewer memberikan catatan') {
+                                $icon = 'fa-comment';
+                                $bgColor = 'bg-secondary';
+                            } elseif (isset($data['uploaded_by'])) {
+                                $icon = 'fa-upload';
+                                $bgColor = 'bg-primary';
+                            } elseif (($data['status'] ?? '') === 'Disetujui') {
+                                $icon = 'fa-check-circle';
+                                $bgColor = 'bg-success';
+                            } elseif (($data['status'] ?? '') === 'Revisi') {
+                                $icon = 'fa-edit';
+                                $bgColor = 'bg-warning';
+                            } else {
+                                $icon = 'fa-bell';
+                                $bgColor = 'bg-info';
+                            }
+                            $message = $data['message'] ?? '';
+                            $chapter = $data['chapter'] ?? 'Bab';
+                            $book = $data['book'] ?? '';
+                        @endphp
+                        <div class="dropdown-item {{ $isUnread ? 'dropdown-item-unread' : '' }}" style="position:relative;">
+                            @if($isUnread)
+                                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#6777ef;"></span>
+                            @endif
+                            <div class="dropdown-item-icon {{ $bgColor }} text-white" style="margin-left:{{ $isUnread ? '14px' : '0' }}">
+                                <i class="fas {{ $icon }}"></i>
                             </div>
                             <div class="dropdown-item-desc">
-                                {{ is_array($notification->data) ? ($notification->data['chapter'] ?? 'Bab') : 'Bab' }}
-                                @if(is_array($notification->data) && isset($notification->data['uploaded_by']))
-                                    diunggah oleh {{ $notification->data['uploaded_by'] }}
+                                @if($message)
+                                    <strong>{{ $message }}</strong><br>
                                 @endif
-                                <div class="time">{{ $notification->created_at->diffForHumans() }}</div>
-                                @if(!$notification->is_read)
-                                    <form method="POST" action="{{ route('reviewer.notification.read', $notification->id) }}" class="mt-1">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-info">Tandai sudah dibaca</button>
-                                    </form>
+                                <span>{{ $chapter }}</span>
+                                @if($book)
+                                    <span class="text-muted">· {{ $book }}</span>
                                 @endif
+                                @if(isset($data['uploaded_by']) && ($data['status'] ?? '') !== 'Reviewer memberikan catatan')
+                                    <span class="text-muted"> oleh {{ $data['uploaded_by'] }}</span>
+                                @endif
+                                <div class="time" style="display:flex;align-items:center;justify-content:space-between;">
+                                    <span>{{ $notification->created_at->diffForHumans() }}</span>
+                                    @if($isUnread)
+                                        <form method="POST" action="{{ route('reviewer.notification.read', $notification->id) }}" class="d-inline" style="line-height:1;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-link btn-sm text-muted p-0" style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;text-decoration:none;">
+                                                Tandai sudah dibaca
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @endforeach
                     @if($notifications->isEmpty())
-                        <div class="dropdown-item text-center text-muted">
-                            <i class="fas fa-bell-slash fa-2x mb-2"></i><br>
-                            Tidak ada notifikasi
+                        <div class="dropdown-item text-center text-muted" style="padding:40px 15px;">
+                            <i class="fas fa-bell-slash fa-3x mb-3" style="opacity:0.3;"></i><br>
+                            <span style="font-size:14px;font-weight:500;">Tidak ada notifikasi</span><br>
+                            <small style="font-size:12px;">Notifikasi akan muncul di sini</small>
                         </div>
                     @endif
                 </div>
