@@ -341,13 +341,6 @@ $(function() {
   }
 
   $(".notification-toggle").dropdown();
-  $(".notification-toggle").parent().on('shown.bs.dropdown', function() {
-    $(".dropdown-list-content").niceScroll({
-      cursoropacitymin: .3,
-      cursoropacitymax: .8,
-      cursorwidth: 7
-    });
-  });
 
   $(".message-toggle").dropdown();
   $(".message-toggle").parent().on('shown.bs.dropdown', function() {

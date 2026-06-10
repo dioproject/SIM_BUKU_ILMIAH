@@ -73,6 +73,7 @@ a.dropdown-item.has-icon i {
 .dropdown-list .dropdown-list-content {
     overflow-y: auto !important;
     overflow-x: hidden;
+    position: relative;
 }
 .dropdown-list .dropdown-list-content::-webkit-scrollbar {
     width: 5px;
@@ -84,7 +85,8 @@ a.dropdown-item.has-icon i {
     background: #c0c0c0;
     border-radius: 3px;
 }
-/* Hapus gradient fade bawah yang tidak berfungsi tanpa JS */
+/* Hapus gradient fade bawah Stisla (tanpa niceScroll) */
+.dropdown-list .dropdown-list-content:after,
 .dropdown-list .dropdown-list-content:not(.is-end):after {
-    display: none !important;
+    content: none !important;
 }
