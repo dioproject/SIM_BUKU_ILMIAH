@@ -25,6 +25,6 @@ class NotificationController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        return back()->with('success', 'Semua notifikasi ditandai sudah dibaca.');
+        return back();
     }
 }
