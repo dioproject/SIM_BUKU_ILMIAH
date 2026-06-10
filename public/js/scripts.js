@@ -342,7 +342,7 @@ $(function() {
 
   $(".notification-toggle").dropdown();
   $(".notification-toggle").parent().on('shown.bs.dropdown', function() {
-    $(".dropdown-list-icons").niceScroll({
+    $(".dropdown-list-content").niceScroll({
       cursoropacitymin: .3,
       cursoropacitymax: .8,
       cursorwidth: 7

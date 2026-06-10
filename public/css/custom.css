@@ -68,3 +68,13 @@ a.dropdown-item.has-icon i {
     line-height: 1;
     text-align: center;
 }
+
+/* ===== Notification Dropdown Scroll Fix ===== */
+/* Hapus gradient overlay palsu yang selalu muncul */
+.dropdown-list .dropdown-list-content:after {
+    display: none !important;
+}
+/* Biarkan niceScroll mengelola overflow */
+.dropdown-list .dropdown-list-content {
+    overflow: hidden !important;
+}
