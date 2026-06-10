@@ -36,7 +36,12 @@ class ProduksiTest extends TestCase
     public function test_produksi_store_creates_new_produksi()
     {
         $buku = Buku::factory()->create();
-        $finalisasi = Finalisasi::create(['buku_id' => $buku->id]);
+        $finalisasi = Finalisasi::create([
+            'buku_id' => $buku->id,
+            'isbn' => '9786021234567',
+            'cover' => 'cover.jpg',
+            'final_file' => 'final.pdf',
+        ]);
 
         $this->actingAs($this->admin)->post(route('admin.store.produksi'), [
             'final_id' => $finalisasi->id,
@@ -67,7 +72,7 @@ class ProduksiTest extends TestCase
 
         $response = $this->actingAs($this->admin)->get(route('admin.show.produksi', $produksi->id));
         $response->assertStatus(200);
-        $response->assertSee('1000');
+        $response->assertSee('1,000');
     }
 
     public function test_produksi_edit_page_renders()
@@ -89,7 +94,12 @@ class ProduksiTest extends TestCase
     public function test_produksi_update_modifies_produksi()
     {
         $buku = Buku::factory()->create();
-        $finalisasi = Finalisasi::create(['buku_id' => $buku->id]);
+        $finalisasi = Finalisasi::create([
+            'buku_id' => $buku->id,
+            'isbn' => '9786021234567',
+            'cover' => 'cover.jpg',
+            'final_file' => 'final.pdf',
+        ]);
         $produksi = Produksi::create([
             'final_id' => $finalisasi->id,
             'eksemplar' => 1000,
@@ -99,6 +109,7 @@ class ProduksiTest extends TestCase
         ]);
 
         $this->actingAs($this->admin)->put(route('admin.update.produksi', $produksi->id), [
+            'final_id' => $finalisasi->id,
             'eksemplar' => 2000,
             'tahun_terbit' => 2027,
             'biaya_produksi' => 100000000,
