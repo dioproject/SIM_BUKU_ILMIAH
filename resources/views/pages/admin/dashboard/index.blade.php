@@ -120,20 +120,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4><i class="fas fa-chart-bar"></i> Status Bab</h4>
                         </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Status Bab</h4>
-                            </div>
-                            <div class="card-body">
-                                @foreach($chaptersByStatus ?? [] as $item)
-                                    <div>{{ $item->status->option ?? 'N/A' }}: {{ $item->count }}</div>
-                                @endforeach
-                            </div>
+                        <div class="card-body">
+                            @forelse($chaptersByStatus ?? [] as $item)
+                                <span class="badge badge-primary m-1 p-2">
+                                    {{ $item->status->option ?? 'N/A' }}: <strong>{{ $item->count }}</strong>
+                                </span>
+                            @empty
+                                <span class="text-muted">Belum ada bab.</span>
+                            @endforelse
                         </div>
                     </div>
                 </div>
