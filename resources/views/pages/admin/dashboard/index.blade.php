@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-secondary">
                             <i class="fas fa-file-alt"></i>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-info">
                             <i class="fas fa-clock"></i>
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-dark">
                             <i class="fas fa-check-double"></i>
@@ -128,8 +128,22 @@
                             <h4><i class="fas fa-chart-bar"></i> Status Bab</h4>
                         </div>
                         <div class="card-body">
+                            @php
+                                $badgeColors = [
+                                    1 => 'badge-secondary',
+                                    2 => 'badge-info',
+                                    3 => 'badge-success',
+                                    4 => 'badge-primary',
+                                    5 => 'badge-danger',
+                                    6 => 'badge-dark',
+                                    7 => 'badge-warning',
+                                    8 => 'badge-info',
+                                    9 => 'badge-primary',
+                                    10 => 'badge-success',
+                                ];
+                            @endphp
                             @forelse($chaptersByStatus ?? [] as $item)
-                                <span class="badge badge-primary m-1 p-2">
+                                <span class="badge {{ $badgeColors[$item->status_id] ?? 'badge-secondary' }} m-1 p-2">
                                     {{ $item->status->option ?? 'N/A' }}: <strong>{{ $item->count }}</strong>
                                 </span>
                             @empty
