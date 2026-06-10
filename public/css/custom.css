@@ -69,6 +69,28 @@ a.dropdown-item.has-icon i {
     text-align: center;
 }
 
+/* ===== Notification Dropdown Font Consistency ===== */
+.dropdown-list .dropdown-item {
+    font-size: 13px;
+}
+.dropdown-list .dropdown-item .dropdown-item-desc {
+    font-size: 13px;
+    line-height: 20px;
+}
+.dropdown-list .dropdown-item .dropdown-item-desc strong {
+    font-size: 13px;
+    font-weight: 600;
+}
+.dropdown-list .dropdown-item .dropdown-item-desc .time {
+    font-size: 10px;
+}
+.dropdown-list .dropdown-item .dropdown-item-desc .time span {
+    font-size: 10px;
+}
+.dropdown-list .dropdown-item .dropdown-item-desc .text-muted {
+    font-size: 12px;
+}
+
 /* ===== Notification Dropdown Native Scroll ===== */
 .dropdown-list .dropdown-list-content {
     overflow-y: auto !important;
