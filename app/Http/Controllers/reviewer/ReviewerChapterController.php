@@ -76,7 +76,9 @@ class ReviewerChapterController extends Controller
             'bab_id' => $chapter->id,
             'data' => [
                 'chapter' => $chapter->nama,
+                'book' => $chapter->buku->judul,
                 'status' => 'Disetujui',
+                'message' => 'Bab Anda telah disetujui.',
             ],
         ]);
 
@@ -112,7 +114,9 @@ class ReviewerChapterController extends Controller
             'bab_id' => $chapter->id,
             'data' => [
                 'chapter' => $chapter->nama,
+                'book' => $chapter->buku->judul,
                 'status' => 'Revisi',
+                'message' => 'Reviewer meminta revisi bab Anda.',
             ],
         ]);
 

@@ -116,6 +116,8 @@ class ReviewerBookController extends Controller
                     'bab_id' => $review->id,
                     'data' => [
                         'chapter' => $review->nama,
+                        'book' => $review->buku->judul,
+                        'uploaded_by' => Auth::user()->username,
                         'status' => $review->status->option,
                     ],
                 ]);
@@ -148,8 +150,10 @@ class ReviewerBookController extends Controller
                 'bab_id' => $chapter->id,
                 'data' => [
                     'chapter' => $chapter->nama,
+                    'book' => $chapter->buku->judul,
                     'status' => 'Reviewer memberikan catatan',
                     'uploaded_by' => Auth::user()->username,
+                    'message' => 'Reviewer memberikan catatan pada bab Anda.',
                 ],
             ]);
 

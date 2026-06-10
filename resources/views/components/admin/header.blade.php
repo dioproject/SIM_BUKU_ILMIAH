@@ -28,21 +28,22 @@
                         @php
                             $data = $notification->data ?? [];
                             $isUnread = !$notification->is_read;
-                            if (isset($data['message'])) {
-                                $icon = 'fa-user-plus';
-                                $bgColor = 'bg-info';
-                            } elseif (isset($data['uploaded_by']) && ($data['status'] ?? '') === 'Reviewer memberikan catatan') {
+                            $notifStatus = $data['status'] ?? '';
+                            if ($notifStatus === 'Disetujui') {
+                                $icon = 'fa-check-circle';
+                                $bgColor = 'bg-success';
+                            } elseif ($notifStatus === 'Revisi') {
+                                $icon = 'fa-edit';
+                                $bgColor = 'bg-warning';
+                            } elseif ($notifStatus === 'Reviewer memberikan catatan') {
                                 $icon = 'fa-comment';
                                 $bgColor = 'bg-secondary';
+                            } elseif (isset($data['message'])) {
+                                $icon = 'fa-user-plus';
+                                $bgColor = 'bg-info';
                             } elseif (isset($data['uploaded_by'])) {
                                 $icon = 'fa-upload';
                                 $bgColor = 'bg-primary';
-                            } elseif (($data['status'] ?? '') === 'Disetujui') {
-                                $icon = 'fa-check-circle';
-                                $bgColor = 'bg-success';
-                            } elseif (($data['status'] ?? '') === 'Revisi') {
-                                $icon = 'fa-edit';
-                                $bgColor = 'bg-warning';
                             } else {
                                 $icon = 'fa-bell';
                                 $bgColor = 'bg-info';
@@ -66,7 +67,7 @@
                                 @if($book)
                                     <span class="text-muted">· {{ $book }}</span>
                                 @endif
-                                @if(isset($data['uploaded_by']) && ($data['status'] ?? '') !== 'Reviewer memberikan catatan')
+                                @if(isset($data['uploaded_by']))
                                     <span class="text-muted"> oleh {{ $data['uploaded_by'] }}</span>
                                 @endif
                                 <div class="time" style="display:flex;align-items:center;justify-content:space-between;">
