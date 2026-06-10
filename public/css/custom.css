@@ -69,12 +69,22 @@ a.dropdown-item.has-icon i {
     text-align: center;
 }
 
-/* ===== Notification Dropdown Scroll Fix ===== */
-/* Hapus gradient overlay palsu yang selalu muncul */
-.dropdown-list .dropdown-list-content:after {
-    display: none !important;
-}
-/* Biarkan niceScroll mengelola overflow */
+/* ===== Notification Dropdown Native Scroll ===== */
 .dropdown-list .dropdown-list-content {
-    overflow: hidden !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+}
+.dropdown-list .dropdown-list-content::-webkit-scrollbar {
+    width: 5px;
+}
+.dropdown-list .dropdown-list-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.dropdown-list .dropdown-list-content::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 3px;
+}
+/* Hapus gradient fade bawah yang tidak berfungsi tanpa JS */
+.dropdown-list .dropdown-list-content:not(.is-end):after {
+    display: none !important;
 }
