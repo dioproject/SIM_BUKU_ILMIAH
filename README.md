@@ -172,77 +172,72 @@ classDiagram
     Royalti "*" --> "1" Bab : berdasarkan bab
 ```
 
-## Struktur Model
+### Penjelasan Class Diagram (Untuk Laporan)
 
-### Domain Inti
+Diagram di atas menggambarkan arsitektur data sistem SIM Buku Ilmiah yang berpusat pada entitas **Bab** sebagai unit kerja utama. Berikut adalah komponen-komponen utamanya:
 
-| Model | Tabel | Deskripsi |
-|---|---|---|
-| `User` | `users` | Pengguna sistem dengan role `admin`, `author`, atau `reviewer` |
-| `Buku` | `bukus` | Data buku ilmiah (judul, template, jumlah bab) |
-| `Bab` | `babs` | Bab/chapter dalam buku — unit kerja utama editorial |
-| `Status` | `statuses` | Status editorial yang merekam siklus hidup bab |
-| `Jenis` | `jenis` | Kategori/jenis buku ilmiah |
+1.  **Entitas Inti (Core Entities):**
+    -   **User:** Menyimpan data pengguna dengan peran (Admin, Author, Reviewer). Relasi ke Bab menunjukkan tanggung jawab sebagai penulis atau peninjau.
+    -   **Buku:** Kontainer utama yang memiliki banyak Bab dan satu jenis kategori.
+    -   **Bab:** Entitas paling krusial yang menyimpan file naskah, file review, catatan, dan melacak status editorial dari awal hingga disetujui.
+2.  **Manajemen Status:**
+    -   **Status:** Menggunakan sistem enumerasi untuk mendefinisikan siklus hidup bab (Draft, Tersedia, Ditugaskan, Review, dsb).
+3.  **Finalisasi & Pasca-Produksi:**
+    -   **Finalisasi:** Menggabungkan bab-bab yang telah disetujui menjadi satu file final dengan tambahan ISBN dan cover.
+    -   **Katalog & Produksi:** Mengelola metadata untuk konsumsi publik (katalog) dan perhitungan biaya serta eksemplar (produksi).
+    -   **Royalti:** Menghitung bagi hasil secara otomatis berdasarkan kontribusi per bab dari setiap Author.
+4.  **Logging & Monitoring:**
+    -   **Histori & Notifikasi:** Mencatat setiap perubahan status dan mengirimkan pemberitahuan kepada pengguna terkait (misal: Author mendapat notifikasi saat Reviewer meminta revisi).
 
-### Domain Finalisasi & Publikasi
-
-| Model | Tabel | Deskripsi |
-|---|---|---|
-| `Finalisasi` | `finalisasis` | Proses finalisasi buku (merge bab, ISBN, cover, file final) |
-| `Katalog` | `katalogs` | Katalog publikasi buku yang sudah final |
-| `Produksi` | `produksis` | Data produksi fisik buku (eksemplar, biaya, harga jual) |
-| `Royalti` | `royaltis` | Perhitungan royalti per kontributor per bab |
-
-### Domain Pendukung
-
-| Model | Tabel | Deskripsi |
-|---|---|---|
-| `Histori` | `historis` | Riwayat aksi pada setiap bab (siapa melakukan apa, kapan) |
-| `Notifikasi` | `notifikasis` | Notifikasi untuk user terkait perubahan status bab |
+---
 
 ## Alur Editorial
 
 ### Status Transitions
 
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Tersedia
+    Tersedia --> Ditugaskan : Admin Assign Author & Reviewer
+    Ditugaskan --> Dikirim_Author : Author Upload Naskah
+    Dikirim_Author --> Dalam_Review
+    Dalam_Review --> Revisi : Reviewer Minta Perbaikan
+    Revisi --> Direvisi : Author Upload Revisi
+    Direvisi --> Dalam_Review
+    Dalam_Review --> Disetujui : Reviewer/Admin Approve
+    Disetujui --> Finalisasi : Semua Bab Disetujui
+    Finalisasi --> Terbit : Katalog Dipublikasi
+    Terbit --> [*]
 ```
-                       ┌─────────────────┐
-                       │     Draft (1)    │
-                       └────────┬─────────┘
-                                │
-                       ┌────────▼─────────┐
-                       │   Tersedia (2)    │
-                       └────────┬─────────┘
-                                │ Admin assign author & reviewer
-                       ┌────────▼─────────┐
-                       │  Ditugaskan (4)   │
-                       └────────┬─────────┘
-                                │ Author upload naskah
-                       ┌────────▼─────────┐
-                       │ Dikirim Author (7)│
-                       └────────┬─────────┘
-                                │
-                       ┌────────▼─────────┐
-                       │  Dalam Review (6) │
-                       └──┬──────────────┬─┘
-                          │              │
-                 ┌────────▼──┐    ┌──────▼───────────┐
-                 │ Revisi (5) │    │ Disetujui (3)    │
-                 └────────┬───┘    └──────┬───────────┘
-                          │              │
-                 ┌────────▼───┐          │
-                 │ Direvisi (8)│          │
-                 └────────┬───┘          │
-                          │              │
-                          └──────┬───────┘
-                                 │
-                        ┌────────▼────────┐
-                        │  Finalisasi (9)  │
-                        └────────┬─────────┘
-                                 │
-                        ┌────────▼────────┐
-                        │   Terbit (10)    │
-                        └─────────────────┘
-```
+
+### Penjelasan Alur Editorial (Untuk Laporan)
+
+Alur editorial pada SIM Buku Ilmiah dirancang untuk memastikan kualitas naskah melalui proses *peer-review* yang ketat:
+
+1.  **Tahap Persiapan:** Buku dibuat oleh Admin, status bab dimulai dari `Draft` kemudian menjadi `Tersedia` untuk diproses.
+2.  **Tahap Penugasan:** Admin menentukan siapa Author dan Reviewer untuk tiap bab. Bab berpindah ke status `Ditugaskan`.
+3.  **Tahap Pengerjaan:** Author mengunggah naskah awal (`Dikirim Author`).
+4.  **Tahap Peninjauan (Review):** Reviewer memeriksa naskah. Di sini terdapat *looping* jika diperlukan perbaikan: `Dalam Review` -> `Revisi` -> `Direvisi` -> kembali ke `Dalam Review`.
+5.  **Tahap Kelulusan:** Setelah naskah sesuai standar, status diubah menjadi `Disetujui`.
+6.  **Tahap Akhir:** Jika seluruh bab dalam satu buku telah disetujui, Admin melakukan `Finalisasi` (penggabungan file) dan akhirnya buku dinyatakan `Terbit`.
+
+---
+
+## Panduan Konversi ke Draw.io
+
+Untuk memasukkan diagram di atas ke dalam Draw.io (Diagrams.net), ikuti langkah-langkah berikut:
+
+1.  Buka **[app.diagrams.net](https://app.diagrams.net/)**.
+2.  Pilih **Insert** (ikon `+` di toolbar atas) atau buka menu **Arrange** > **Insert**.
+3.  Pilih **Advanced** > **Mermaid...**.
+4.  Salin kode Mermaid (yang berada di dalam blok ` ```mermaid `) dari README ini.
+5.  Tempelkan kode tersebut ke dalam kotak teks yang muncul.
+6.  Klik **Insert**.
+7.  Diagram akan otomatis terbuat dalam format Draw.io yang bisa Anda edit warnanya, bentuknya, atau tata letaknya.
+
+---
+
 
 ### Urutan Proses
 
