@@ -124,12 +124,26 @@ classDiagram
     User "1" --> "*" Notifikasi : menerima
 ```
 
-### Penjelasan Class Diagram (Untuk Laporan)
+### Penjelasan Class Diagram (Untuk Laporan Akhir)
 
-Pemisahan diagram di atas bertujuan untuk memperjelas tanggung jawab setiap modul dalam sistem:
-1.  **Modul Editorial:** Mengelola data dasar buku dan proses peer-review antar Author dan Reviewer.
-2.  **Modul Publikasi:** Mengelola output sistem berupa file buku yang sudah digabung, penomoran ISBN, dan data produksi fisik.
-3.  **Modul Monitoring:** Memastikan setiap aksi tercatat dalam log (Histori) dan sistem bagi hasil (Royalti) berjalan transparan bagi penulis.
+Pemisahan diagram ke dalam tiga modul fungsional bertujuan untuk memberikan gambaran yang lebih terstruktur mengenai bagaimana sistem mengelola data dari tahap ide hingga menjadi produk komersial:
+
+#### 1. Modul Manajemen Buku & Editorial (Core)
+Modul ini merupakan jantung dari sistem SIM Buku Ilmiah.
+- **Buku & Bab:** Sistem tidak menganggap buku sebagai satu file tunggal, melainkan sekumpulan **Bab** yang independen. Pendekatan ini memungkinkan manajemen proses editorial yang lebih granular, di mana setiap bab bisa memiliki tenggat waktu dan progres yang berbeda-beda.
+- **Klasifikasi Jenis:** Setiap buku terikat pada **Jenis** tertentu (seperti Referensi, Monograf, atau Buku Ajar) yang menentukan standar *template* dan aturan penulisan yang harus diikuti oleh Author.
+- **Siklus Hidup Status:** Hubungan antara Bab dan **Status** menggunakan sistem enumerasi untuk memastikan naskah melewati gerbang validasi yang ketat. Naskah tidak dapat berlanjut ke tahap berikutnya sebelum statusnya diverifikasi oleh Reviewer atau Admin.
+
+#### 2. Modul Finalisasi & Publikasi
+Setelah seluruh bab melalui proses *peer-review*, modul ini mengambil alih untuk mengubah kumpulan naskah menjadi produk siap edar.
+- **Integrasi Finalisasi:** Entitas **Finalisasi** berfungsi sebagai titik temu (konsolidator). Di sini, file-file bab yang terpisah digabungkan menjadi satu naskah utuh. Metadata penting seperti **ISBN** dan desain **Cover** disematkan secara permanen pada tahap ini.
+- **Hilirisasi ke Katalog & Produksi:** Data yang sudah difinalisasi secara otomatis mengalir ke dua arah: ke **Katalog** untuk visibilitas publik (pemasaran) dan ke **Produksi** untuk pencatatan inventaris (jumlah eksemplar dan biaya cetak). Ini memastikan konsistensi data antara naskah yang diterbitkan dan data stok di gudang.
+
+#### 3. Modul Monitoring & Keuangan
+Modul ini berfungsi sebagai instrumen transparansi dan akuntabilitas bagi seluruh pihak yang terlibat.
+- **Akuntabilitas User:** Setiap aksi yang dilakukan oleh Admin, Author, maupun Reviewer terekam secara otomatis dalam **Histori**. Hal ini penting untuk audit internal jika terjadi keterlambatan atau perselisihan dalam proses editorial.
+- **Transparansi Royalti:** Sebagai bentuk apresiasi terhadap kekayaan intelektual, sistem menghitung **Royalti** secara otomatis bagi setiap kontributor bab. Perhitungan ini didasarkan pada data Produksi, sehingga penulis mendapatkan bagi hasil yang akurat sesuai dengan volume buku yang dicetak atau terjual.
+- **Sistem Notifikasi:** Untuk meminimalkan *bottleneck*, entitas **Notifikasi** memastikan setiap pengguna mendapatkan informasi *real-time* mengenai tugas mereka (misal: saat naskah siap di-review atau revisi diminta).
 
 ---
 
@@ -152,8 +166,13 @@ stateDiagram-v2
     Terbit --> [*]
 ```
 
-### Penjelasan Alur Editorial (Untuk Laporan)
-Diagram alur di atas menunjukkan transisi status sebuah bab dari pembuatan awal (`Draft`) hingga publikasi (`Terbit`). Arah horizontal ini memudahkan pembaca untuk melihat progres linier dari tahap penugasan hingga tahap finalisasi tanpa memakan banyak ruang vertikal dalam dokumen Word.
+### Penjelasan Alur Editorial (Untuk Laporan Akhir)
+
+Alur kerja (workflow) editorial dalam sistem ini mengadopsi standar penerbitan ilmiah profesional yang menekankan pada kualitas konten:
+1.  **Tahap Inisiasi:** Proses dimulai dari **Draft** oleh Admin. Status **Tersedia** menandakan slot bab sudah siap untuk diisi oleh penulis.
+2.  **Tahap Kolaborasi:** Saat Admin melakukan *assignment*, Author dan Reviewer mulai bekerja secara paralel. **Dikirim Author** adalah tonggak awal di mana tanggung jawab berpindah dari penulis ke penguji.
+3.  **Iterasi Kualitas:** Proses antara **Dalam Review**, **Revisi**, dan **Direvisi** adalah siklus peningkatan mutu. Di sini terjadi dialog intelektual antara Reviewer dan Author hingga naskah mencapai standar layak terbit (**Disetujui**).
+4.  **Tahap Finalisasi & Rilis:** Setelah kualitas konten terjamin, sistem melakukan otomatisasi administratif melalui tahap **Finalisasi** hingga akhirnya naskah dapat diakses oleh publik dalam status **Terbit**.
 
 ---
 
